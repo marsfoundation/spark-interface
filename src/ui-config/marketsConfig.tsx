@@ -16,9 +16,6 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
   };
-  cachingServerUrl?: string;
-  cachingWSServerUrl?: string;
-  rpcOnly?: boolean;
   isFork?: boolean;
   permissionComponent?: ReactNode;
   addresses: {
@@ -61,6 +58,7 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
+  proto_spark_v3 = 'proto_spark_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -86,7 +84,6 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -103,6 +100,28 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
+  [CustomMarket.proto_spark_v3]: {
+    marketTitle: 'Spark',
+    v3: true,
+    chainId: ChainId.mainnet,
+    enabledFeatures: {
+      incentives: false,
+      collateralRepay: false,
+      liquiditySwap: false,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xc3023a2c9f7B92d1dd19F488AF6Ee107a78Df9DB'.toLowerCase(),
+      LENDING_POOL: '0xcdc9D7811974744355d74819D044b2B92D75b83e',
+      WETH_GATEWAY: '0xF6a8aD553b265405526030c2102fda2bDcdDC177',
+      WALLET_BALANCE_PROVIDER: '0x09120eAED8e4cD86D85a616680151DAA653880F2',
+      UI_POOL_DATA_PROVIDER: '0x666432Ccb747B2220875cE185f487Ed53677faC9',
+      UI_INCENTIVE_DATA_PROVIDER: '0xeC1BB74f5799811c0c1Bff94Ef76Fb40abccbE4a',
+      //L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      //COLLECTOR: '0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf',
+      //SWAP_COLLATERAL_ADAPTER: '0xC7524B08101dBe695d7ad671a332760b5d967Cbd',
+      //REPAY_WITH_COLLATERAL_ADAPTER: '0x70371a494f73A8Df658C5cd29E2C1601787e1009',
+    },
+  },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
@@ -112,7 +131,6 @@ export const marketsData: {
   //     // incentives: true,
   //     permissions: true,
   //   },
-  //   rpcOnly: true,
   //   permissionComponent: <PermissionView />,
   //   addresses: {
   //     LENDING_POOL_ADDRESS_PROVIDER: '<address here>'.toLowerCase(),
@@ -129,7 +147,6 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -148,8 +165,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xd05e3E715d945B59290df0ae8eF85c1BdB684744'.toLowerCase(),
       LENDING_POOL: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
@@ -174,8 +189,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f'.toLowerCase(),
       LENDING_POOL: '0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C',
@@ -204,7 +217,6 @@ export const marketsData: {
       // staking: true,
       // incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D'.toLowerCase(),
       LENDING_POOL: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
@@ -224,7 +236,6 @@ export const marketsData: {
       liquiditySwap: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -250,7 +261,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc'.toLowerCase(),
       LENDING_POOL: '0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075',
@@ -271,7 +281,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -296,7 +305,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x1775ECC8362dB6CaB0c7A9C0957cF656A5276c29'.toLowerCase(),
       LENDING_POOL: '0xb47673b7a73D78743AFF1487AF69dBB5763F00cA',
@@ -315,7 +323,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x74a328ED938160D702378Daeb7aB2504714B4E4b'.toLowerCase(),
       LENDING_POOL: '0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4',
@@ -335,7 +342,6 @@ export const marketsData: {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -360,7 +366,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xE339D30cBa24C70dCCb82B234589E3C83249e658'.toLowerCase(),
       LENDING_POOL: '0x771A45a19cE333a19356694C5fc80c76fe9bc741',
@@ -378,7 +383,6 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -398,7 +402,6 @@ export const marketsData: {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -421,7 +424,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -445,7 +447,6 @@ export const marketsData: {
       incentives: true,
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6'.toLowerCase(),
       LENDING_POOL: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',
@@ -463,7 +464,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
     },
-    rpcOnly: true,
+
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5E52dEc931FFb32f609681B8438A51c675cc232d'.toLowerCase(),
       LENDING_POOL: '0x4bd5643ac6f66a5237E18bfA7d47cF22f1c9F210',
@@ -481,7 +482,6 @@ export const marketsData: {
       incentives: true,
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x178113104fEcbcD7fF8669a0150721e231F0FD4B'.toLowerCase(),
       LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
@@ -499,7 +499,6 @@ export const marketsData: {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f'.toLowerCase(),
       LENDING_POOL: '0x76cc67FF2CC77821A70ED14321111Ce381C2594D',
