@@ -4351,10 +4351,10 @@
     "@types/react" "*"
     "@visx/point" "2.6.0"
 
-"@visx/gradient@^2.10.0":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@visx/gradient/-/gradient-2.10.0.tgz#a3905735da18c2c074edc7becc93a46f17f2e086"
-  integrity sha512-qxmIFY7aRcz0BqaH3gX0tYJu6cOJZhjTzPnHCuuxOjlF28fDDaAVG+oRqlZzYBMAvlWJ9s5qtDou7OvKJF/+2g==
+"@visx/gradient@^2.17.0":
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/@visx/gradient/-/gradient-2.17.0.tgz#8c1113f66703b48ee2d4fc064d7ff6dfc701094c"
+  integrity sha512-3vyMzSR5iSo8+nKOx+bQZpFXqFGVzCrRbuStxTH4Ag0KFATOYnjCsypjD+gc2DEVzkarVGy0V9kRfFIH09r8Fg==
   dependencies:
     "@types/react" "*"
     prop-types "^15.5.7"
