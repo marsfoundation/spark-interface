@@ -54,6 +54,7 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
+  proto_spark_goerli_v3 = 'proto_spark_goerli_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -232,6 +233,28 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x75CC0f0E3764be7594772D08EEBc322970CbB3a9',
       UI_POOL_DATA_PROVIDER: '0xC576539371a2f425545B7BF4eb2a14Eee1944a1C',
       UI_INCENTIVE_DATA_PROVIDER: '0xACFd610B51ac6B70F030B277EA8A2A8D2143dC7A',
+    },
+  },
+  [CustomMarket.proto_spark_goerli_v3]: {
+    marketTitle: 'Spark Lend Görli',
+    v3: true,
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
+      faucet: true,
+      // governance: true,
+      // staking: true,
+      // incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x2a16453F57aa43fE9394190bCAEe76ec9cE79345'.toLowerCase(),
+      LENDING_POOL: '0x5eFeD709e91A48D7C507F7e5eC985e31B22a9539',
+      WETH_GATEWAY: '0x4DF8cfc1bB07CB0C94A14C0a595B9471ccF729fb',
+      FAUCET: '0x1ca525Cd5Cb77DB5Fa9cBbA02A0824e283469DBe',
+      WALLET_BALANCE_PROVIDER: '0x924aF9b333A0b373304d800B1dD5Dcf809aFff99',
+      UI_POOL_DATA_PROVIDER: '0x7a3bdA2705145eb4c45ff6C2f079FbCB70E22e84',
+      UI_INCENTIVE_DATA_PROVIDER: '0xc6d5BA50271418f19eB4A16cac5c24090ce62B5A',
     },
   },
   [CustomMarket.proto_arbitrum_v3]: {
