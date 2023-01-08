@@ -104,6 +104,7 @@ export const SupplyAssetsList = () => {
             usageAsCollateralEnabledOnUser,
             detailsAddress: reserve.underlyingAsset,
             id: reserve.id + 'base',
+            showSwap: false,
           },
           {
             ...reserve,
@@ -116,6 +117,7 @@ export const SupplyAssetsList = () => {
               Number(availableToDepositUSD) <= 0 ? '0' : availableToDepositUSD.toString(),
             usageAsCollateralEnabledOnUser,
             detailsAddress: reserve.underlyingAsset,
+            showSwap: reserve.symbol === 'DAI' || reserve.symbol === 'USDC',
           },
         ];
       }
@@ -131,6 +133,7 @@ export const SupplyAssetsList = () => {
           Number(availableToDepositUSD) <= 0 ? '0' : availableToDepositUSD.toString(),
         usageAsCollateralEnabledOnUser,
         detailsAddress: reserve.underlyingAsset,
+        showSwap: reserve.symbol === 'DAI' || reserve.symbol === 'USDC',
       };
     })
     .flat();

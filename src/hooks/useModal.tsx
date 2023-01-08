@@ -19,6 +19,7 @@ export enum ModalType {
   Emode,
   Faucet,
   Swap,
+  PSMSwap,
   GovDelegation,
   GovVote,
 }
@@ -56,6 +57,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
+  openPSMSwap: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   close: () => void;
@@ -148,6 +150,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openSwap: (underlyingAsset) => {
           setType(ModalType.Swap);
+          setArgs({ underlyingAsset });
+        },
+        openPSMSwap: (underlyingAsset) => {
+          setType(ModalType.PSMSwap);
           setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {

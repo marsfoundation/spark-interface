@@ -32,9 +32,10 @@ export const SupplyAssetsListItem = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
   detailsAddress,
+  showSwap,
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
-  const { openSupply } = useModalContext();
+  const { openSupply, openPSMSwap } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
@@ -80,6 +81,15 @@ export const SupplyAssetsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
+        {
+          showSwap &&
+          <Button
+              variant="gradient"
+              onClick={() => openPSMSwap(underlyingAsset)}
+            >
+            <Trans>Swap</Trans>
+          </Button>
+        }
         <Button
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
           variant="contained"
@@ -87,13 +97,16 @@ export const SupplyAssetsListItem = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Button
-          variant="outlined"
-          component={Link}
-          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-        >
-          <Trans>Details</Trans>
-        </Button>
+        {
+          !showSwap &&
+          <Button
+            variant="outlined"
+            component={Link}
+            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          >
+            <Trans>Details</Trans>
+          </Button>
+        }
       </ListButtonsColumn>
     </ListItemWrapper>
   );
