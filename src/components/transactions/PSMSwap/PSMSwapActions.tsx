@@ -10,71 +10,34 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface SwapActionProps extends BoxProps {
+export interface PSMSwapActionProps extends BoxProps {
   amountToSwap: string;
-  amountToReceive: string;
   poolReserve: ComputedReserveData;
-  targetReserve: ComputedReserveData;
-  isWrongNetwork: boolean;
-  customGasPrice?: string;
   symbol: string;
-  blocked: boolean;
-  priceRoute: OptimalRate | null;
-  isMaxSelected: boolean;
-  useFlashLoan: boolean;
 }
 
 export const PSMSwapActions = ({
   amountToSwap,
-  amountToReceive,
-  isWrongNetwork,
-  sx,
+  symbol,
   poolReserve,
-  targetReserve,
-  priceRoute,
-  isMaxSelected,
-  useFlashLoan,
+  sx,
   ...props
-}: SwapActionProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentNetworkConfig } = useProtocolDataContext();
+}: PSMSwapActionProps) => {
+  const { psmService } = useTxBuilderContext();
   const { currentAccount } = useWeb3Context();
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        const { swapCallData, augustus } = await getSwapCallData({
-          srcToken: poolReserve.underlyingAsset,
-          srcDecimals: poolReserve.decimals,
-          destToken: targetReserve.underlyingAsset,
-          destDecimals: targetReserve.decimals,
-          user: currentAccount,
-          route: priceRoute as OptimalRate,
-          chainId: currentNetworkConfig.underlyingChainId || chainId,
-        });
-        return lendingPool.swapCollateral({
-          fromAsset: poolReserve.underlyingAsset,
-          toAsset: targetReserve.underlyingAsset,
-          swapAll: isMaxSelected,
-          fromAToken: poolReserve.aTokenAddress,
-          fromAmount: amountToSwap,
-          minToAmount: amountToReceive,
-          user: currentAccount,
-          flash: useFlashLoan,
-          augustus,
-          swapCallData,
+        return psmService.buyGem({
+          userAddress: currentAccount,
+          usr: currentAccount,
+          gemAmt: amountToSwap,
         });
       },
-      skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
+      skip: !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
       deps: [
         amountToSwap,
-        amountToReceive,
-        priceRoute,
-        poolReserve.underlyingAsset,
-        targetReserve.underlyingAsset,
-        isMaxSelected,
-        currentAccount,
-        useFlashLoan,
       ],
     });
 
@@ -82,12 +45,12 @@ export const PSMSwapActions = ({
     <TxActionsWrapper
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
-      isWrongNetwork={isWrongNetwork}
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() => approval(amountToSwap, poolReserve.aTokenAddress)}
+      isWrongNetwork={false}
+      handleApproval={() => approval(amountToSwap, poolReserve.underlyingAsset)}
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}

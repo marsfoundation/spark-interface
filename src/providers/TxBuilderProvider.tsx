@@ -7,6 +7,7 @@ import {
   LendingPool,
   Pool,
   PoolInterface,
+  PsmService,
 } from '@aave/contract-helpers';
 import React, { ReactElement } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -17,6 +18,7 @@ export interface TxBuilderContextInterface {
   faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;
   incentivesTxBuilderV2: IncentivesControllerV2Interface;
+  psmService: PsmService;
 }
 
 export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -49,9 +51,11 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
     jsonRpcProvider
   );
 
+  const psmService = new PsmService(jsonRpcProvider, currentMarketData.addresses.PSM, currentMarketData.addresses.PSM_TOKEN, currentMarketData.addresses.DAI);
+
   return (
     <TxBuilderContext.Provider
-      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2 }}
+      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2, psmService }}
     >
       {children}
     </TxBuilderContext.Provider>

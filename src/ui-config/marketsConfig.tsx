@@ -34,6 +34,9 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
+    PSM?: string;
+    PSM_TOKEN?: string;
+    DAI?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -255,6 +258,9 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x71144e6A3EF5C7F99Be26715895FAFf58A2a7642',
       UI_POOL_DATA_PROVIDER: '0x153447b905BE178977D8cF5A652E5CD006afcd3c',
       UI_INCENTIVE_DATA_PROVIDER: '0x849e3dfC2BdEc61e10A3535B4675A888B0d0Aab6',
+      PSM: '0xb480B8dD5A232Cb7B227989Eacda728D1F247dB6',
+      PSM_TOKEN: '0x6Fb5ef893d44F4f88026430d82d4ef269543cB23',
+      DAI: '0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844',
     },
   },
   [CustomMarket.proto_arbitrum_v3]: {
