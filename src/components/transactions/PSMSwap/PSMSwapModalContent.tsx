@@ -1,25 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
+import { AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import {
-  DetailsHFLine,
-  DetailsIncentivesLine,
+  DetailsPSMSwap,
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useSwap } from 'src/hooks/useSwap';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
-import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 
 import {
   ComputedReserveData,
@@ -27,25 +16,22 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
 import { PSMSwapActions } from './PSMSwapActions';
 import {
-  calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
-  valueToBigNumber,
 } from '@aave/math-utils';
 import { CapType } from '../../caps/helper';
 
 export const PSMSwapModalContent = ({
   poolReserve,
-  userReserve,
   isWrongNetwork,
   tokenBalance,
 }: ModalWrapperProps) => {
-  const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+  const { marketReferencePriceInUsd, reserves } = useAppDataContext();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
+  const poolReserveSwapTo = reserves.find(
+    (reserve) => (reserve.symbol === 'DAI' || reserve.symbol === 'USDC') && reserve.symbol !== poolReserve.symbol
+  ) as ComputedReserveData;
 
   // states
   const [_amount, setAmount] = useState('');
@@ -68,9 +54,15 @@ export const PSMSwapModalContent = ({
   );
   // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
-  const totalCollateralMarketReferenceCurrencyAfter = user
-    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(amountIntEth)
-    : '-1';
+  
+  if (supplyTxState.success)
+    return (
+      <TxSuccessView
+        action={<Trans>Swapped</Trans>}
+        amount={amountRef.current}
+        symbol={poolReserve.symbol}
+      />
+    );
 
   return (
     <>
@@ -92,14 +84,24 @@ export const PSMSwapModalContent = ({
         maxValue={maxAmountToSupply.toString(10)}
       />
 
-      <TxModalDetails gasLimit={gasLimit} />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine description={<Trans>Fee</Trans>} value={0} percent />
+        <DetailsPSMSwap
+          description={<Trans>You receive</Trans>}
+          symbol={poolReserveSwapTo.symbol}
+          iconSymbol={poolReserveSwapTo.iconSymbol}
+          value={amount}
+        />
+      </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
 
       <PSMSwapActions
+        buyGem={poolReserve.symbol === 'DAI'}
         poolReserve={poolReserve}
         amountToSwap={amount}
         symbol={poolReserve.symbol}
+        isWrongNetwork={isWrongNetwork}
       />
     </>
   );

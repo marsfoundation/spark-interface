@@ -286,6 +286,7 @@ export const useTransactionHandler = ({
                   'STAKE_ACTION',
                   'GOV_DELEGATION_ACTION',
                   'GOVERNANCE_ACTION',
+                  'PSM_ACTION',
                 ].includes(tx.txType)
               )
             );

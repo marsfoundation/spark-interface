@@ -300,3 +300,28 @@ export const DetailsUnwrapSwitch = ({
     </Row>
   );
 };
+
+interface DetailsPSMSwapProps extends FormattedNumberProps {
+  description: ReactNode;
+  value: FormattedNumberProps['value'];
+  iconSymbol: string;
+  symbol: string;
+}
+
+export const DetailsPSMSwap = ({
+  value,
+  symbol,
+  iconSymbol,
+  description,
+  ...rest
+}: DetailsPSMSwapProps) => {
+  return (
+    <Row caption={description} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <FormattedNumber value={value} variant="secondary14" {...rest} sx={{ margin: '0 8px' }} />
+        <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />
+        {symbol}
+      </Box>
+    </Row>
+  );
+};
