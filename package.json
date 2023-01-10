@@ -4,7 +4,7 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
-    "postinstall": "mkdir node_modules/@aave/spark-utilities; cd node_modules/@aave/spark-utilities; git init; git remote add -f origin https://github.com/hexonaut/spark-utilities.git; git pull origin spark; yarn; cd packages/contract-helpers; yarn run build; cd ../../..; ln -s spark-utilities/packages/contract-helpers contract-helpers",
+    "postinstall": "mkdir node_modules/@aave/spark-utilities; cd node_modules/@aave; git clone https://github.com/hexonaut/spark-utilities.git; cd spark-utilities; git checkout spark; yarn; cd packages/contract-helpers; yarn run build; cd ../../..; rm -rf contract-heleprs; ln -s spark-utilities/packages/contract-helpers contract-helpers",
     "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
@@ -33,6 +33,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@aave/contract-helpers": "1.9.0",
     "@aave/math-utils": "1.9.0",
     "@apollo/client": "^3.5.10",
     "@emotion/cache": "11.10.3",
