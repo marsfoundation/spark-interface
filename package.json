@@ -4,7 +4,7 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
-    "postinstall": "mkdir node_modules/@aave/spark-utilities; cd node_modules/@aave; git clone https://github.com/hexonaut/spark-utilities.git; cd spark-utilities; git checkout spark; yarn; cd packages/contract-helpers; yarn run build; cd ../../..; ln -s spark-utilities/packages/contract-helpers contract-helpers; rm -rf spark-utilities/node_modules; cd ../..",
+    "postinstall": "PROJ_CWD=`pwd` TMPDIR=`mktemp -d` cd $TMPDIR; git clone https://github.com/hexonaut/spark-utilities.git; cd spark-utilities; git checkout spark; yarn; cd packages/contract-helpers; yarn run build; cp -r ../contract-helpers ${PROJ_CWD}/node_modules/@aave/contract-helpers; cd $PROJ_CWD",
     "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
