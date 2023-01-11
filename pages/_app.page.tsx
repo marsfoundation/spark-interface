@@ -17,11 +17,11 @@ import { CollateralChangeModal } from 'src/components/transactions/CollateralCha
 import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
+import { PSMSwapModal } from 'src/components/transactions/PSMSwap/PSMSwapModal';
 import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwitchModal';
 import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
 import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
-import { PSMSwapModal } from 'src/components/transactions/PSMSwap/PSMSwapModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -66,9 +66,7 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <Meta
         title={'Maker-Powered Lending Market'}
-        description={
-          'Spark Protocol'
-        }
+        description={'Spark Protocol'}
         imageUrl={AaveMetaImage.src}
       />
 

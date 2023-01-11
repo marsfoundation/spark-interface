@@ -30,20 +30,20 @@ export const PSMSwapActions = ({
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        return buyGem ? psmService.buyGem({
-            userAddress: currentAccount,
-            usr: currentAccount,
-            gemAmt: amountToSwap,
-          }) : psmService.sellGem({
-            userAddress: currentAccount,
-            usr: currentAccount,
-            gemAmt: amountToSwap,
-          });
+        return buyGem
+          ? psmService.buyGem({
+              userAddress: currentAccount,
+              usr: currentAccount,
+              gemAmt: amountToSwap,
+            })
+          : psmService.sellGem({
+              userAddress: currentAccount,
+              usr: currentAccount,
+              gemAmt: amountToSwap,
+            });
       },
       skip: !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
-      deps: [
-        amountToSwap,
-      ],
+      deps: [amountToSwap],
     });
 
   return (

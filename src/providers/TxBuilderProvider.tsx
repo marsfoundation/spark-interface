@@ -51,7 +51,12 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
     jsonRpcProvider
   );
 
-  const psmService = new PsmService(jsonRpcProvider, currentMarketData.addresses.PSM, currentMarketData.addresses.PSM_TOKEN, currentMarketData.addresses.DAI);
+  const psmService = new PsmService(
+    jsonRpcProvider,
+    currentMarketData.addresses.PSM,
+    currentMarketData.addresses.PSM_TOKEN,
+    currentMarketData.addresses.DAI
+  );
 
   return (
     <TxBuilderContext.Provider

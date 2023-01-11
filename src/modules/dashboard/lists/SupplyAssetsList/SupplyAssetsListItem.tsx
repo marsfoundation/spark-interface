@@ -81,15 +81,11 @@ export const SupplyAssetsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {
-          showSwap &&
-          <Button
-              variant="gradient"
-              onClick={() => openPSMSwap(underlyingAsset)}
-            >
+        {showSwap && (
+          <Button variant="gradient" onClick={() => openPSMSwap(underlyingAsset)}>
             <Trans>Swap</Trans>
           </Button>
-        }
+        )}
         <Button
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
           variant="contained"
@@ -97,8 +93,7 @@ export const SupplyAssetsListItem = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        {
-          !showSwap &&
+        {!showSwap && (
           <Button
             variant="outlined"
             component={Link}
@@ -106,7 +101,7 @@ export const SupplyAssetsListItem = ({
           >
             <Trans>Details</Trans>
           </Button>
-        }
+        )}
       </ListButtonsColumn>
     </ListItemWrapper>
   );

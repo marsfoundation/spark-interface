@@ -1,11 +1,12 @@
+import { USD_DECIMALS } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import {
-  DetailsPSMSwap,
   DetailsNumberLine,
+  DetailsPSMSwap,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useModalContext } from 'src/hooks/useModal';
@@ -14,13 +15,10 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { CapType } from '../../caps/helper';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { PSMSwapActions } from './PSMSwapActions';
-import {
-  USD_DECIMALS,
-} from '@aave/math-utils';
-import { CapType } from '../../caps/helper';
 
 export const PSMSwapModalContent = ({
   poolReserve,
@@ -30,7 +28,9 @@ export const PSMSwapModalContent = ({
   const { marketReferencePriceInUsd, reserves } = useAppDataContext();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
   const poolReserveSwapTo = reserves.find(
-    (reserve) => (reserve.symbol === 'DAI' || reserve.symbol === 'USDC') && reserve.symbol !== poolReserve.symbol
+    (reserve) =>
+      (reserve.symbol === 'DAI' || reserve.symbol === 'USDC') &&
+      reserve.symbol !== poolReserve.symbol
   ) as ComputedReserveData;
 
   // states
@@ -54,7 +54,7 @@ export const PSMSwapModalContent = ({
   );
   // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
-  
+
   if (supplyTxState.success)
     return (
       <TxSuccessView
