@@ -34,7 +34,7 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
-    CHAINLOG?: string;
+    CHAINLOG: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
