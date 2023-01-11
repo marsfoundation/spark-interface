@@ -4,7 +4,6 @@
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
-    "postinstall": "PROJ_CWD=`pwd` TMPDIR=`mktemp -d` cd $TMPDIR; git clone https://github.com/hexonaut/spark-utilities.git; cd spark-utilities; git checkout spark; yarn; cd packages/contract-helpers; yarn run build; mkdir -p ${PROJ_CWD}/node_modules/@aave; cp -r ../contract-helpers ${PROJ_CWD}/node_modules/@aave/contract-helpers; cd $PROJ_CWD",
     "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
@@ -33,6 +32,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@aave/contract-helpers": "npm:@blank101/contract-helpers@1.12.0",
     "@aave/math-utils": "1.9.0",
     "@apollo/client": "^3.5.10",
     "@emotion/cache": "11.10.3",
