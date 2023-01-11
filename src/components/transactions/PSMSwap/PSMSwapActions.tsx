@@ -10,14 +10,12 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 export interface PSMSwapActionProps extends BoxProps {
   amountToSwap: string;
   poolReserve: ComputedReserveData;
-  symbol: string;
   isWrongNetwork: boolean;
   buyGem: boolean;
 }
 
 export const PSMSwapActions = ({
   amountToSwap,
-  symbol,
   poolReserve,
   isWrongNetwork,
   buyGem,

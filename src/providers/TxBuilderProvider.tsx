@@ -7,7 +7,6 @@ import {
   LendingPool,
   Pool,
   PoolInterface,
-  ChainlogService,
   PsmService,
 } from '@aave/contract-helpers';
 import React, { ReactElement } from 'react';
@@ -19,7 +18,6 @@ export interface TxBuilderContextInterface {
   faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;
   incentivesTxBuilderV2: IncentivesControllerV2Interface;
-  chainlogService: ChainlogService;
   psmService: PsmService;
 }
 
@@ -53,20 +51,11 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
     jsonRpcProvider
   );
 
-  const chainlogService = new ChainlogService(
-    jsonRpcProvider,
-    currentMarketData.addresses.CHAINLOG,
-  );
-
-  const psmService = new PsmService(
-    jsonRpcProvider,
-    currentMarketData.addresses.CHAINLOG,
-    'USDC',
-  );
+  const psmService = new PsmService(jsonRpcProvider, currentMarketData.addresses.CHAINLOG, 'USDC');
 
   return (
     <TxBuilderContext.Provider
-      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2, chainlogService, psmService }}
+      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2, psmService }}
     >
       {children}
     </TxBuilderContext.Provider>
