@@ -100,7 +100,6 @@ export const PSMSwapModalContent = ({
         buyGem={poolReserve.symbol === 'DAI'}
         poolReserve={poolReserve}
         amountToSwap={amount}
-        symbol={poolReserve.symbol}
         isWrongNetwork={isWrongNetwork}
       />
     </>
