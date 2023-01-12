@@ -32,6 +32,8 @@ export const SupplyAssetsListItem = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
   detailsAddress,
+  showSwap,
+  hideSupply,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply, openPSMSwap } = useModalContext();
@@ -85,13 +87,15 @@ export const SupplyAssetsListItem = ({
             <Trans>Swap</Trans>
           </Button>
         )}
-        <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
-          variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
-        >
-          <Trans>Supply</Trans>
-        </Button>
+        {!hideSupply && (
+          <Button
+            disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+            variant="contained"
+            onClick={() => openSupply(underlyingAsset)}
+          >
+            <Trans>Supply</Trans>
+          </Button>
+        )}
         {!showSwap && (
           <Button
             variant="outlined"

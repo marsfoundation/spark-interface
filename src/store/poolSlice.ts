@@ -9,10 +9,11 @@ import {
   LendingPool,
   Pool,
   PoolBaseCurrencyHumanized,
+  PsmParamsType,
+  PsmService,
   ReserveDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
-  PsmService,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -56,6 +57,8 @@ export interface PoolSlice {
   // methods
   useOptimizedPath: () => boolean | undefined;
   mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
+  buyGem: (args: Omit<PsmParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
+  sellGem: (args: Omit<PsmParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   withdraw: (
     args: Omit<LPWithdrawParamsType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
@@ -208,7 +211,8 @@ export const createPoolSlice: StateCreator<
       const userAddress = get().account;
       const service = new PsmService(
         get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG
+        get().currentMarketData.addresses.CHAINLOG,
+        'USDC'
       );
       return service.buyGem({ ...args, userAddress });
     },
@@ -216,7 +220,8 @@ export const createPoolSlice: StateCreator<
       const userAddress = get().account;
       const service = new PsmService(
         get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG
+        get().currentMarketData.addresses.CHAINLOG,
+        'USDC'
       );
       return service.sellGem({ ...args, userAddress });
     },

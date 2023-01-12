@@ -30,12 +30,10 @@ export const PSMSwapActions = ({
       handleGetTxns: async () => {
         return buyGemMode
           ? buyGem({
-              userAddress: currentAccount,
               usr: currentAccount,
               gemAmt: amountToSwap,
             })
           : sellGem({
-              userAddress: currentAccount,
               usr: currentAccount,
               gemAmt: amountToSwap,
             });
@@ -53,7 +51,9 @@ export const PSMSwapActions = ({
       requiresAmount
       amount={amountToSwap}
       isWrongNetwork={isWrongNetwork}
-      handleApproval={() => approval(amountToSwap, poolReserve.underlyingAsset)}
+      handleApproval={() =>
+        approval({ amount: amountToSwap, underlyingAsset: poolReserve.underlyingAsset })
+      }
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
