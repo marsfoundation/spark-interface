@@ -13,13 +13,17 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/infoTooltips/AMPLWarning.tsx
-msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
-msgstr "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
+#: src/components/Warnings/AMPLWarning.tsx
+msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
+msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+
+#: src/modules/dashboard/lists/SlippageList.tsx
+msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
+msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -41,7 +45,7 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
 
@@ -53,14 +57,14 @@ msgstr "APY type"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, stable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, variable"
 msgstr "APY, variable"
 
@@ -152,29 +156,21 @@ msgstr "Amount"
 msgid "Amount must be greater than 0"
 msgstr "Amount must be greater than 0"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "Ampleforth FAQ"
-msgstr "Ampleforth FAQ"
-
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr "An error has occurred fetching the proposal metadata from IPFS."
 
-#: src/components/infoModalContents/ApprovalInfoContent.tsx
-msgid "Approval"
-msgstr "Approval"
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Approve Confirmed"
+msgstr "Approve Confirmed"
 
-#: src/components/transactions/FlowCommons/LeftHelperText.tsx
-msgid "Approve confirmed"
-msgstr "Approve confirmed"
+#: src/components/transactions/FlowCommons/RightHelperText.tsx
+msgid "Approve with"
+msgstr "Approve with"
 
 #: src/components/transactions/TxActionsWrapper.tsx
-msgid "Approve to continue"
-msgstr "Approve to continue"
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Approved"
-msgstr "Approved"
+msgid "Approve {symbol} to continue"
+msgstr "Approve {symbol} to continue"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approving {symbol}..."
@@ -184,16 +180,19 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsList.tsx
 msgid "Asset"
 msgstr "Asset"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr "Asset cannot be used as collateral."
 
@@ -210,7 +209,7 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
@@ -219,6 +218,7 @@ msgid "Asset to delegate"
 msgstr "Asset to delegate"
 
 #: src/modules/dashboard/lists/ListHeader.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets"
 msgstr "Assets"
 
@@ -236,6 +236,8 @@ msgstr "Assets to supply"
 msgid "Author"
 msgstr "Author"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
 msgstr "Available"
@@ -283,10 +285,6 @@ msgstr "Be careful - You are very close to liquidation. Consider depositing more
 msgid "Before supplying"
 msgstr "Before supplying"
 
-#: src/components/infoModalContents/ApprovalInfoContent.tsx
-msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our <0>FAQ</0>"
-msgstr "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our <0>FAQ</0>"
-
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
 msgstr "Blocked Address"
@@ -305,13 +303,13 @@ msgstr "Borrow"
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
 msgstr "Borrow APY, stable"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
 msgstr "Borrow APY, variable"
 
@@ -319,7 +317,16 @@ msgstr "Borrow APY, variable"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Borrow balance"
+msgstr "Borrow balance"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Borrow balance after repay"
+msgstr "Borrow balance after repay"
+
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
 msgstr "Borrow cap"
 
@@ -343,23 +350,27 @@ msgstr "Borrowed"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
+#: src/components/Warnings/BorrowDisabledWarning.tsx
+msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
@@ -395,9 +406,10 @@ msgstr "CLAIM {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
@@ -405,7 +417,7 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/modules/markets/AssetListTitle.tsx
+#: src/modules/markets/MarketAssetListTitle.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -467,20 +479,24 @@ msgid "Collateral"
 msgstr "Collateral"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "Collateral amount to repay with"
-msgstr "Collateral amount to repay with"
+msgid "Collateral balance after repay"
+msgstr "Collateral balance after repay"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Collateral to repay with"
+msgstr "Collateral to repay with"
+
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
 
@@ -496,7 +512,7 @@ msgstr "Collateralization"
 msgid "Collector Contract"
 msgstr "Collector Contract"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
 
@@ -572,10 +588,6 @@ msgstr "Data couldn't be fetched, please reload graph."
 msgid "Debt"
 msgstr "Debt"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "Debt amount to repay"
-msgstr "Debt amount to repay"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
@@ -587,10 +599,6 @@ msgstr "Debt ceiling is not zero"
 #: src/components/caps/DebtCeilingStatus.tsx
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
-
-#: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
-msgid "Define Retry with Approval text"
-msgstr "Define Retry with Approval text"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -609,7 +617,7 @@ msgstr "Delegation"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/AssetsListItem.tsx
+#: src/modules/markets/MarketAssetsListItem.tsx
 msgid "Details"
 msgstr "Details"
 
@@ -635,6 +643,7 @@ msgstr "Disable testnet"
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
 
+#: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
@@ -747,10 +756,6 @@ msgstr "English"
 msgid "Enter ETH address"
 msgstr "Enter ETH address"
 
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Enter an address to track in watch-only mode"
-msgstr "Enter an address to track in watch-only mode"
-
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
 msgstr "Enter an amount"
@@ -762,6 +767,10 @@ msgstr "Error connecting. Try refreshing the page."
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Expected amount to repay"
+msgstr "Expected amount to repay"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
@@ -788,6 +797,10 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Fetching data..."
+msgstr "Fetching data..."
+
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
 msgstr "Filter"
@@ -803,6 +816,10 @@ msgstr "Forum discussion"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
 msgstr "French"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Frozen assets"
+msgstr "Frozen assets"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -822,13 +839,10 @@ msgstr "Github"
 msgid "Global settings"
 msgstr "Global settings"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Go Back"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "Go back"
-msgstr "Go back"
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
@@ -963,9 +977,9 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -990,7 +1004,7 @@ msgid "Liquidation at"
 msgstr "Liquidation at"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
@@ -1002,8 +1016,9 @@ msgstr "Liquidation risk"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
 
@@ -1037,18 +1052,13 @@ msgid "Max"
 msgstr "Max"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
 msgstr "Max slashing"
-
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Max slippage rate"
-msgstr "Max slippage rate"
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
@@ -1058,8 +1068,8 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
@@ -1074,11 +1084,6 @@ msgstr "Maximum loan to value"
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menu"
-
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Minimum received"
-msgstr "Minimum received"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -1120,12 +1125,16 @@ msgstr "Network not supported for this wallet"
 msgid "New APY"
 msgstr "New APY"
 
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+msgid "No"
+msgstr "No"
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
@@ -1135,6 +1144,7 @@ msgstr "No voting power"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "None"
 msgstr "None"
 
@@ -1246,10 +1256,17 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Price impact"
-msgstr "Price impact"
+#: src/modules/dashboard/lists/SlippageList.tsx
+msgid "Powered by"
+msgstr "Powered by"
+
+#: src/components/infoTooltips/PriceImpactTooltip.tsx
+msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgstr "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+
+#: src/components/infoTooltips/PriceImpactTooltip.tsx
+msgid "Price impact {0}%"
+msgstr "Price impact {0}%"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
@@ -1306,6 +1323,18 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Reached"
 
+#: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
+msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+
+#: src/layouts/WalletWidget.tsx
+msgid "Read-only mode."
+msgstr "Read-only mode."
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Read-only mode. Connect to a wallet to perform transactions."
+msgstr "Read-only mode. Connect to a wallet to perform transactions."
+
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
 msgstr "Received"
@@ -1326,7 +1355,6 @@ msgstr "Reload"
 msgid "Reload the page"
 msgstr "Reload the page"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
 msgstr "Remaining debt"
@@ -1334,6 +1362,10 @@ msgstr "Remaining debt"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
 msgstr "Remaining supply"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Repaid"
+msgstr "Repaid"
 
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -1345,6 +1377,7 @@ msgstr "Repay"
 msgid "Repay with"
 msgstr "Repay with"
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
@@ -1370,18 +1403,6 @@ msgstr "Reserve factor is a percentage of interest which goes to a {0} that is c
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
 msgstr "Reserve status & configuration"
-
-#: src/components/transactions/FlowCommons/LeftHelperText.tsx
-msgid "Retry What?"
-msgstr "Retry What?"
-
-#: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
-msgid "Retry with Approval"
-msgstr "Retry with Approval"
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Retry with approval"
-msgstr "Retry with approval"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
@@ -1435,6 +1456,10 @@ msgstr "Select APY type to switch"
 msgid "Select language"
 msgstr "Select language"
 
+#: src/modules/dashboard/lists/SlippageList.tsx
+msgid "Select slippage tolerance"
+msgstr "Select slippage tolerance"
+
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 msgid "Select token to add"
 msgstr "Select token to add"
@@ -1466,6 +1491,10 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/components/infoTooltips/SlippageTooltip.tsx
+msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
+msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
@@ -1548,9 +1577,13 @@ msgstr "Staking"
 msgid "Staking APR"
 msgstr "Staking APR"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Staking Rewards"
 msgstr "Staking Rewards"
+
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+msgid "Staking balance"
+msgstr "Staking balance"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -1563,6 +1596,10 @@ msgstr "State"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
 msgstr "Supplied"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Supplied asset amount"
+msgstr "Supplied asset amount"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -1577,20 +1614,27 @@ msgstr "Supply"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Supply APY"
 msgstr "Supply APY"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "Supply balance"
+
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+msgid "Supply balance after swap"
+msgstr "Supply balance after swap"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1613,11 +1657,16 @@ msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 
 #: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
 msgstr "Swap"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swap to"
+msgstr "Swap to"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swapped"
@@ -1755,6 +1804,10 @@ msgstr "There is not enough collateral to cover a new borrow"
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+msgstr "These assets are temporarily frozen by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
+
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1786,6 +1839,10 @@ msgstr "This asset has reached its supply cap. Nothing is available to be suppli
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+
+#: src/components/infoTooltips/RenFILToolTip.tsx
+msgid "This asset is frozen due to an Aave Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
+msgstr "This asset is frozen due to an Aave Protocol Governance decision. On the 20th of December 2022, renFIL will no longer be supported and cannot be bridged back to its native network. It is recommended to withdraw supply positions and repay borrow positions so that renFIL can be bridged back to FIL before the deadline. After this date, it will no longer be possible to convert renFIL to FIL. <0>More details</0>"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
@@ -1823,10 +1880,14 @@ msgstr "Time left to unstake"
 msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
+
+#: src/components/infoTooltips/ApprovalTooltip.tsx
+msgid "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
+msgstr "To continue, you need to grant Aave smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
@@ -1848,10 +1909,10 @@ msgstr "Top 10 addresses"
 msgid "Total available"
 msgstr "Total available"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
@@ -1867,10 +1928,10 @@ msgstr "Total emission per day"
 msgid "Total market size"
 msgstr "Total market size"
 
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
 
@@ -1881,6 +1942,14 @@ msgstr "Total voting power"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
 msgstr "Total worth"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet"
+msgstr "Track wallet"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Track wallet balance in read-only mode"
+msgstr "Track wallet balance in read-only mode"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
@@ -1903,11 +1972,10 @@ msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
 msgstr "Unbacked"
 
@@ -2000,7 +2068,7 @@ msgstr "View all votes"
 msgid "View contract"
 msgstr "View contract"
 
-#: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
 
@@ -2050,11 +2118,12 @@ msgstr "Voting results"
 msgid "Wallet Balance"
 msgstr "Wallet Balance"
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Wallet balance"
 
@@ -2066,21 +2135,9 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
-#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
-msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-msgstr "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
-
-#: src/layouts/WalletWidget.tsx
-msgid "Watch-only mode."
-msgstr "Watch-only mode."
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Watch-only mode. Connect to a wallet to perform transactions."
-msgstr "Watch-only mode. Connect to a wallet to perform transactions."
-
-#: src/modules/markets/AssetsList.tsx
-msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
-msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
+msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
@@ -2093,10 +2150,6 @@ msgstr "We suggest you go back to the Dashboard."
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
-
-#: src/components/transactions/FlowCommons/LeftHelperText.tsx
-msgid "Why do I need to approve?"
-msgstr "Why do I need to approve?"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
@@ -2131,6 +2184,10 @@ msgstr "Wrong Network"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
+
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+msgid "Yes"
+msgstr "Yes"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
@@ -2253,7 +2310,7 @@ msgstr "Your {name} wallet is empty. Purchase or transfer assets."
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/hooks/useReserveActionState.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 
@@ -2261,7 +2318,7 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
-#: src/modules/markets/AssetListTitle.tsx
+#: src/modules/markets/MarketAssetListTitle.tsx
 msgid "assets"
 msgstr "assets"
 
@@ -2273,10 +2330,6 @@ msgstr "blocked activities"
 msgid "copy the error"
 msgstr "copy the error"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "documentation"
-msgstr "documentation"
-
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "ends"
@@ -2285,15 +2338,11 @@ msgstr "ends"
 msgid "here."
 msgstr "here."
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "is an asset affected by rebasing. Visit the"
-msgstr "is an asset affected by rebasing. Visit the"
-
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "of"
 msgstr "of"
 
@@ -2301,20 +2350,15 @@ msgstr "of"
 msgid "on"
 msgstr "on"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "or"
-msgstr "or"
-
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 msgstr "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "repaid"
 msgstr "repaid"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 msgstr "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 
@@ -2322,9 +2366,9 @@ msgstr "stETH supplied as collateral will continue to accrue staking rewards pro
 msgid "staking view"
 msgstr "staking view"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "to learn more."
-msgstr "to learn more."
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "starts"
+msgstr "starts"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
@@ -2339,6 +2383,8 @@ msgid "withdrew"
 msgstr "withdrew"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -2363,6 +2409,10 @@ msgstr "{0} on-ramp service is provided by External Provider and by selecting yo
 msgid "{0}{name}"
 msgstr "{0}{name}"
 
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "{currentMethod}"
+msgstr "{currentMethod}"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
 msgstr "{d}d"
@@ -2375,8 +2425,8 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/hooks/useReserveActionState.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 

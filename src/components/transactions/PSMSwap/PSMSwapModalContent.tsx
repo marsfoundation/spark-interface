@@ -97,7 +97,7 @@ export const PSMSwapModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <PSMSwapActions
-        buyGem={poolReserve.symbol === 'DAI'}
+        buyGemMode={poolReserve.symbol === 'DAI'}
         poolReserve={poolReserve}
         amountToSwap={amount}
         isWrongNetwork={isWrongNetwork}

@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -11,30 +11,30 @@ export interface PSMSwapActionProps extends BoxProps {
   amountToSwap: string;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
-  buyGem: boolean;
+  buyGemMode: boolean;
 }
 
 export const PSMSwapActions = ({
   amountToSwap,
   poolReserve,
   isWrongNetwork,
-  buyGem,
+  buyGemMode,
   sx,
   ...props
 }: PSMSwapActionProps) => {
-  const { psmService } = useTxBuilderContext();
+  const { buyGem, sellGem } = useRootStore();
   const { currentAccount } = useWeb3Context();
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        return buyGem
-          ? psmService.buyGem({
+        return buyGemMode
+          ? buyGem({
               userAddress: currentAccount,
               usr: currentAccount,
               gemAmt: amountToSwap,
             })
-          : psmService.sellGem({
+          : sellGem({
               userAddress: currentAccount,
               usr: currentAccount,
               gemAmt: amountToSwap,

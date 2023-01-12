@@ -16,9 +16,6 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
   };
-  cachingServerUrl?: string;
-  cachingWSServerUrl?: string;
-  rpcOnly?: boolean;
   isFork?: boolean;
   permissionComponent?: ReactNode;
   addresses: {
@@ -89,7 +86,6 @@ export const marketsData: {
       // staking: true,
       // incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x9a92018Def4fF783B2c0B3dc0F5F42D6078f5e4A'.toLowerCase(),
       LENDING_POOL: '0xd0AE3f8a3baF66273a025fEBf90756e95252882D',

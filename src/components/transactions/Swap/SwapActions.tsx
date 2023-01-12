@@ -1,16 +1,18 @@
+import {
+  API_ETH_MOCK_ADDRESS,
+  gasLimitRecommendations,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { OptimalRate } from 'paraswap-core';
+import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getSwapCallData } from 'src/hooks/useSwap';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
+import { useRootStore } from 'src/store/root';
 
-import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export interface SwapActionProps extends BoxProps {
+interface SwapBaseProps extends BoxProps {
   amountToSwap: string;
   amountToReceive: string;
   poolReserve: ComputedReserveData;
@@ -19,9 +21,14 @@ export interface SwapActionProps extends BoxProps {
   customGasPrice?: string;
   symbol: string;
   blocked: boolean;
-  priceRoute: OptimalRate | null;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
+  loading?: boolean;
+}
+
+export interface SwapActionProps extends SwapBaseProps {
+  swapCallData: string;
+  augustus: string;
 }
 
 export const SwapActions = ({
@@ -31,51 +38,51 @@ export const SwapActions = ({
   sx,
   poolReserve,
   targetReserve,
-  priceRoute,
   isMaxSelected,
   useFlashLoan,
+  loading,
+  symbol,
+  blocked,
+  buildTxFn,
   ...props
-}: SwapActionProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentNetworkConfig } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+}: SwapBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
+  const swapCollateral = useRootStore((state) => state.swapCollateral);
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
-    useTransactionHandler({
+    useParaSwapTransactionHandler({
       handleGetTxns: async () => {
-        const { swapCallData, augustus } = await getSwapCallData({
-          srcToken: poolReserve.underlyingAsset,
-          srcDecimals: poolReserve.decimals,
-          destToken: targetReserve.underlyingAsset,
-          destDecimals: targetReserve.decimals,
-          user: currentAccount,
-          route: priceRoute as OptimalRate,
-          chainId: currentNetworkConfig.underlyingChainId || chainId,
-        });
-        return lendingPool.swapCollateral({
-          fromAsset: poolReserve.underlyingAsset,
-          toAsset: targetReserve.underlyingAsset,
-          swapAll: isMaxSelected,
-          fromAToken: poolReserve.aTokenAddress,
-          fromAmount: amountToSwap,
-          minToAmount: amountToReceive,
-          user: currentAccount,
-          flash: useFlashLoan,
-          augustus,
-          swapCallData,
+        const route = await buildTxFn();
+        return swapCollateral({
+          amountToSwap: route.inputAmount,
+          amountToReceive: route.outputAmount,
+          poolReserve,
+          targetReserve,
+          isWrongNetwork,
+          symbol,
+          blocked,
+          isMaxSelected,
+          useFlashLoan,
+          swapCallData: route.swapCallData,
+          augustus: route.augustus,
         });
       },
-      skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
-      deps: [
-        amountToSwap,
-        amountToReceive,
-        priceRoute,
-        poolReserve.underlyingAsset,
-        targetReserve.underlyingAsset,
-        isMaxSelected,
-        currentAccount,
-        useFlashLoan,
-      ],
+      handleGetApprovalTxns: async () => {
+        return swapCollateral({
+          amountToSwap,
+          amountToReceive,
+          poolReserve,
+          targetReserve,
+          isWrongNetwork,
+          symbol,
+          blocked,
+          isMaxSelected,
+          useFlashLoan: false,
+          swapCallData: '0x',
+          augustus: API_ETH_MOCK_ADDRESS,
+        });
+      },
+      gasLimitRecommendation: gasLimitRecommendations[ProtocolAction.swapCollateral].limit,
+      skip: loading || !amountToSwap || parseFloat(amountToSwap) === 0,
     });
 
   return (
@@ -87,11 +94,18 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() => approval(amountToSwap, poolReserve.aTokenAddress)}
+      handleApproval={() => approval()}
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
       sx={sx}
+      fetchingData={loading}
+      errorParams={{
+        loading: false,
+        disabled: blocked,
+        content: <Trans>Swap</Trans>,
+        handleClick: action,
+      }}
       {...props}
     />
   );
