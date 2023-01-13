@@ -44,9 +44,6 @@ const head = [
     title: <Trans key="APY">APY</Trans>,
     sortKey: 'borrowAPY',
   },
-  {
-    title: <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
-  },
 ];
 
 export const BorrowedPositionsList = () => {

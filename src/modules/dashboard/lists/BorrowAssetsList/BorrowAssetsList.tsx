@@ -56,22 +56,12 @@ const head = [
   {
     title: (
       <VariableAPYTooltip
-        text={<Trans>APY, variable</Trans>}
+        text={<Trans>Borrow APY</Trans>}
         key="variableBorrowAPY"
         variant="subheader2"
       />
     ),
     sortKey: 'variableBorrowAPY',
-  },
-  {
-    title: (
-      <StableAPYTooltip
-        text={<Trans>APY, stable</Trans>}
-        key="stableBorrowAPY"
-        variant="subheader2"
-      />
-    ),
-    sortKey: 'stableBorrowAPY',
   },
 ];
 
