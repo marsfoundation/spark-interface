@@ -22,8 +22,6 @@ export const BorrowAssetsListItem = ({
   borrowCap,
   totalBorrows,
   variableBorrowRate,
-  stableBorrowRate,
-  sIncentivesData,
   vIncentivesData,
   underlyingAsset,
   isFreezed,

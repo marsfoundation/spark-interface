@@ -5,10 +5,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
-import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
-import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 
@@ -21,13 +19,12 @@ export const BorrowedPositionsListItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: DashboardReserve) => {
-  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
+  const { openBorrow, openRepay } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const {
     isActive,
     isFrozen,
     borrowingEnabled,
-    stableBorrowRateEnabled,
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,

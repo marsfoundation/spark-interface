@@ -1,7 +1,7 @@
 import { Box, Container } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { PageTitle, PageTitleProps } from './PageTitle';
+import { PageTitleProps } from './PageTitle';
 
 interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
@@ -9,10 +9,7 @@ interface TopInfoPanelProps extends PageTitleProps {
 }
 
 export const TopInfoPanel = ({
-  pageTitle,
   titleComponent,
-  withMarketSwitcher,
-  bridge,
   children,
 }: TopInfoPanelProps) => {
   return (
