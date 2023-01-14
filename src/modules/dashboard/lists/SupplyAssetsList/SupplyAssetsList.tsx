@@ -36,10 +36,6 @@ const head = [
   { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
   { title: <Trans key="Wallet balance">Wallet balance</Trans>, sortKey: 'walletBalance' },
   { title: <Trans key="APY">APY</Trans>, sortKey: 'supplyAPY' },
-  {
-    title: <Trans key="Can be collateral">Can be collateral</Trans>,
-    sortKey: 'usageAsCollateralEnabledOnUser',
-  },
 ];
 
 export const SupplyAssetsList = () => {

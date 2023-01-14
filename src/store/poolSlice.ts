@@ -1,4 +1,5 @@
 import {
+  ChainlogService,
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
@@ -9,6 +10,7 @@ import {
   LendingPool,
   Pool,
   PoolBaseCurrencyHumanized,
+  PotService,
   PsmParamsType,
   PsmService,
   ReserveDataHumanized,
@@ -26,6 +28,7 @@ import {
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { SignatureLike } from '@ethersproject/bytes';
+import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
@@ -50,6 +53,8 @@ export interface PoolSlice {
         baseCurrencyData?: PoolBaseCurrencyHumanized;
         userEmodeCategoryId?: number;
         userReserves?: UserReserveDataHumanized[];
+        dsr?: BigNumber;
+        chi?: BigNumber;
       }
     >
   >;
@@ -127,6 +132,10 @@ export const createPoolSlice: StateCreator<
       const account = get().account;
       const currentMarketData = get().currentMarketData;
       const currentChainId = get().currentChainId;
+      const chainlogService = new ChainlogService(
+        get().jsonRpcProvider(),
+        get().currentMarketData.addresses.CHAINLOG
+      );
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
         provider: get().jsonRpcProvider(),
@@ -136,30 +145,38 @@ export const createPoolSlice: StateCreator<
       const promises: Promise<void>[] = [];
       try {
         promises.push(
-          poolDataProviderContract
-            .getReservesHumanized({
+          Promise.all([
+            poolDataProviderContract.getReservesHumanized({
               lendingPoolAddressProvider,
-            })
-            .then((reservesResponse) =>
-              set((state) =>
-                produce(state, (draft) => {
-                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
-                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
-                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
-                      reserves: reservesResponse.reservesData,
-                      baseCurrencyData: reservesResponse.baseCurrencyData,
-                    });
-                  } else {
-                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
-                      reservesResponse.reservesData;
-                    draft.data
-                      .get(currentChainId)!
-                      .get(lendingPoolAddressProvider)!.baseCurrencyData =
-                      reservesResponse.baseCurrencyData;
-                  }
-                })
-              )
+            }),
+            chainlogService.getAddress('MCD_POT').then((potAddress) => {
+              const potService = new PotService(get().jsonRpcProvider(), potAddress);
+              return Promise.all([potService.getDaiSavingsRate(), potService.getChi()]);
+            }),
+          ]).then(([reservesResponse, [dsr, chi]]) =>
+            set((state) =>
+              produce(state, (draft) => {
+                if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
+                if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
+                  draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
+                    reserves: reservesResponse.reservesData,
+                    baseCurrencyData: reservesResponse.baseCurrencyData,
+                    dsr,
+                    chi,
+                  });
+                } else {
+                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
+                    reservesResponse.reservesData;
+                  draft.data
+                    .get(currentChainId)!
+                    .get(lendingPoolAddressProvider)!.baseCurrencyData =
+                    reservesResponse.baseCurrencyData;
+                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.dsr = dsr;
+                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.chi = chi;
+                }
+              })
             )
+          )
         );
         if (account) {
           promises.push(
@@ -224,6 +241,28 @@ export const createPoolSlice: StateCreator<
         'USDC'
       );
       return service.sellGem({ ...args, userAddress });
+    },
+    getDaiSavingsRate: async () => {
+      const chainlogService = new ChainlogService(
+        get().jsonRpcProvider(),
+        get().currentMarketData.addresses.CHAINLOG
+      );
+      const service = new PotService(
+        get().jsonRpcProvider(),
+        await chainlogService.getAddress('MCD_POT')
+      );
+      return service.getDaiSavingsRate();
+    },
+    getChi: async () => {
+      const chainlogService = new ChainlogService(
+        get().jsonRpcProvider(),
+        get().currentMarketData.addresses.CHAINLOG
+      );
+      const service = new PotService(
+        get().jsonRpcProvider(),
+        await chainlogService.getAddress('MCD_POT')
+      );
+      return service.getChi();
     },
     withdraw: (args) => {
       const pool = getCorrectPool();

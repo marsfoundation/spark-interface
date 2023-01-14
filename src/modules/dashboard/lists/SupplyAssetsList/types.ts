@@ -19,5 +19,4 @@ export type SupplyAssetsItem = {
   usageAsCollateralEnabledOnUser: boolean;
   detailsAddress: string;
   showSwap: boolean;
-  hideSupply: boolean;
 };

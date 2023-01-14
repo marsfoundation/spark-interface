@@ -15,10 +15,12 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import {
   reserveSortFn,
+  selectChi,
   selectCurrentBaseCurrencyData,
   selectCurrentReserves,
   selectCurrentUserEmodeCategoryId,
   selectCurrentUserReserves,
+  selectDSR,
   selectEmodes,
 } from '../../store/poolSelectors';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
@@ -63,6 +65,8 @@ export interface AppDataContextType {
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userReserves: UserReserveData[];
+  dsr?: BigNumber;
+  chi?: BigNumber;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -83,6 +87,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentiveData,
     userIncentiveData,
     eModes,
+    dsr,
+    chi,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -91,6 +97,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.reserveIncentiveData,
     state.userIncentiveData,
     selectEmodes(state),
+    selectDSR(state),
+    selectChi(state),
   ]);
 
   const formattedPoolReserves = formatReservesAndIncentives({
@@ -208,6 +216,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+        dsr,
+        chi,
       }}
     >
       {children}

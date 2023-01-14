@@ -22,6 +22,14 @@ export const selectCurrentReserves = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.reserves || [];
 };
 
+export const selectDSR = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.dsr;
+};
+
+export const selectChi = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.chi;
+};
+
 export const selectCurrentBaseCurrencyData = (state: RootStore) => {
   return (
     selectCurrentUserLendingPoolData(state)?.baseCurrencyData || {

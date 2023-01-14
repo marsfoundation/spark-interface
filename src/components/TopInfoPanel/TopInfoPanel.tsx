@@ -8,10 +8,7 @@ interface TopInfoPanelProps extends PageTitleProps {
   titleComponent?: ReactNode;
 }
 
-export const TopInfoPanel = ({
-  titleComponent,
-  children,
-}: TopInfoPanelProps) => {
+export const TopInfoPanel = ({ titleComponent, children }: TopInfoPanelProps) => {
   return (
     <Box
       sx={{
@@ -23,7 +20,6 @@ export const TopInfoPanel = ({
     >
       <Container sx={{ pb: 0 }}>
         <Box sx={{ px: { xs: 4, xsm: 6 } }}>
-
           {titleComponent && titleComponent}
 
           <Box
