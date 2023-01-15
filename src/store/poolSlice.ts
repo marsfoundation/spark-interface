@@ -1,5 +1,6 @@
 import {
   ChainlogService,
+  DepositParamsType,
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
@@ -13,7 +14,9 @@ import {
   PotService,
   PsmParamsType,
   PsmService,
+  RedeemParamsType,
   ReserveDataHumanized,
+  SavingsDaiService,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
@@ -64,6 +67,12 @@ export interface PoolSlice {
   mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   buyGem: (args: Omit<PsmParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   sellGem: (args: Omit<PsmParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
+  sDAIDeposit: (
+    args: Omit<DepositParamsType, 'userAddress'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  sDAIRedeem: (
+    args: Omit<RedeemParamsType, 'userAddress'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   withdraw: (
     args: Omit<LPWithdrawParamsType, 'user'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
@@ -136,6 +145,10 @@ export const createPoolSlice: StateCreator<
         get().jsonRpcProvider(),
         get().currentMarketData.addresses.CHAINLOG
       );
+      const savingsDaiService = new SavingsDaiService(
+        get().jsonRpcProvider(),
+        get().currentMarketData.addresses.SAVINGS_DAI
+      );
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
         provider: get().jsonRpcProvider(),
@@ -151,7 +164,10 @@ export const createPoolSlice: StateCreator<
             }),
             chainlogService.getAddress('MCD_POT').then((potAddress) => {
               const potService = new PotService(get().jsonRpcProvider(), potAddress);
-              return Promise.all([potService.getDaiSavingsRate(), potService.getChi()]);
+              return Promise.all([
+                potService.getDaiSavingsRate(),
+                savingsDaiService.previewDeposit('1'),
+              ]);
             }),
           ]).then(([reservesResponse, [dsr, chi]]) =>
             set((state) =>
@@ -241,6 +257,22 @@ export const createPoolSlice: StateCreator<
         'USDC'
       );
       return service.sellGem({ ...args, userAddress });
+    },
+    sDAIDeposit: async (args) => {
+      const userAddress = get().account;
+      const service = new SavingsDaiService(
+        get().jsonRpcProvider(),
+        get().currentMarketData.addresses.SAVINGS_DAI
+      );
+      return service.deposit({ ...args, userAddress });
+    },
+    sDAIRedeem: async (args) => {
+      const userAddress = get().account;
+      const service = new SavingsDaiService(
+        get().jsonRpcProvider(),
+        get().currentMarketData.addresses.SAVINGS_DAI
+      );
+      return service.redeem({ ...args, userAddress });
     },
     getDaiSavingsRate: async () => {
       const chainlogService = new ChainlogService(

@@ -304,6 +304,7 @@ export const useTransactionHandler = ({
                     'GOV_DELEGATION_ACTION',
                     'GOVERNANCE_ACTION',
                     'PSM_ACTION',
+                    'SAVINGS_DAI_ACTION',
                   ].includes(tx.txType)
                 )
               );

@@ -122,6 +122,7 @@ export const SupplyAssetsList = () => {
             detailsAddress: reserve.underlyingAsset,
             id: reserve.id + 'base',
             showSwap: false,
+            hideSupply: false,
           },
           {
             ...reserve,
@@ -134,7 +135,9 @@ export const SupplyAssetsList = () => {
               Number(availableToDepositUSD) <= 0 ? '0' : availableToDepositUSD.toString(),
             usageAsCollateralEnabledOnUser,
             detailsAddress: reserve.underlyingAsset,
-            showSwap: reserve.symbol === 'DAI' || reserve.symbol === 'USDC',
+            showSwap:
+              reserve.symbol === 'DAI' || reserve.symbol === 'USDC' || reserve.symbol === 'sDAI',
+            hideSupply: reserve.symbol === 'DAI' || reserve.symbol === 'USDC',
           },
         ];
       }
@@ -150,7 +153,9 @@ export const SupplyAssetsList = () => {
           Number(availableToDepositUSD) <= 0 ? '0' : availableToDepositUSD.toString(),
         usageAsCollateralEnabledOnUser,
         detailsAddress: reserve.underlyingAsset,
-        showSwap: reserve.symbol === 'DAI' || reserve.symbol === 'USDC',
+        showSwap:
+          reserve.symbol === 'DAI' || reserve.symbol === 'USDC' || reserve.symbol === 'sDAI',
+        hideSupply: reserve.symbol === 'DAI' || reserve.symbol === 'USDC',
       };
     })
     .flat();
@@ -208,7 +213,7 @@ export const SupplyAssetsList = () => {
     return (
       <ListLoader
         head={head.map((col) => col.title)}
-        title={<Trans>Assets to supply</Trans>}
+        title={<Trans>Your Wallet</Trans>}
         withTopMargin
       />
     );
@@ -219,7 +224,7 @@ export const SupplyAssetsList = () => {
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Assets to supply</Trans>
+          <Trans>Your Wallet</Trans>
         </Typography>
       }
       localStorageName="supplyAssetsDashboardTableCollapse"

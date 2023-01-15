@@ -10,6 +10,7 @@ import { CollateralType } from 'src/helpers/types';
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
+import { Link } from '../../primitives/Link';
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { GasStation } from '../GasStation/GasStation';
@@ -359,6 +360,8 @@ interface DetailsPSMSwapProps extends FormattedNumberProps {
   value: FormattedNumberProps['value'];
   iconSymbol: string;
   symbol: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  switchToHandle?: (evt: any) => void;
 }
 
 export const DetailsPSMSwap = ({
@@ -366,6 +369,7 @@ export const DetailsPSMSwap = ({
   symbol,
   iconSymbol,
   description,
+  switchToHandle,
   ...rest
 }: DetailsPSMSwapProps) => {
   return (
@@ -374,6 +378,15 @@ export const DetailsPSMSwap = ({
         <FormattedNumber value={value} variant="secondary14" {...rest} sx={{ margin: '0 8px' }} />
         <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />
         {symbol}
+        {switchToHandle && (
+          <Box sx={{ paddingLeft: '4px' }}>
+            (
+            <Link href="#" onClick={switchToHandle}>
+              Switch
+            </Link>
+            )
+          </Box>
+        )}
       </Box>
     </Row>
   );

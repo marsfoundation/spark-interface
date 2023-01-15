@@ -9,37 +9,61 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface PSMSwapActionProps extends BoxProps {
   amountToSwap: string;
+  exchangeRate: number;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
-  buyGemMode: boolean;
+  type: PSMSwapActionType;
+}
+
+export enum PSMSwapActionType {
+  BUY_GEM = 'buyGem',
+  SELL_GEM = 'sellGem',
+  SDAI_DEPOSIT = 'sDAIDeposit',
+  SDAI_REDEEM = 'sDAIRedeem',
 }
 
 export const PSMSwapActions = ({
   amountToSwap,
+  exchangeRate,
   poolReserve,
   isWrongNetwork,
-  buyGemMode,
+  type,
   sx,
   ...props
 }: PSMSwapActionProps) => {
-  const { buyGem, sellGem } = useRootStore();
+  const { buyGem, sellGem, sDAIDeposit, sDAIRedeem } = useRootStore();
   const { currentAccount } = useWeb3Context();
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        return buyGemMode
-          ? buyGem({
-              usr: currentAccount,
-              gemAmt: amountToSwap,
-            })
-          : sellGem({
+        switch (type) {
+          case PSMSwapActionType.BUY_GEM:
+            return buyGem({
               usr: currentAccount,
               gemAmt: amountToSwap,
             });
+          case PSMSwapActionType.SELL_GEM:
+            return sellGem({
+              usr: currentAccount,
+              gemAmt: amountToSwap,
+            });
+          case PSMSwapActionType.SDAI_DEPOSIT:
+            return sDAIDeposit({
+              receiver: currentAccount,
+              assets: amountToSwap,
+            });
+          case PSMSwapActionType.SDAI_REDEEM:
+            return sDAIRedeem({
+              receiver: currentAccount,
+              owner: currentAccount,
+              shares: amountToSwap,
+            });
+        }
       },
-      skip: !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
-      deps: [amountToSwap],
+      skip:
+        !amountToSwap || parseFloat(amountToSwap) === 0 || exchangeRate === 0 || !currentAccount,
+      deps: [amountToSwap, type],
     });
 
   return (

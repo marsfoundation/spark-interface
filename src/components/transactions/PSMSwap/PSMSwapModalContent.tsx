@@ -18,33 +18,66 @@ import {
 import { CapType } from '../../caps/helper';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { PSMSwapActions } from './PSMSwapActions';
+import { PSMSwapActions, PSMSwapActionType } from './PSMSwapActions';
 
 export const PSMSwapModalContent = ({
   poolReserve,
   isWrongNetwork,
   tokenBalance,
 }: ModalWrapperProps) => {
-  const { marketReferencePriceInUsd, reserves } = useAppDataContext();
+  const { marketReferencePriceInUsd, reserves, chi } = useAppDataContext();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
-  const poolReserveSwapTo = reserves.find(
-    (reserve) =>
-      (reserve.symbol === 'DAI' || reserve.symbol === 'USDC') &&
-      reserve.symbol !== poolReserve.symbol
-  ) as ComputedReserveData;
+
+  const validTypes = new Map<string, Array<PSMSwapActionType>>(
+    Object.entries({
+      DAI: [PSMSwapActionType.BUY_GEM, PSMSwapActionType.SDAI_DEPOSIT],
+      USDC: [PSMSwapActionType.SELL_GEM],
+      sDAI: [PSMSwapActionType.SDAI_REDEEM],
+    })
+  );
+  const typeTargetReserveMap = new Map<string, string>(
+    Object.entries({
+      [PSMSwapActionType.BUY_GEM]: 'USDC',
+      [PSMSwapActionType.SELL_GEM]: 'DAI',
+      [PSMSwapActionType.SDAI_DEPOSIT]: 'sDAI',
+      [PSMSwapActionType.SDAI_REDEEM]: 'DAI',
+    })
+  );
+  const exchangeRate = new Map<string, BigNumber>(
+    Object.entries({
+      [PSMSwapActionType.BUY_GEM]: new BigNumber(1),
+      [PSMSwapActionType.SELL_GEM]: new BigNumber(1),
+      [PSMSwapActionType.SDAI_DEPOSIT]: new BigNumber(chi != null ? chi : 0),
+      [PSMSwapActionType.SDAI_REDEEM]: new BigNumber(
+        chi != null ? new BigNumber(1).dividedBy(chi) : 0
+      ),
+    })
+  );
+  const currentValidTypes = validTypes.get(poolReserve.symbol)!;
 
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>('');
+  const [type, setType] = useState(currentValidTypes[0]);
+  const poolReserveSwapTo = reserves.find(
+    (reserve) => typeTargetReserveMap.get(type)! === reserve.symbol
+  ) as ComputedReserveData;
+  const currentExchangeRate = exchangeRate.get(type)!;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleTypeChange = (e: any) => {
+    e.preventDefault();
+    setType(currentValidTypes[(currentValidTypes.indexOf(type) + 1) % currentValidTypes.length]);
+  };
 
   // Calculate max amount to supply
-  const maxAmountToSupply = new BigNumber(tokenBalance);
+  const maxAmountToSwap = new BigNumber(tokenBalance);
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
+  const amount = isMaxSelected ? maxAmountToSwap.toString(10) : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToSupply.toString(10) : value;
+    amountRef.current = maxSelected ? maxAmountToSwap.toString(10) : value;
     setAmount(value);
   };
 
@@ -73,7 +106,7 @@ export const PSMSwapModalContent = ({
         symbol={poolReserve.symbol}
         assets={[
           {
-            balance: maxAmountToSupply.toString(10),
+            balance: maxAmountToSwap.toString(10),
             symbol: poolReserve.symbol,
             iconSymbol: poolReserve.iconSymbol,
           },
@@ -81,26 +114,34 @@ export const PSMSwapModalContent = ({
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        maxValue={maxAmountToSupply.toString(10)}
+        maxValue={maxAmountToSwap.toString(10)}
       />
 
       <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLine description={<Trans>Fee</Trans>} value={0} percent />
+        <DetailsNumberLine
+          description={<Trans>Exchange Rate</Trans>}
+          value={1}
+          futureValue={currentExchangeRate.toNumber()}
+          visibleDecimals={4}
+        />
         <DetailsPSMSwap
           description={<Trans>You receive</Trans>}
           symbol={poolReserveSwapTo.symbol}
           iconSymbol={poolReserveSwapTo.iconSymbol}
-          value={amount}
+          visibleDecimals={2}
+          value={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
+          switchToHandle={currentValidTypes.length > 1 ? handleTypeChange : undefined}
         />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
 
       <PSMSwapActions
-        buyGemMode={poolReserve.symbol === 'DAI'}
+        type={type}
         poolReserve={poolReserve}
         amountToSwap={amount}
         isWrongNetwork={isWrongNetwork}
+        exchangeRate={currentExchangeRate.toNumber()}
       />
     </>
   );

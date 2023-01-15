@@ -28,6 +28,7 @@ export const SupplyAssetsListItem = ({
   isFreezed,
   detailsAddress,
   showSwap,
+  hideSupply,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply, openPSMSwap } = useModalContext();
@@ -65,11 +66,12 @@ export const SupplyAssetsListItem = ({
       <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
 
       <ListButtonsColumn>
-        {showSwap ? (
+        {showSwap && (
           <Button variant="contained" onClick={() => openPSMSwap(underlyingAsset)}>
             <Trans>Swap</Trans>
           </Button>
-        ) : (
+        )}
+        {!hideSupply && (
           <Button
             disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
             variant="contained"
@@ -78,13 +80,15 @@ export const SupplyAssetsListItem = ({
             <Trans>Supply</Trans>
           </Button>
         )}
-        <Button
-          variant="outlined"
-          component={Link}
-          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-        >
-          <Trans>Details</Trans>
-        </Button>
+        {!(showSwap && !hideSupply) && (
+          <Button
+            variant="outlined"
+            component={Link}
+            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          >
+            <Trans>Details</Trans>
+          </Button>
+        )}
       </ListButtonsColumn>
     </ListItemWrapper>
   );

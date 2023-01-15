@@ -32,6 +32,7 @@ export type MarketDataType = {
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
     CHAINLOG: string;
+    SAVINGS_DAI: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -73,6 +74,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x666432Ccb747B2220875cE185f487Ed53677faC9',
       UI_INCENTIVE_DATA_PROVIDER: '0xeC1BB74f5799811c0c1Bff94Ef76Fb40abccbE4a',
       CHAINLOG: '0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F',
+      SAVINGS_DAI: '0x0000000000000000000000000000000000000000',
     },
   },
   [CustomMarket.proto_spark_goerli_v3]: {
@@ -95,6 +97,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xF06D0a76CecEA047ad52dA0eA3ED773fF1F365EF',
       UI_INCENTIVE_DATA_PROVIDER: '0x9775ad0010880024Ae0979949A9db3a3eBcECaaC',
       CHAINLOG: '0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F',
+      SAVINGS_DAI: '0xd8134205b0328f5676aaefb3b2a0dc15f4029d8c',
     },
   },
 } as const;
