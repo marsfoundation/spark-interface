@@ -33,11 +33,11 @@ export function MoreMenu() {
         aria-haspopup="true"
         onClick={handleClick}
         sx={{
-          color: '#F1F1F3',
+          color: 'rgba(255, 255, 255, 0.5)',
           minWidth: 'unset',
           p: '6px 8px',
           '&:hover': {
-            bgcolor: 'rgba(250, 251, 252, 0.08)',
+            color: '#E3C154',
           },
         }}
       >

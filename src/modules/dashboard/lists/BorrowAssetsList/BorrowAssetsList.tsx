@@ -181,7 +181,7 @@ export const BorrowAssetsList = () => {
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
-        <Box sx={{ px: 6, mb: 4 }}>
+        <Box sx={{ px: 6, pb: 4, }}>
           {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
             <MarketWarning marketName="Harmony" />
           )}

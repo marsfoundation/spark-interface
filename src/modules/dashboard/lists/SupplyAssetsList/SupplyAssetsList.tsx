@@ -57,7 +57,7 @@ export const SupplyAssetsList = () => {
 
   const localStorageName = 'showSupplyZeroAssets';
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
-    localStorage.getItem(localStorageName) === 'true'
+    localStorage.getItem(localStorageName) == null || localStorage.getItem(localStorageName) === 'true'
   );
 
   const tokensToSupply = reserves

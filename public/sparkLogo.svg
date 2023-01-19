@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="113" height="46" viewBox="0 0 113 46">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.872" y1="-0.061" x2="0.135" y2="1.036" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e5d718"/>
+      <stop offset="0.998" stop-color="#e3c154"/>
+      <stop offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="Logo" transform="translate(-855 -77)">
+    <path id="Logo-2" data-name="Logo" d="M0,21.959l4.356-1.385L10.194,32Zm9.058-.147L17.086,5.284,12.1,31.481Zm8.823-1.9,4.471-1.532-7.4,12.031ZM4.557,8.024l5.154,7.011L8.259,17.658ZM21.1,0,24,3.808,18.508,15.123Z" transform="translate(866 84)" fill="url(#linear-gradient)"/>
+    <text id="SPARK" transform="translate(901 108)" fill="#fff" font-size="22" font-family="BrandonGrotesque-Regular, Brandon Grotesque" opacity="0.5"><tspan x="0" y="0">SPARK</tspan></text>
+    <rect id="Rectangle_2" data-name="Rectangle 2" width="46" height="46" transform="translate(855 77)" fill="#fff" opacity="0"/>
+  </g>
+</svg>

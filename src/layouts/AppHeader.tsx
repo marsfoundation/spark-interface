@@ -54,7 +54,7 @@ export function AppHeader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = 48;
+  const headerHeight = 80;
 
   const disableTestnet = () => {
     localStorage.setItem('testnetsEnabled', 'false');
@@ -94,7 +94,7 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: theme.palette.background.header,
+          background: theme.palette.background.navbar,
           padding: {
             xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
             xsm: '8px 20px',
@@ -102,7 +102,6 @@ export function AppHeader() {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'space-between',
-          boxShadow: 'inset 0px -1px 0px rgba(242, 243, 247, 0.16)',
         })}
       >
         <Box
@@ -117,7 +116,7 @@ export function AppHeader() {
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
+          <img src={uiConfig.appLogo} alt="An SVG of the Spark logo" height={40} />
         </Box>
         <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (
@@ -127,8 +126,8 @@ export function AppHeader() {
                 size="small"
                 color="primary"
                 sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
                 }}
               >
                 TESTNET

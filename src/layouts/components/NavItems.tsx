@@ -54,25 +54,14 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               <Button
                 component={Link}
                 href={item.link}
-                sx={(theme) => ({
-                  color: '#F1F1F3',
-                  p: '6px 8px',
+                sx={() => ({
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  p: '6px 20px',
+                  fontSize: '16px',
+                  fontWeight: '400',
                   position: 'relative',
-                  '.active&:after, &:hover&:after': {
-                    transform: 'scaleX(1)',
-                    transformOrigin: 'bottom left',
-                  },
-                  '&:after': {
-                    content: "''",
-                    position: 'absolute',
-                    width: '100%',
-                    transform: 'scaleX(0)',
-                    height: '2px',
-                    bottom: '-6px',
-                    left: '0',
-                    background: theme.palette.gradients.aaveGradient,
-                    transformOrigin: 'bottom right',
-                    transition: 'transform 0.25s ease-out',
+                  '&.active, &:hover': {
+                    color: '#E3C154',
                   },
                 })}
               >
@@ -82,7 +71,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
           </ListItem>
         ))}
 
-      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
+      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }}>
         <MoreMenu />
       </ListItem>
     </List>

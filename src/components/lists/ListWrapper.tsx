@@ -36,6 +36,16 @@ export const ListWrapper = ({
       sx={(theme) => ({
         mt: withTopMargin ? 4 : 0,
         border: `1px solid ${theme.palette.divider}`,
+        position: 'relative',
+        '&:before': {
+          content: "''",
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0, 0, 0, 0.03)',
+          borderRadius: '8px',
+        },
       })}
     >
       <Box
@@ -114,9 +124,9 @@ export const ListWrapper = ({
         </Box>
       )}
       {subChildrenComponent && !collapsed && (
-        <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
+        <Box sx={{ marginBottom: { xs: 2, xsm: 0 }, }}>{subChildrenComponent}</Box>
       )}
-      <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
+      <Box sx={{ display: collapsed ? 'none' : 'block', position: 'relative', }}>{children}</Box>
     </Paper>
   );
 };
