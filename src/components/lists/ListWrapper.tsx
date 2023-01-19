@@ -77,6 +77,7 @@ export const ListWrapper = ({
               alignItems: 'center',
               cursor: 'pointer',
               minHeight: '28px',
+              zIndex: '1',
               pl: 3,
               span: {
                 width: '14px',
