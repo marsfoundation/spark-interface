@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
-import LoveGhost from '/public/loveGhost.svg';
+import WalletConnectLogo from '/public/walletConnectLogo.svg';
+import WalletConnectLogoDark from '/public/walletConnectLogoDark.svg';
 
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
@@ -17,6 +18,7 @@ export const ConnectWalletPaper = ({
   sx,
   ...rest
 }: ConnectWalletPaperProps) => {
+  const theme = useTheme();
   return (
     <Paper
       {...rest}
@@ -31,7 +33,7 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      <LoveGhost style={{ marginBottom: '16px' }} />
+      { theme.palette.mode === 'light' ? <WalletConnectLogo style={{ marginBottom: '16px' }} /> : <WalletConnectLogoDark style={{ marginBottom: '16px' }} /> }
       <>
         {loading ? (
           <CircularProgress />

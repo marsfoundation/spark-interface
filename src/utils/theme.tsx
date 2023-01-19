@@ -193,8 +193,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         focus: getColor('#F1F1F3', '#EBEBEF1F'),
       },
       gradients: {
-        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
+        aaveGradient: 'linear-gradient(to right, #E5D718, #E3C154)',
+        newGradient: 'linear-gradient(to right, #E5D718, #E3C154)',
       },
     },
     spacing: 4,
@@ -423,9 +423,33 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           {
-            props: { variant: 'gradient' },
+            props: { variant: 'contained' },
+            style: {
+              color: theme.palette.common.black,
+              border: '1px solid',
+              borderColor: '#EBEBED1F',
+              background: '#E3C154',
+              '&:hover, &.Mui-focusVisible': {
+                background: '#E5D718',
+              },
+            },
+          },
+          {
+            props: { variant: 'contained2' },
             style: {
               color: theme.palette.common.white,
+              border: '1px solid',
+              borderColor: '#EBEBED1F',
+              background: '#4caf50',
+              '&:hover, &.Mui-focusVisible': {
+                background: '#8bc34a',
+              },
+            },
+          },
+          {
+            props: { variant: 'gradient' },
+            style: {
+              color: theme.palette.common.black,
               background: theme.palette.gradients.aaveGradient,
               transition: 'all 0.2s ease',
               '&:hover, &.Mui-focusVisible': {

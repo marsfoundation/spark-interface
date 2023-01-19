@@ -67,7 +67,7 @@ export const SupplyAssetsListItem = ({
 
       <ListButtonsColumn>
         {showSwap && (
-          <Button variant="contained" onClick={() => openPSMSwap(underlyingAsset)}>
+          <Button variant="contained2" onClick={() => openPSMSwap(underlyingAsset)}>
             <Trans>Swap</Trans>
           </Button>
         )}
