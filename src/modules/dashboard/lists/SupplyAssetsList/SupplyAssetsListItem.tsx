@@ -67,7 +67,14 @@ export const SupplyAssetsListItem = ({
 
       <ListButtonsColumn>
         {showSwap && (
-          <Button variant="contained2" onClick={() => openPSMSwap(underlyingAsset)}>
+          <Button sx={(theme) => ({
+            color: theme.palette.common.white,
+            border: '1px solid',
+            background: '#4caf50',
+            '&:hover, &.Mui-focusVisible': {
+              background: '#8bc34a',
+            },
+          })} variant="contained" onClick={() => openPSMSwap(underlyingAsset)}>
             <Trans>Swap</Trans>
           </Button>
         )}

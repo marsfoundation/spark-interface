@@ -435,18 +435,6 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           {
-            props: { variant: 'contained2' },
-            style: {
-              color: theme.palette.common.white,
-              border: '1px solid',
-              borderColor: '#EBEBED1F',
-              background: '#4caf50',
-              '&:hover, &.Mui-focusVisible': {
-                background: '#8bc34a',
-              },
-            },
-          },
-          {
             props: { variant: 'gradient' },
             style: {
               color: theme.palette.common.black,
