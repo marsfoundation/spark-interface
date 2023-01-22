@@ -33,7 +33,11 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      { theme.palette.mode === 'light' ? <WalletConnectLogo style={{ marginBottom: '16px' }} /> : <WalletConnectLogoDark style={{ marginBottom: '16px' }} /> }
+      {theme.palette.mode === 'light' ? (
+        <WalletConnectLogo style={{ marginBottom: '16px' }} />
+      ) : (
+        <WalletConnectLogoDark style={{ marginBottom: '16px' }} />
+      )}
       <>
         {loading ? (
           <CircularProgress />

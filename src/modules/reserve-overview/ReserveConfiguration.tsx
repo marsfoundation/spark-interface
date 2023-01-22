@@ -216,7 +216,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && reserve.symbol !== 'DAI' && (
         <>
           <Divider sx={{ my: '40px' }} />
 

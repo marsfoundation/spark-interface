@@ -125,9 +125,17 @@ export const ListWrapper = ({
         </Box>
       )}
       {subChildrenComponent && !collapsed && (
-        <Box sx={{ marginBottom: { xs: 2, xsm: 0 }, }}>{subChildrenComponent}</Box>
+        <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
       )}
-      <Box sx={{ display: collapsed ? 'none' : 'block', position: 'relative', }}>{children}</Box>
+      <Box
+        sx={{
+          display: collapsed ? 'none' : 'block',
+          position: 'relative',
+          '& > *:last-child': { borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' },
+        }}
+      >
+        {children}
+      </Box>
     </Paper>
   );
 };

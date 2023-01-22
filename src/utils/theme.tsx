@@ -179,8 +179,14 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         default: getColor('#F1F1F3', '#373736'),
         paper: getColor('#f1f1f1', '#2d2d2b'),
         surface: getColor('#F7F7F9', '#383D51'),
-        navbar: getColor('radial-gradient(150% 300% at center calc(100% + 80px), #3F3E37, #171715)', 'radial-gradient(200% 200% at center calc(100% + 80px), #3F3E37, #171715)'),
-        header: getColor('radial-gradient(150% 300% at bottom, #3F3E37, #171715)', 'radial-gradient(200% 200% at bottom, #3F3E37, #171715)'),
+        navbar: getColor(
+          'radial-gradient(150% 300% at center calc(100% + 80px), #3F3E37, #171715)',
+          'radial-gradient(200% 200% at center calc(100% + 80px), #3F3E37, #171715)'
+        ),
+        header: getColor(
+          'radial-gradient(150% 300% at bottom, #3F3E37, #171715)',
+          'radial-gradient(200% 200% at bottom, #3F3E37, #171715)'
+        ),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
@@ -426,7 +432,6 @@ export function getThemedComponents(theme: Theme) {
             props: { variant: 'contained' },
             style: {
               color: theme.palette.common.black,
-              border: '1px solid',
               borderColor: '#EBEBED1F',
               background: '#E3C154',
               '&:hover, &.Mui-focusVisible': {
