@@ -6,7 +6,7 @@ import { providers } from 'ethers';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
+import SparkMetaImage from 'public/sparkMetaLogo-min.jpg';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
@@ -60,8 +60,8 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <Meta
         title={'Maker-Powered Lending Market'}
-        description={'Spark Protocol'}
-        imageUrl={AaveMetaImage.src}
+        description={'Spark'}
+        imageUrl={SparkMetaImage.src}
       />
       <LanguageProvider>
         <Web3ReactProvider getLibrary={getWeb3Library}>
