@@ -34,9 +34,9 @@ export const ConnectWalletPaper = ({
       }}
     >
       {theme.palette.mode === 'light' ? (
-        <WalletConnectLogo style={{ marginBottom: '16px' }} />
+        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '600px' }} />
       ) : (
-        <WalletConnectLogoDark style={{ marginBottom: '16px' }} />
+        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '600px' }} />
       )}
       <>
         {loading ? (
