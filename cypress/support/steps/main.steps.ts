@@ -231,9 +231,10 @@ export const repay = (
           break;
       }
     });
+
     if (repayableAsset) {
       it(`Choose ${repayableAsset.shortName} as option to repay`, () => {
-        cy.get('[data-cy=Modal] ').as('Modal');
+        cy.get('[data-cy=Modal]').as('Modal');
         cy.get('@Modal').get('[data-cy=assetSelect]').click();
         cy.get('@Modal')
           .get(`[data-cy='assetsSelectOption_${repayableAsset.shortName.toUpperCase()}']`)
@@ -245,6 +246,13 @@ export const repay = (
       isMaxAmount ? 'MAX' : amount
     } amount for ${_shortName}, with ${repayOption} repay option`, () => {
       cy.setAmount(amount, isMaxAmount);
+      if (repayOption == constants.repayType.collateral) {
+        cy.get('[data-cy=Modal]')
+          .find('[data-cy=approveButtonChange]')
+          .click()
+          .get('[data-cy=approveOption_Transaction]')
+          .click();
+      }
       cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
@@ -440,6 +448,11 @@ export const swap = (
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
       cy.setAmount(amount, isMaxAmount);
+      cy.get('[data-cy=Modal]')
+        .find('[data-cy=approveButtonChange]')
+        .click()
+        .get('[data-cy=approveOption_Transaction]')
+        .click();
       cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
@@ -601,10 +614,12 @@ export const emodeActivating = (
     turnOn,
     multipleEmodes,
     emodeOption,
+    emodeName = 'Stablecoins',
   }: {
     turnOn: boolean;
     multipleEmodes?: boolean;
     emodeOption?: string;
+    emodeName?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -641,7 +656,7 @@ export const emodeActivating = (
     });
     doCloseModal();
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
-      cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? 'Stablecoins' : 'Disabled');
+      cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? emodeName : 'Disabled');
     });
   });
 };
@@ -651,7 +666,84 @@ export const emodeActivating = (
  */
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
-    cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();
+    cy.get('[data-cy=CloseModalIcon]').last().should('not.be.disabled').click({ force: true });
     cy.get('[data-cy=Modal]').should('not.exist');
+  });
+};
+
+/**
+ * This action start from v2 market page
+ */
+export const migration = (
+  {
+    supplies,
+    borrows,
+    isAllSupplies = false,
+    isAllBorrows = false,
+  }: {
+    supplies: { shortName: string; switchCollateral?: boolean }[];
+    borrows: { shortName: string; isStable?: boolean }[];
+    isAllSupplies?: boolean;
+    isAllBorrows?: boolean;
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
+  return describe(`Migration process`, () => {
+    skipSetup({ skip, updateSkipStatus });
+    before(`Open migration page`, () => {
+      cy.get(`[data-cy="migration-button"]`).click();
+      cy.wait(10000); //TODO: optimise awaiting upload migratiopn board
+    });
+    if (isAllSupplies) {
+      it(`Select all supplies`, () => {
+        cy.get(`[data-cy="migration-checkbox-all"]`).first().click();
+      });
+    } else {
+      supplies.forEach(($asset) => {
+        it(`Choose supply asset ${$asset.shortName}`, () => {
+          cy.get(`[data-cy="migration-supply-${$asset.shortName}"]`)
+            .find(`[data-cy="migration-checkbox"]`)
+            .click();
+        });
+      });
+    }
+    if (isAllBorrows) {
+      it(`Select all borrows`, () => {
+        cy.get(`[data-cy="migration-checkbox-all"]`).last().click();
+      });
+    } else {
+      borrows.forEach(($asset) => {
+        it(`Choose borrow asset ${$asset.shortName}`, () => {
+          cy.get(
+            `[data-cy="migration-borrow-${$asset.isStable ? 'Stable' : 'Variable'}-${
+              $asset.shortName
+            }"]`
+          )
+            .find(`[data-cy="migration-checkbox"]`)
+            .click();
+        });
+      });
+    }
+    it(`Agree and open migration`, () => {
+      cy.get(`[data-cy="migration-risk-checkbox"]`).click();
+      cy.get(`[data-cy="migration-button"]`).click();
+    });
+    it(`Migration modal`, () => {
+      cy.wait(2000);
+      cy.get('[data-cy=Modal]')
+        .find('[data-cy=approveButtonChange]')
+        .last()
+        .click({ force: true })
+        .get('[data-cy=approveOption_Transaction]')
+        .first()
+        .click({ force: true });
+      cy.wait(2000);
+      cy.doConfirm(false, `Migration`);
+    });
+    doCloseModal();
+    it(`Move back to dashboard page`, () => {
+      cy.get(`[data-cy="goBack-btn"]`).click();
+    });
   });
 };

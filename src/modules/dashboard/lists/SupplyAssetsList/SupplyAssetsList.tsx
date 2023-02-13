@@ -85,7 +85,7 @@ export const SupplyAssetsList = () => {
       );
 
       const usageAsCollateralEnabledOnUser = !user?.isInIsolationMode
-        ? reserve.usageAsCollateralEnabled &&
+        ? reserve.reserveLiquidationThreshold !== '0' &&
           (!isIsolated || (isIsolated && !hasDifferentCollateral))
         : !isIsolated
         ? false

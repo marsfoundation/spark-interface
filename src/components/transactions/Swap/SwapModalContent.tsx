@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
@@ -14,6 +13,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
+import { amountToUsd } from 'src/utils/utils';
 
 import {
   ComputedUserReserveData,
@@ -22,6 +22,7 @@ import {
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
 
@@ -34,7 +35,7 @@ export const SwapModalContent = ({
   userReserve,
   isWrongNetwork,
 }: ModalWrapperProps) => {
-  const { reserves, user } = useAppDataContext();
+  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
@@ -63,7 +64,11 @@ export const SwapModalContent = ({
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
 
-  const remainingCapBn = remainingCap(swapTarget.reserve);
+  const remainingCapUsd = amountToUsd(
+    remainingCap(swapTarget.reserve),
+    swapTarget.reserve.formattedPriceInMarketReferenceCurrency,
+    marketReferencePriceInUsd
+  );
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -116,7 +121,7 @@ export const SwapModalContent = ({
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   let blockingError: ErrorType | undefined = undefined;
-  if (!remainingCapBn.eq('-1') && remainingCapBn.lt(amount)) {
+  if (!remainingCapUsd.eq('-1') && remainingCapUsd.lt(outputAmountUSD)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
@@ -159,7 +164,7 @@ export const SwapModalContent = ({
   const showHealthFactor =
     user &&
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
-    poolReserve.usageAsCollateralEnabled;
+    poolReserve.reserveLiquidationThreshold !== '0';
 
   // calculate impact based on $ difference
   const priceImpact =
@@ -237,7 +242,7 @@ export const SwapModalContent = ({
         />
       </TxModalDetails>
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && <ParaswapErrorDisplay txError={txError} />}
 
       <SwapActions
         isMaxSelected={isMaxSelected}

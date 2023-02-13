@@ -22,6 +22,7 @@ export enum ModalType {
   PSMSwap,
   GovDelegation,
   GovVote,
+  V3Migration,
 }
 
 export interface ModalArgsType {
@@ -60,6 +61,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openSwap: (underlyingAsset: string) => void;
   openPSMSwap: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
+  openV3Migration: () => void;
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   close: () => void;
   type?: ModalType;
@@ -160,6 +162,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openGovVote: (proposalId, support, power) => {
           setType(ModalType.GovVote);
           setArgs({ proposalId, support, power });
+        },
+        openV3Migration: () => {
+          setType(ModalType.V3Migration);
         },
         close: () => {
           setType(undefined);

@@ -76,7 +76,7 @@ export const PSMSwapActions = ({
       amount={amountToSwap}
       isWrongNetwork={isWrongNetwork}
       handleApproval={() =>
-        approval({ amount: amountToSwap, underlyingAsset: poolReserve.underlyingAsset })
+        approval([{ amount: amountToSwap, underlyingAsset: poolReserve.underlyingAsset }])
       }
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}

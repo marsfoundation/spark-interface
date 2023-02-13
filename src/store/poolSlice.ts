@@ -1,6 +1,8 @@
 import {
   ChainlogService,
   DepositParamsType,
+  ERC20_2612Service,
+  ERC20Service,
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
@@ -9,6 +11,7 @@ import {
   IncentivesControllerV2Interface,
   InterestRate,
   LendingPool,
+  PermitSignature,
   Pool,
   PoolBaseCurrencyHumanized,
   PotService,
@@ -16,9 +19,12 @@ import {
   PsmService,
   RedeemParamsType,
   ReserveDataHumanized,
+  ReservesIncentiveDataHumanized,
   SavingsDaiService,
+  UiIncentiveDataProvider,
   UiPoolDataProvider,
   UserReserveDataHumanized,
+  V3FaucetService,
 } from '@aave/contract-helpers';
 import {
   LPBorrowParamsType,
@@ -33,37 +39,41 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
+import { Signature } from 'ethers';
+import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
 import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import { selectFormattedReserves } from './poolSelectors';
+import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
+
+// TODO: what is the better name for this type?
+export type PoolReserve = {
+  reserves?: ReserveDataHumanized[];
+  reserveIncentives?: ReservesIncentiveDataHumanized[];
+  baseCurrencyData?: PoolBaseCurrencyHumanized;
+  userEmodeCategoryId?: number;
+  userReserves?: UserReserveDataHumanized[];
+  dsr?: BigNumber;
+  chi?: BigNumber;
+};
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
-  data: Map<
-    number,
-    Map<
-      string,
-      {
-        reserves?: ReserveDataHumanized[];
-        baseCurrencyData?: PoolBaseCurrencyHumanized;
-        userEmodeCategoryId?: number;
-        userReserves?: UserReserveDataHumanized[];
-        dsr?: BigNumber;
-        chi?: BigNumber;
-      }
-    >
-  >;
-  refreshPoolData: () => Promise<void>;
+  data: Map<number, Map<string, PoolReserve>>;
+  refreshPoolData: (marketData?: MarketDataType) => Promise<void>;
+  refreshPoolV3Data: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
+  isFaucetPermissioned: boolean;
+  setIsFaucetPermissioned: (isPermissioned: boolean) => void;
   mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   buyGem: (args: Omit<PsmParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
   sellGem: (args: Omit<PsmParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
@@ -104,6 +114,13 @@ export interface PoolSlice {
   supply: (
     args: Omit<SupplyActionProps, 'poolReserve'>
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
+  generateSignatureRequst: (args: {
+    token: string;
+    amount: string;
+    deadline: string;
+    spender: string;
+  }) => Promise<string>;
   poolComputed: {
     minRemainingBaseTokenBalance: string;
   };
@@ -111,7 +128,7 @@ export interface PoolSlice {
 
 export const createPoolSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/subscribeWithSelector', never], ['zustand/devtools', never]],
   [],
   PoolSlice
 > = (set, get) => {
@@ -137,20 +154,26 @@ export const createPoolSlice: StateCreator<
   }
   return {
     data: new Map(),
-    refreshPoolData: async () => {
+    refreshPoolData: async (marketData?: MarketDataType) => {
       const account = get().account;
-      const currentMarketData = get().currentMarketData;
       const currentChainId = get().currentChainId;
+      const currentMarketData = marketData || get().currentMarketData;
       const chainlogService = new ChainlogService(
         get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG
+        currentMarketData.addresses.CHAINLOG
       );
       const savingsDaiService = new SavingsDaiService(
         get().jsonRpcProvider(),
-        get().currentMarketData.addresses.SAVINGS_DAI
+        currentMarketData.addresses.SAVINGS_DAI
       );
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
+        provider: get().jsonRpcProvider(),
+        chainId: currentChainId,
+      });
+      const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
+        uiIncentiveDataProviderAddress:
+          currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
         provider: get().jsonRpcProvider(),
         chainId: currentChainId,
       });
@@ -194,6 +217,29 @@ export const createPoolSlice: StateCreator<
             )
           )
         );
+        promises.push(
+          uiIncentiveDataProviderContract
+            .getReservesIncentivesDataHumanized({
+              lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+            })
+            .then((reserveIncentivesResponse) =>
+              set((state) =>
+                produce(state, (draft) => {
+                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
+                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
+                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
+                      reserveIncentives: reserveIncentivesResponse,
+                    });
+                  } else {
+                    draft.data
+                      .get(currentChainId)!
+                      .get(lendingPoolAddressProvider)!.reserveIncentives =
+                      reserveIncentivesResponse;
+                  }
+                })
+              )
+            )
+        );
         if (account) {
           promises.push(
             poolDataProviderContract
@@ -230,15 +276,28 @@ export const createPoolSlice: StateCreator<
         console.log('error fetching pool data', e);
       }
     },
+    refreshPoolV3Data: async () => {
+      const v3MarketData = selectCurrentChainIdV3MarketData(get());
+      get().refreshPoolData(v3MarketData);
+    },
+    isFaucetPermissioned: true,
+    setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),
     mint: async (args) => {
-      if (!get().currentMarketData.addresses.FAUCET)
+      const { jsonRpcProvider, currentMarketData, account: userAddress } = get();
+
+      if (!currentMarketData.addresses.FAUCET)
         throw Error('currently selected market does not have a faucet attached');
-      const userAddress = get().account;
-      const service = new FaucetService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.FAUCET
-      );
-      return service.mint({ ...args, userAddress });
+
+      if (currentMarketData.v3) {
+        const v3Service = new V3FaucetService(
+          jsonRpcProvider(),
+          currentMarketData.addresses.FAUCET
+        );
+        return v3Service.mint({ ...args, userAddress });
+      } else {
+        const service = new FaucetService(jsonRpcProvider(), currentMarketData.addresses.FAUCET);
+        return service.mint({ ...args, userAddress });
+      }
     },
     buyGem: async (args) => {
       const userAddress = get().account;
@@ -334,10 +393,25 @@ export const createPoolSlice: StateCreator<
       rateMode,
       augustus,
       swapCallData,
+      signature,
+      deadline,
+      signedAmount,
     }) => {
       const user = get().account;
       const pool = getCorrectPool();
 
+      let permitSignature: PermitSignature | undefined;
+
+      if (signature && deadline && signedAmount) {
+        const sig: Signature = splitSignature(signature);
+        permitSignature = {
+          amount: signedAmount,
+          deadline: deadline,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
       return pool.paraswapRepayWithCollateral({
         user,
         fromAsset: fromAssetData.underlyingAsset,
@@ -350,6 +424,7 @@ export const createPoolSlice: StateCreator<
         flash: useFlashLoan,
         swapAndRepayCallData: swapCallData,
         augustus,
+        permitSignature,
       });
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
@@ -424,9 +499,25 @@ export const createPoolSlice: StateCreator<
       useFlashLoan,
       augustus,
       swapCallData,
+      signature,
+      deadline,
+      signedAmount,
     }) => {
       const pool = getCorrectPool();
       const user = get().account;
+
+      let permitSignature: PermitSignature | undefined;
+
+      if (signature && deadline && signedAmount) {
+        const sig: Signature = splitSignature(signature);
+        permitSignature = {
+          amount: signedAmount,
+          deadline: deadline,
+          v: sig.v,
+          r: sig.r,
+          s: sig.s,
+        };
+      }
 
       return pool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,
@@ -439,6 +530,7 @@ export const createPoolSlice: StateCreator<
         flash: useFlashLoan,
         augustus,
         swapCallData,
+        permitSignature,
       });
     },
     setUserEMode: async (categoryId) => {
@@ -509,6 +601,47 @@ export const createPoolSlice: StateCreator<
     },
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
+    },
+    // TO-DO: Move to @aave/contract-helpers, build with approval transaction, and re-use for staking and pool permit functions
+    generateSignatureRequst: async ({ token, amount, deadline, spender }) => {
+      const provider = get().jsonRpcProvider();
+      const tokenERC20Service = new ERC20Service(provider);
+      const tokenERC2612Service = new ERC20_2612Service(provider);
+      const { name } = await tokenERC20Service.getTokenData(token);
+      const { chainId } = await provider.getNetwork();
+      const nonce = await tokenERC2612Service.getNonce({ token, owner: get().account });
+      const typeData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          Permit: [
+            { name: 'owner', type: 'address' },
+            { name: 'spender', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' },
+          ],
+        },
+        primaryType: 'Permit',
+        domain: {
+          name,
+          version: '1',
+          chainId,
+          verifyingContract: token,
+        },
+        message: {
+          owner: get().account,
+          spender: spender,
+          value: amount,
+          nonce,
+          deadline,
+        },
+      };
+      return JSON.stringify(typeData);
     },
     poolComputed: {
       get minRemainingBaseTokenBalance() {

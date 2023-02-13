@@ -1,5 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { ReactNode } from 'react';
+
+// Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
@@ -18,6 +20,7 @@ export type MarketDataType = {
   };
   isFork?: boolean;
   permissionComponent?: ReactNode;
+  disableCharts?: boolean;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -33,6 +36,7 @@ export type MarketDataType = {
     COLLECTOR?: string;
     CHAINLOG: string;
     SAVINGS_DAI: string;
+    V3_MIGRATOR?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -82,11 +86,7 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.goerli,
     enabledFeatures: {
-      // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
-      // governance: true,
-      // staking: true,
-      // incentives: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x0bf0A0B1B53D21CAd9739AbaB07be2a388d31DAE'.toLowerCase(),

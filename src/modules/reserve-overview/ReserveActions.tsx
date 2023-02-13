@@ -1,5 +1,4 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
-import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -33,23 +32,12 @@ import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { amountToUsd } from 'src/utils/utils';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
-
-const amountToUSD = (
-  amount: string,
-  formattedPriceInMarketReferenceCurrency: string,
-  marketReferencePriceInUsd: string
-) => {
-  return valueToBigNumber(amount)
-    .multipliedBy(formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS)
-    .toString();
-};
 
 interface ReserveActionsProps {
   reserve: ComputedReserveData;
@@ -74,35 +62,31 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    reserve,
-    user,
-    InterestRate.Variable
-  ).toString();
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable);
 
-  const maxAmountToBorrowUSD = amountToUSD(
+  const maxAmountToBorrowUsd = amountToUsd(
     maxAmountToBorrow,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
-  );
+  ).toString();
 
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance?.amount || '0',
     reserve,
     reserve.underlyingAsset,
     minRemainingBaseTokenBalance
-  ).toString();
+  );
 
-  const maxAmountToSupplyUSD = amountToUSD(
+  const maxAmountToSupplyUsd = amountToUsd(
     maxAmountToSupply,
     reserve.formattedPriceInMarketReferenceCurrency,
     marketReferencePriceInUsd
-  );
+  ).toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
     balance: balance?.amount || '0',
-    maxAmountToSupply,
-    maxAmountToBorrow,
+    maxAmountToSupply: maxAmountToSupply.toString(),
+    maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
   });
 
@@ -150,15 +134,15 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
             <SupplyAction
-              value={maxAmountToSupply}
-              usdValue={maxAmountToSupplyUSD}
+              value={maxAmountToSupply.toString()}
+              usdValue={maxAmountToSupplyUsd}
               symbol={selectedAsset}
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
             <BorrowAction
-              value={maxAmountToBorrow}
-              usdValue={maxAmountToBorrowUSD}
+              value={maxAmountToBorrow.toString()}
+              usdValue={maxAmountToBorrowUsd}
               symbol={selectedAsset}
               disable={disableBorrowButton}
               onActionClicked={() => openBorrow(reserve.underlyingAsset)}
