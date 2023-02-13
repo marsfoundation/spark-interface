@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@npm:@blank101/contract-helpers@1.12.7":
-  version "1.12.7"
-  resolved "https://registry.yarnpkg.com/@blank101/contract-helpers/-/contract-helpers-1.12.7.tgz#ba27fee564852c553925067789c9ec23e6bf74c3"
-  integrity sha512-/I6MD6PymCNBHZMtWcAt1NHiO7nHF09pQuD38rq0oRMYc7iVoDE/BuKVb6gDtMEPoLTN5JPb4Ly+7xTzN6aVIw==
+"@aave/contract-helpers@npm:@blank101/contract-helpers@1.13.5":
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/@blank101/contract-helpers/-/contract-helpers-1.13.5.tgz#2a689ee55794c9c14e7feffbc3b5b888a95883a3"
+  integrity sha512-BBN6yjKX07As3REyv1P4lQCqhrpJmCrxgOaIbGfAg0LFAeJFQlSwIRhxDZ4tnUgZkaZvhfbq4dkQGE2Vh9F4vw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
