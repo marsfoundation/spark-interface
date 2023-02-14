@@ -2,26 +2,12 @@
   "short_name": "Spark",
   "name": "Spark",
   "description": "Maker-Powered Lending Market",
-  "iconPath": "spark.svg",
   "icons": [
-    {
-      "src": "favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-        "src": "/android-chrome-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-    },
-    {
-        "src": "/android-chrome-384x384.png",
-        "sizes": "384x384",
-        "type": "image/png"
-    }
+    {"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},
+    {"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}
   ],
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#171715",
-  "background_color": "#171715"
+  "theme_color": "#2d2d2b",
+  "background_color": "#2d2d2b"
 }
