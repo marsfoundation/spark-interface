@@ -143,7 +143,7 @@ jobs:
         with:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
-          PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
+          PIN_ALIAS: 'app-spark-${{ github.head_ref || github.ref }}'
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
