@@ -15,7 +15,7 @@ export const CooldownWarning = () => {
           The cooldown period is the time required prior to unstaking your tokens(10 days). You can
           only withdraw your assets from the Security Module after the cooldown period and within
           the active the unstake window.
-          <Link href="https://docs.aave.com/faq/migration-and-staking" fontWeight={500}>
+          <Link href="https://docs.sparkprotocol.io/faq/migration-and-staking" fontWeight={500}>
             <Trans>Learn more</Trans>
           </Link>
         </Trans>

@@ -35,9 +35,9 @@ export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBloc
         </Typography>
         <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
           <Trans>
-            This address is blocked on app.aave.com because it is associated with one or more
+            This address is blocked on app.sparkprotocol.io because it is associated with one or more
           </Trans>{' '}
-          <Link href="https://docs.aave.com/faq/#address-screening" underline="always">
+          <Link href="https://docs.sparkprotocol.io/faq/#address-screening" underline="always">
             <Trans>blocked activities</Trans>
           </Link>
           {'.'}

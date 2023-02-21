@@ -311,7 +311,7 @@ export const BorrowModalContent = ({
         <Trans>
           <b>Attention:</b> Parameter changes via governance can alter your account health factor
           and risk of liquidation. Follow the{' '}
-          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+          <a href="https://forum.makerdao.com/">Maker governance forum</a> for updates.
         </Trans>
       </Warning>
 

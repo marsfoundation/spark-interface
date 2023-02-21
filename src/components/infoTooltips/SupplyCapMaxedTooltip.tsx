@@ -19,7 +19,7 @@ export const SupplyCapMaxedTooltip = ({ supplyCap, ...rest }: SupplyCapMaxedTool
         <>
           <Trans>Protocol supply cap at 100% for this asset. Further supply unavailable.</Trans>{' '}
           <Link
-            href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+            href="https://docs.sparkprotocol.io/developers/whats-new/supply-borrow-caps"
             underline="always"
           >
             <Trans>Learn more</Trans>

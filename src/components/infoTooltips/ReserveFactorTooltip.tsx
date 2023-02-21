@@ -17,7 +17,7 @@ export const ReserveFactorTooltip = ({ collectorLink, ...rest }: ReserveFactorTo
         ) : (
           'collector contract'
         )}{' '}
-        that is controlled by Aave governance to promote ecosystem growth.{' '}
+        that is controlled by Spark governance to promote ecosystem growth.{' '}
       </Trans>
     </TextWithTooltip>
   );

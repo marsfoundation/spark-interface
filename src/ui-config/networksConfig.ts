@@ -87,7 +87,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
-    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    //ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.polygon]: {

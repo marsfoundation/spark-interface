@@ -55,7 +55,7 @@ export const LiquidationRiskParametresInfoModal = ({
           liquidations you can supply more collateral or repay borrow positions.
         </Trans>{' '}
         <Link
-          href="https://docs.aave.com/faq/"
+          href="https://docs.sparkprotocol.io/faq/"
           sx={{ textDecoration: 'underline' }}
           color="text.primary"
           variant="description"
