@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
@@ -19,11 +20,16 @@ export const InterestRateModelGraphContainer = ({
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
   const CHART_HEIGHT = 155;
   const fields: Fields = [
-    { name: 'variableBorrowRate', text: 'Borrow APR, variable', color: '#B6509E' },
+    {
+      name: 'variableBorrowRate',
+      text: reserve.symbol === 'DAI' ? 'Borrow APY' : 'Borrow APR',
+      color: '#B6509E',
+    },
     ...(reserve.stableBorrowRateEnabled
       ? ([{ name: 'stableBorrowRate', text: 'Borrow APR, stable', color: '#E7C6DF' }] as const)
       : []),
   ];
+  const { dsr } = useAppDataContext();
 
   return (
     <Box sx={{ mt: 8, mb: 10 }}>
@@ -45,7 +51,10 @@ export const InterestRateModelGraphContainer = ({
             fields={fields}
             reserve={{
               baseStableBorrowRate: reserve.baseStableBorrowRate,
-              baseVariableBorrowRate: reserve.baseVariableBorrowRate,
+              baseVariableBorrowRate:
+                reserve.symbol === 'DAI' && dsr != null
+                  ? dsr.div(0.9).multipliedBy(1e27).toString()
+                  : reserve.baseVariableBorrowRate,
               optimalUsageRatio: reserve.optimalUsageRatio,
               stableRateSlope1: reserve.stableRateSlope1,
               stableRateSlope2: reserve.stableRateSlope2,
@@ -53,6 +62,7 @@ export const InterestRateModelGraphContainer = ({
               variableRateSlope1: reserve.variableRateSlope1,
               variableRateSlope2: reserve.variableRateSlope2,
               stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
+              symbol: reserve.symbol,
             }}
           />
         )}

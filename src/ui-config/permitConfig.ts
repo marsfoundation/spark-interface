@@ -12,6 +12,14 @@ export const permitByChainAndToken: {
     '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': false,
     '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0': true,
   },
+  [ChainId.goerli]: {
+    '0x11fe4b6ae13d2a6055c8d9cf65c55bac32b5d844': false,
+    '0xd8134205b0328f5676aaefb3b2a0dc15f4029d8c': true,
+    '0x6fb5ef893d44f4f88026430d82d4ef269543cb23': false,
+    '0x7b9525daa4da6a028edef775a2a0b45780599afa': false,
+    '0xf576bbdcdd77b16ac5e57acde7026a9591762039': true,
+    '0x77fb172eba30ef1a701b08b910fc20ec8a06fe3f': false,
+  },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,
     '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': true,

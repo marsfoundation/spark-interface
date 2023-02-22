@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -31,6 +32,7 @@ export const SupplyAssetsListItem = ({
   hideSupply,
 }: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
+  const { dsr } = useAppDataContext();
   const { openSupply, openPSMSwap } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
@@ -63,7 +65,19 @@ export const SupplyAssetsListItem = ({
         }
       />
 
-      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
+      <ListAPRColumn
+        value={symbol === 'sDAI' && dsr != null ? dsr.toNumber() : Number(supplyAPY)}
+        incentives={aIncentivesData}
+        symbol={symbol}
+        tooltip={
+          symbol === 'sDAI' && dsr != null ? (
+            <Trans>
+              This is the Dai Savings Rate, and not the supply rate. You earn this automatically
+              when converting your DAI to sDAI.
+            </Trans>
+          ) : null
+        }
+      />
 
       <ListButtonsColumn>
         {showSwap && (

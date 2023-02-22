@@ -14,7 +14,8 @@ export const getFrozenProposalLink = (
   symbol: string | undefined,
   currentMarket: string | undefined
 ): string => {
-  symbol; currentMarket;  // Prevent warnings
+  symbol;
+  currentMarket; // Prevent warnings
   return 'https://vote.makerdao.com/polling';
 };
 

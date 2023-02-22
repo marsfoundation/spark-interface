@@ -12,7 +12,10 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
@@ -30,6 +33,7 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { dsr } = useAppDataContext();
   const reserveId =
     reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
   const renderCharts =
@@ -42,6 +46,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
+      {reserve.symbol === 'wstETH' && (
+        <Warning severity="info" icon={false}>
+          <Trans>
+            <Link href="https://stake.lido.fi/wrap">Wrap your Lido stETH here.</Link>
+          </Trans>
+        </Warning>
+      )}
       <Box
         sx={{
           display: 'flex',
@@ -218,7 +229,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && reserve.symbol !== 'DAI' && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
 
@@ -241,6 +252,21 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     compact
                   />
                 </PanelItem>
+                {reserve.symbol === 'DAI' && dsr != null && (
+                  <>
+                    <PanelItem title={<Trans>Dai Savings Rate (APY)</Trans>} className="borderless">
+                      <FormattedNumber value={dsr.toNumber()} percent variant="main16" compact />
+                    </PanelItem>
+                    <PanelItem title={<Trans>Borrow Rate (APY)</Trans>} className="borderless">
+                      <FormattedNumber
+                        value={dsr.toNumber() / 0.9}
+                        percent
+                        variant="main16"
+                        compact
+                      />
+                    </PanelItem>
+                  </>
+                )}
                 <Button
                   href={currentNetworkConfig.explorerLinkBuilder({
                     address: reserve.interestRateStrategyAddress,

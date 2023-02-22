@@ -58,6 +58,14 @@ export const BorrowAssetsListItem = ({
         value={Number(variableBorrowRate)}
         incentives={vIncentivesData}
         symbol={symbol}
+        tooltip={
+          symbol === 'DAI' ? (
+            <Trans>
+              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
+              unless Maker needs to reclaim capital.
+            </Trans>
+          ) : null
+        }
       />
 
       <ListButtonsColumn>

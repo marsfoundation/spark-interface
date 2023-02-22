@@ -1,23 +1,21 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Trans } from '@lingui/macro';
 import { Box, Tooltip } from '@mui/material';
+import { ReactNode } from 'react';
 
 import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
 import { ListColumn } from '../../../components/lists/ListColumn';
-import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 
 interface ListAPRColumnProps {
   value: number;
   incentives?: ReserveIncentiveResponse[];
   symbol: string;
+  tooltip?: ReactNode;
 }
 
-export const ListAPRColumn = ({ value, incentives, symbol }: ListAPRColumnProps) => {
-  const { dsr } = useAppDataContext();
-
+export const ListAPRColumn = ({ value, incentives, symbol, tooltip }: ListAPRColumnProps) => {
   return (
     <ListColumn>
-      {symbol === 'sDAI' && dsr != null ? (
+      {tooltip != null ? (
         <Tooltip
           title={
             <Box
@@ -28,10 +26,7 @@ export const ListAPRColumn = ({ value, incentives, symbol }: ListAPRColumnProps)
                 justifyContent: 'center',
               }}
             >
-              <Trans>
-                This is the Dai Savings Rate, and not the supply rate. You earn this automatically
-                when converting your DAI to sDAI.
-              </Trans>
+              {tooltip}
             </Box>
           }
           arrow
@@ -46,7 +41,7 @@ export const ListAPRColumn = ({ value, incentives, symbol }: ListAPRColumnProps)
             }}
           >
             <IncentivesCard
-              value={dsr?.toNumber()}
+              value={value}
               incentives={incentives}
               symbol={symbol}
               data-cy={`apyType`}

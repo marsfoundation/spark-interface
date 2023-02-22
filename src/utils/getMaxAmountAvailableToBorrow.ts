@@ -29,7 +29,12 @@ export function getMaxAmountAvailableToBorrow(
           valueToBigNumber(poolReserve.totalDebt)
         );
   const availableLiquidity = BigNumber.max(
-    BigNumber.min(valueToBigNumber(poolReserve.availableLiquidity).div(new BigNumber(10).pow(poolReserve.decimals)), availableBorrowCap),
+    BigNumber.min(
+      valueToBigNumber(poolReserve.availableLiquidity).div(
+        new BigNumber(10).pow(poolReserve.decimals)
+      ),
+      availableBorrowCap
+    ),
     0
   );
 

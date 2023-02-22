@@ -75,6 +75,7 @@ export const useReserveActionState = ({
                 bridge={bridge}
                 icon={false}
                 chainId={currentChainId}
+                symbol={reserve.symbol}
               />
             )}
           </>

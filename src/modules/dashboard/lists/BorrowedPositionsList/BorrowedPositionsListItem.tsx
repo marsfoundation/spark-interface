@@ -58,6 +58,14 @@ export const BorrowedPositionsListItem = ({
         )}
         incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
         symbol={reserve.symbol}
+        tooltip={
+          reserve.symbol === 'DAI' ? (
+            <Trans>
+              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
+              unless Maker needs to reclaim capital.
+            </Trans>
+          ) : null
+        }
       />
 
       <ListButtonsColumn>

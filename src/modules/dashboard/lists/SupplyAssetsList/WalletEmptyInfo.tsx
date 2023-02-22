@@ -11,9 +11,10 @@ type WalletEmptyInfoProps = Pick<NetworkConfig, 'bridge' | 'name'> & {
   chainId: number;
   icon?: boolean;
   sx?: SxProps<Theme>;
+  symbol?: string;
 };
 
-export function WalletEmptyInfo({ bridge, name, chainId, icon, sx }: WalletEmptyInfoProps) {
+export function WalletEmptyInfo({ bridge, name, chainId, icon, sx, symbol }: WalletEmptyInfoProps) {
   const network = [ChainId.avalanche].includes(chainId) ? 'Ethereum & Bitcoin' : 'Ethereum';
   return (
     <Warning severity="info" icon={icon} sx={sx}>
@@ -23,7 +24,12 @@ export function WalletEmptyInfo({ bridge, name, chainId, icon, sx }: WalletEmpty
           {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your {network} assets.
         </Trans>
       ) : (
-        <Trans>Your {name} wallet is empty. Purchase or transfer assets.</Trans>
+        <Trans>
+          Your {name} wallet is empty. Purchase or transfer assets.{' '}
+          {symbol === 'wstETH' && (
+            <Link href="https://stake.lido.fi/wrap">Wrap your Lido stETH here.</Link>
+          )}
+        </Trans>
       )}
     </Warning>
   );
