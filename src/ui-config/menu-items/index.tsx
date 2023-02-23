@@ -1,4 +1,4 @@
-import { BookOpenIcon } from '@heroicons/react/outline';
+import { BookOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -59,7 +59,12 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.sparkprotocol.io/',
+    link: 'https://docs.sparkprotocol.io/faq/',
+    title: t`FAQ`,
+    icon: <QuestionMarkCircleIcon />,
+  },
+  {
+    link: 'https://docs.sparkprotocol.io/hub/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },
