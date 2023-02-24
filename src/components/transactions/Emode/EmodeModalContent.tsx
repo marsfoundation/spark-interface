@@ -189,7 +189,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
               Enabling E-Mode only allows you to borrow assets belonging to the selected category.
               Please visit our{' '}
               <Link
-                href="https://docs.sparkprotocol.io/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                href="https://docs.sparkprotocol.io/faq/spark-lend-features#high-efficiency-mode-e-mode"
                 target="_blank"
                 rel="noopener"
               >

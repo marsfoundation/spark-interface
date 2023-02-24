@@ -20,7 +20,7 @@ export const EModeTooltip = ({
         />
         .{' '}
         <Link
-          href="https://docs.sparkprotocol.io/faq/aave-v3-features#high-efficiency-mode-e-mode"
+          href="https://docs.sparkprotocol.io/faq/spark-lend-features#high-efficiency-mode-e-mode"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"

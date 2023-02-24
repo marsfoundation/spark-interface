@@ -173,7 +173,7 @@ export const SupplyInfo = ({
                 In Isolation mode you cannot supply other assets as collateral for borrowing. Assets
                 used as collateral in Isolation mode can only be borrowed to a specific debt
                 ceiling.{' '}
-                <Link href="https://docs.sparkprotocol.io/faq/aave-v3-features#isolation-mode">
+                <Link href="https://docs.sparkprotocol.io/faq/spark-lend-features#isolation-mode">
                   Learn more
                 </Link>
               </Typography>
