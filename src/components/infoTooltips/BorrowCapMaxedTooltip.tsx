@@ -19,7 +19,7 @@ export const BorrowCapMaxedTooltip = ({ borrowCap, ...rest }: BorrowCapMaxedTool
         <>
           <Trans>Protocol borrow cap at 100% for this asset. Further borrowing unavailable.</Trans>{' '}
           <Link
-            href="https://docs.sparkprotocol.io/developers/whats-new/supply-borrow-caps"
+            href="https://docs.sparkprotocol.io/developers/features/supply-borrow-caps"
             underline="always"
           >
             <Trans>Learn more</Trans>

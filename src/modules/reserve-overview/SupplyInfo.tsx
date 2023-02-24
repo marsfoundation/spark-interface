@@ -88,7 +88,7 @@ export const SupplyInfo = ({
                         the asset and to help manage risks involved.
                       </Trans>{' '}
                       <Link
-                        href="https://docs.sparkprotocol.io/developers/whats-new/supply-borrow-caps"
+                        href="https://docs.sparkprotocol.io/developers/features/supply-borrow-caps"
                         underline="always"
                       >
                         <Trans>Learn more</Trans>
