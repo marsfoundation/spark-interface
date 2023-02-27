@@ -48,7 +48,7 @@
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.6.0",
     "@visx/gradient": "^2.10.0",
-    "@visx/grid": "^2.12.2",
+    "@visx/grid": "^3.0.1",
     "@visx/legend": "^2.10.0",
     "@visx/mock-data": "^2.15.1",
     "@visx/responsive": "^2.10.0",
