@@ -62,7 +62,7 @@ export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
   [CustomMarket.proto_spark_v3]: {
-    marketTitle: 'Spark',
+    marketTitle: 'Spark Protocol',
     v3: true,
     chainId: ChainId.mainnet,
     enabledFeatures: {
@@ -82,7 +82,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_spark_goerli_v3]: {
-    marketTitle: 'Spark Lend Görli',
+    marketTitle: 'Spark Protocol Görli',
     v3: true,
     chainId: ChainId.goerli,
     enabledFeatures: {
