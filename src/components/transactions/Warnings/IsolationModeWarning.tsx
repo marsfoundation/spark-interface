@@ -20,7 +20,7 @@ export const IsolationModeWarning = ({ asset, severity }: IsolationModeWarningPr
           In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling
           limits the borrowing power of the isolated asset. To exit isolation mode disable{' '}
           {asset ? asset : ''} as collateral before borrowing another asset. Read more in our{' '}
-          <Link href="https://docs.sparkprotocol.io/faq/aave-v3-features#isolation-mode">FAQ</Link>
+          <Link href="https://docs.sparkprotocol.io/faq/spark-lend-features#isolation-mode">FAQ</Link>
         </Trans>
       </Typography>
     </Warning>
