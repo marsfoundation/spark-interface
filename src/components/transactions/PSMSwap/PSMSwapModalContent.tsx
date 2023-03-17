@@ -25,7 +25,7 @@ export const PSMSwapModalContent = ({
   isWrongNetwork,
   tokenBalance,
 }: ModalWrapperProps) => {
-  const { marketReferencePriceInUsd, reserves, chi } = useAppDataContext();
+  const { marketReferencePriceInUsd, reserves, chi, tin, tout } = useAppDataContext();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const validTypes = new Map<string, Array<PSMSwapActionType>>(
@@ -45,8 +45,10 @@ export const PSMSwapModalContent = ({
   );
   const exchangeRate = new Map<string, BigNumber>(
     Object.entries({
-      [PSMSwapActionType.BUY_GEM]: new BigNumber(1),
-      [PSMSwapActionType.SELL_GEM]: new BigNumber(1),
+      [PSMSwapActionType.BUY_GEM]:
+        tout != null ? new BigNumber(1).dividedBy(tout) : new BigNumber(1),
+      [PSMSwapActionType.SELL_GEM]:
+        tin != null ? new BigNumber(1).dividedBy(tin) : new BigNumber(1),
       [PSMSwapActionType.SDAI_DEPOSIT]: new BigNumber(chi != null ? chi : 0),
       [PSMSwapActionType.SDAI_REDEEM]: new BigNumber(
         chi != null ? new BigNumber(1).dividedBy(chi) : 0

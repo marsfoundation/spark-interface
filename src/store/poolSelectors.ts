@@ -100,6 +100,14 @@ export const selectChi = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.chi;
 };
 
+export const selectTin = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.tin;
+};
+
+export const selectTout = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.tout;
+};
+
 export const selectFormatBaseCurrencyData = (reserve?: PoolReserve) => {
   return (
     reserve?.baseCurrencyData || {

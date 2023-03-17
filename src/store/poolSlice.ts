@@ -63,6 +63,8 @@ export type PoolReserve = {
   userReserves?: UserReserveDataHumanized[];
   dsr?: BigNumber;
   chi?: BigNumber;
+  tin?: BigNumber;
+  tout?: BigNumber;
 };
 
 // TODO: add chain/provider/account mapping
@@ -166,6 +168,11 @@ export const createPoolSlice: StateCreator<
         get().jsonRpcProvider(),
         currentMarketData.addresses.SAVINGS_DAI
       );
+      const psmService = new PsmService(
+        get().jsonRpcProvider(),
+        currentMarketData.addresses.CHAINLOG,
+        'USDC'
+      );
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
         provider: get().jsonRpcProvider(),
@@ -190,9 +197,11 @@ export const createPoolSlice: StateCreator<
               return Promise.all([
                 potService.getDaiSavingsRate(),
                 savingsDaiService.previewDeposit('1'),
+                psmService.tin(),
+                psmService.tout(),
               ]);
             }),
-          ]).then(([reservesResponse, [dsr, chi]]) =>
+          ]).then(([reservesResponse, [dsr, chi, tin, tout]]) =>
             set((state) =>
               produce(state, (draft) => {
                 if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
@@ -202,6 +211,8 @@ export const createPoolSlice: StateCreator<
                     baseCurrencyData: reservesResponse.baseCurrencyData,
                     dsr,
                     chi,
+                    tin,
+                    tout,
                   });
                 } else {
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
@@ -212,6 +223,8 @@ export const createPoolSlice: StateCreator<
                     reservesResponse.baseCurrencyData;
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.dsr = dsr;
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.chi = chi;
+                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tin = tin;
+                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tout = tout;
                 }
               })
             )

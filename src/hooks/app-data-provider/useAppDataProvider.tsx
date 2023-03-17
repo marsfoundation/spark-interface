@@ -21,6 +21,8 @@ import {
   selectDSR,
   selectEmodes,
   selectFormattedReserves,
+  selectTin,
+  selectTout,
   selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
@@ -66,6 +68,8 @@ export interface AppDataContextType {
   userReserves: UserReserveData[];
   dsr?: BigNumber;
   chi?: BigNumber;
+  tin?: BigNumber;
+  tout?: BigNumber;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -85,6 +89,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     eModes,
     dsr,
     chi,
+    tin,
+    tout,
     formattedPoolReserves,
     user,
   ] = useRootStore((state) => [
@@ -95,6 +101,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     selectEmodes(state),
     selectDSR(state),
     selectChi(state),
+    selectTin(state),
+    selectTout(state),
     selectFormattedReserves(state, currentTimestamp),
     selectUserSummaryAndIncentives(state, currentTimestamp),
   ]);
@@ -189,6 +197,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
         dsr,
         chi,
+        tin,
+        tout,
       }}
     >
       {children}
