@@ -130,7 +130,7 @@ export const CollateralChangeModalContent = ({
         <DetailsNumberLine
           symbol={poolReserve.symbol}
           iconSymbol={poolReserve.iconSymbol}
-          description={<Trans>Supply balance</Trans>}
+          description={<Trans>Deposit balance</Trans>}
           value={userReserve.underlyingBalance}
         />
         <DetailsHFLine

@@ -164,7 +164,7 @@ export const BorrowAssetsList = () => {
   if (loading)
     return (
       <ListLoader
-        title={<Trans>Assets to borrow</Trans>}
+        title={<Trans>Assets to Borrow</Trans>}
         head={head.map((col) => col.title)}
         withTopMargin
       />
@@ -174,7 +174,7 @@ export const BorrowAssetsList = () => {
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Assets to borrow</Trans>
+          <Trans>Assets to Borrow</Trans>
         </Typography>
       }
       localStorageName="borrowAssetsDashboardTableCollapse"

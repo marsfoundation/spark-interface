@@ -132,13 +132,13 @@ export const BorrowedPositionsList = () => {
   };
 
   if (loading)
-    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
+    return <ListLoader title={<Trans>Your Borrows</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your borrows</Trans>
+          <Trans>Your Borrows</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"

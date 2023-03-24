@@ -28,7 +28,7 @@ const listHeaders = [
     sortKey: 'totalLiquidityUSD',
   },
   {
-    title: <Trans>Supply APY</Trans>,
+    title: <Trans>Deposit APY</Trans>,
     sortKey: 'supplyAPY',
   },
   {

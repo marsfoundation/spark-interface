@@ -48,7 +48,7 @@ export const SupplyAssetsListMobileItem = ({
       showDebtCeilingTooltips
     >
       <ListValueRow
-        title={<Trans>Supply balance</Trans>}
+        title={<Trans>Deposit balance</Trans>}
         value={Number(walletBalance)}
         subValue={walletBalanceUSD}
         disabled={Number(walletBalance) === 0}
@@ -63,7 +63,7 @@ export const SupplyAssetsListMobileItem = ({
       />
 
       <Row
-        caption={<Trans>Supply APY</Trans>}
+        caption={<Trans>Deposit APY</Trans>}
         align="flex-start"
         captionVariant="description"
         mb={2}
@@ -96,7 +96,7 @@ export const SupplyAssetsListMobileItem = ({
           sx={{ mr: 1.5 }}
           fullWidth
         >
-          <Trans>Supply</Trans>
+          <Trans>Deposit</Trans>
         </Button>
         <Button
           variant="outlined"

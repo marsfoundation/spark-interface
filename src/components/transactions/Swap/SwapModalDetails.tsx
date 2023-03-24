@@ -84,7 +84,7 @@ export const SwapModalDetails = ({
         />
       )}
       <DetailsNumberLine
-        description={<Trans>Supply apy</Trans>}
+        description={<Trans>Deposit apy</Trans>}
         value={swapSource.reserve.supplyAPY}
         futureValue={swapTarget.reserve.supplyAPY}
         percent
@@ -124,7 +124,7 @@ export const SwapModalDetails = ({
       />
 
       <Row
-        caption={<Trans>Supply balance after swap</Trans>}
+        caption={<Trans>Deposit balance after swap</Trans>}
         captionVariant="description"
         mb={4}
         align="flex-start"

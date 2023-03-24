@@ -277,7 +277,7 @@ const SupplyAction = ({ value, usdValue, symbol, disable, onActionClicked }: Act
           variant="contained"
           data-cy="supplyButton"
         >
-          <Trans>Supply</Trans>
+          <Trans>Deposit</Trans>
         </Button>
       </Stack>
     </Stack>

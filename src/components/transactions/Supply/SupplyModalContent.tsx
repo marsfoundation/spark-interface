@@ -206,7 +206,7 @@ export const SupplyModalContent = ({
   if (supplyTxState.success)
     return (
       <TxSuccessView
-        action={<Trans>Supplied</Trans>}
+        action={<Trans>Deposited</Trans>}
         amount={amountRef.current}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         addToken={addToken}

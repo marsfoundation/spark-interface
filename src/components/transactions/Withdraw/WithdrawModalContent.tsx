@@ -190,7 +190,7 @@ export const WithdrawModalContent = ({
           unborrowedLiquidity.lt(underlyingBalance) ? (
             <Trans>Available</Trans>
           ) : (
-            <Trans>Supply balance</Trans>
+            <Trans>Deposit balance</Trans>
           )
         }
       />

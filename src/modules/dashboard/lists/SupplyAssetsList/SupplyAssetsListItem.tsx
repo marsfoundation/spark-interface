@@ -80,7 +80,7 @@ export const SupplyAssetsListItem = ({
       />
 
       <ListButtonsColumn>
-        {showSwap && (
+        {!hideSupply && (
           <Button
             sx={(theme) => ({
               color: theme.palette.common.white,
@@ -89,19 +89,16 @@ export const SupplyAssetsListItem = ({
                 background: '#8bc34a',
               },
             })}
-            variant="contained"
-            onClick={() => openPSMSwap(underlyingAsset)}
-          >
-            <Trans>Swap</Trans>
-          </Button>
-        )}
-        {!hideSupply && (
-          <Button
             disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
             variant="contained"
             onClick={() => openSupply(underlyingAsset)}
           >
-            <Trans>Supply</Trans>
+            <Trans>Deposit</Trans>
+          </Button>
+        )}
+        {showSwap && (
+          <Button variant="contained" onClick={() => openPSMSwap(underlyingAsset)}>
+            <Trans>Swap</Trans>
           </Button>
         )}
         {!(showSwap && !hideSupply) && (

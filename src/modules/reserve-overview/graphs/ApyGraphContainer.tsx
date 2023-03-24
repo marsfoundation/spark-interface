@@ -52,7 +52,7 @@ export const ApyGraphContainer = ({
   );
 
   // Supply fields
-  const supplyFields: Fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
+  const supplyFields: Fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Deposit APR' }];
 
   // Borrow fields
   const borrowFields: Fields = [

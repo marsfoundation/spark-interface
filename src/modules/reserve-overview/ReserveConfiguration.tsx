@@ -90,7 +90,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       </Box>
 
       <PanelRow>
-        <PanelTitle>Supply Info</PanelTitle>
+        <PanelTitle>Deposit Info</PanelTitle>
         <SupplyInfo
           reserve={reserve}
           currentMarketData={currentMarketData}
@@ -284,6 +284,26 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <Trans>Interest rate strategy</Trans>
                 </Button>
               </Box>
+              {reserve.symbol === 'DAI' && dsr != null && (
+                <Typography variant="caption" color="text.secondary" paddingTop="24px">
+                  <Trans>
+                    Please note that unlike other markets, the Dai borrow rate does not depend on
+                    the utilization. The rate will always be anchored to the Dai Savings Rate (DSR)
+                    which is set by Maker Governance. The DSR is expected to track below the US
+                    Federal Funds Rate, but may deviate from this based on Maker Governance
+                    requirements. You can read more about the DSR your{' '}
+                    <Link
+                      href="https://manual.makerdao.com/parameter-index/core/param-dai-savings-rate"
+                      sx={{ textDecoration: 'underline' }}
+                      variant="caption"
+                      color="text.secondary"
+                    >
+                      here
+                    </Link>
+                    .
+                  </Trans>
+                </Typography>
+              )}
               <InterestRateModelGraphContainer reserve={reserve} />
             </Box>
           </PanelRow>

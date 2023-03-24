@@ -112,13 +112,13 @@ export const SuppliedPositionsList = () => {
   };
 
   if (loading)
-    return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((col) => col.title)} />;
+    return <ListLoader title={<Trans>Your Deposits</Trans>} head={head.map((col) => col.title)} />;
 
   return (
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your supplies</Trans>
+          <Trans>Your Deposits</Trans>
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"

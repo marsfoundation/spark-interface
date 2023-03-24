@@ -106,7 +106,7 @@ export const SuppliedPositionsListItem = ({
             variant="outlined"
             onClick={() => openSupply(underlyingAsset)}
           >
-            <Trans>Supply</Trans>
+            <Trans>Deposit</Trans>
           </Button>
         )}
       </ListButtonsColumn>

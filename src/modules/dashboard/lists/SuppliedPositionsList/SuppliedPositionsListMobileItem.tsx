@@ -47,14 +47,14 @@ export const SuppliedPositionsListMobileItem = ({
       showDebtCeilingTooltips
     >
       <ListValueRow
-        title={<Trans>Supply balance</Trans>}
+        title={<Trans>Deposit balance</Trans>}
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
         disabled={Number(underlyingBalance) === 0}
       />
 
       <Row
-        caption={<Trans>Supply APY</Trans>}
+        caption={<Trans>Deposit APY</Trans>}
         align="flex-start"
         captionVariant="description"
         mb={2}
@@ -108,7 +108,7 @@ export const SuppliedPositionsListMobileItem = ({
             onClick={() => openSupply(underlyingAsset)}
             fullWidth
           >
-            <Trans>Supply</Trans>
+            <Trans>Deposit</Trans>
           </Button>
         )}
       </Box>

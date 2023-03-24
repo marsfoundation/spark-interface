@@ -38,7 +38,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         </Box>
       </Row>
       <Row
-        caption={<Trans>Supply APY</Trans>}
+        caption={<Trans>Deposit APY</Trans>}
         captionVariant="description"
         mb={3}
         align="flex-start"
