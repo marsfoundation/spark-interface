@@ -43,7 +43,7 @@ export const DashboardTopPanel = () => {
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
   const showMigrateButton =
-    isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0;
+    isMigrateToV3Available && currentAccount !== '' /* && Number(user.totalLiquidityUSD) > 0 */;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -96,7 +96,7 @@ export const DashboardTopPanel = () => {
 
   return (
     <>
-      {showMigrateButton && downToSM && (
+      {showMigrateButton && (
         <Box sx={{ width: '100%' }}>
           <Link href={ROUTES.migrationTool}>
             <Button
@@ -107,7 +107,7 @@ export const DashboardTopPanel = () => {
               }}
             >
               <Typography variant="buttonM">
-                <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
+                <Trans>Migrate Your Aave V2 Position to Spark Protocol</Trans>
               </Typography>
             </Button>
           </Link>

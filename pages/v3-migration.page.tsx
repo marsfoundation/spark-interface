@@ -18,14 +18,18 @@ import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
+import { useProtocolDataContext } from '../src/hooks/useProtocolDataContext';
 import {
   selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
   selectV3UserSummary,
   selectV3UserSummaryAfterMigration,
 } from 'src/store/v3MigrationSelectors';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export default function V3Migration() {
+  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  if (currentMarket !== CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_mainnet);
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
