@@ -325,7 +325,7 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
       };
       if (v3SupplyAsset.reserve.isFrozen) {
         migrationDisabled = MigrationDisabled.ReserveFrozen;
-      } else if (!availableSupplies.isGreaterThan(userReserve.underlyingBalance)) {
+      } else if (!availableSupplies.isGreaterThan(userReserve.underlyingBalance) && !valueToBigNumber(v3SupplyAsset.reserve.supplyCap).isEqualTo(0)) {
         migrationDisabled = MigrationDisabled.NotEnoughtSupplies;
       }
     } else {
@@ -364,7 +364,11 @@ export const selectUserReservesForMigration = (store: RootStore, timestamp: numb
     if (userEmodeCategoryId !== 0 && selectedReserve?.eModeCategoryId !== userEmodeCategoryId) {
       disabledForMigration = MigrationDisabled.EModeBorrowDisabled;
     }
-    const v3BorrowAsset = v3ReservesMap[userReserve.underlyingAsset];
+    let v3BorrowAsset = v3ReservesMap[userReserve.underlyingAsset];
+    if (userReserve.underlyingAsset.toLowerCase() === '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase()) {
+      // USDC borrows will be converted to DAI borrows
+      v3BorrowAsset = v3ReservesMap['0x6B175474E89094C44Da98b954EedeAC495271d0F'.toLowerCase()];
+    }
     if (v3BorrowAsset) {
       v3Rates = {
         stableBorrowAPY: v3BorrowAsset.stableBorrowAPY,
@@ -670,9 +674,22 @@ export const selectMigrationBorrowPermitPayloads = (
     .forEach((item) => {
       stableUserReserves[item.underlyingAsset] = item;
     });
+      
+  const daiBorrow = borrowUserReserves
+    .find((r) => r.underlyingAsset.toLowerCase() === '0x6B175474E89094C44Da98b954EedeAC495271d0F'.toLowerCase());
+  const usdcBorrow = borrowUserReserves
+    .find((r) => r.underlyingAsset.toLowerCase() === '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase());
+  
+  if (daiBorrow && usdcBorrow) {
+    // Both exist merge usdc into dai
+    daiBorrow.increasedVariableBorrows = valueToBigNumber(daiBorrow.increasedVariableBorrows).plus(usdcBorrow.increasedVariableBorrows).toString();
+  } else if (usdcBorrow) {
+    // Change usdc to dai approval if dai doesn't exist
+    usdcBorrow.underlyingAsset = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+  }
 
   return borrowUserReserves
-    .filter((userReserve) => userReserve.interestRate == InterestRate.Variable)
+    .filter((userReserve) => userReserve.interestRate == InterestRate.Variable && userReserve.underlyingAsset.toLowerCase() !== '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase())
     .map(({ increasedVariableBorrows, underlyingAsset, debtKey, reserve }) => {
       const stableUserReserve = stableUserReserves[underlyingAsset];
       let combinedIncreasedAmount = valueToBigNumber(increasedVariableBorrows);

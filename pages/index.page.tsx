@@ -16,7 +16,6 @@ import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  if (currentMarket === CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_spark_v3);
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
@@ -29,6 +28,10 @@ export default function Home() {
     if (!mode) setMode('supply');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);
+
+  useEffect(() => {
+    if (currentMarket === CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_spark_v3);
+  }, [setCurrentMarket, currentMarket]);
 
   return (
     <>

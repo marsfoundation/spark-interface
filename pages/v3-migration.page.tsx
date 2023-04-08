@@ -29,7 +29,6 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export default function V3Migration() {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  if (currentMarket !== CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_mainnet);
   const { loading } = useAppDataContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
@@ -90,6 +89,10 @@ export default function V3Migration() {
       resetMigrationSelectedAssets();
     }
   }, [resetMigrationSelectedAssets]);
+
+  useEffect(() => {
+    if (currentMarket !== CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_mainnet);
+  }, [setCurrentMarket, currentMarket]);
 
   usePoolDataV3Subscription();
 

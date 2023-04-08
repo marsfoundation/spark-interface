@@ -12,12 +12,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { HFChange } from './HFChange';
 
@@ -48,8 +46,6 @@ export const MigrationBottomPanel = ({
 }: MigrationBottomPanelProps) => {
   const { breakpoints } = useTheme();
   const downToSM = useMediaQuery(breakpoints.down('sm'));
-  const { currentMarket } = useProtocolDataContext();
-  const { market } = getMarketInfoById(currentMarket);
 
   const { openV3Migration } = useModalContext();
   const [isChecked, setIsChecked] = useState(false);
@@ -72,7 +68,7 @@ export const MigrationBottomPanel = ({
       case ErrorType.V2_HF_TOO_LOW:
         return (
           <Trans>
-            This action will reduce V2 health factor below liquidation threshold. retain collateral
+            This action will reduce Aave V2 health factor below liquidation threshold. retain collateral
             or migrate borrow position to continue.
           </Trans>
         );
@@ -80,7 +76,7 @@ export const MigrationBottomPanel = ({
         return (
           <>
             <Trans>
-              This action will reduce health factor of V3 below liquidation threshold. Increase
+              This action will reduce health factor of Spark Protocol below liquidation threshold. Increase
               migrated collateral or reduce migrated borrow to continue.
             </Trans>
           </>
@@ -113,14 +109,14 @@ export const MigrationBottomPanel = ({
         />
 
         <HFChange
-          caption={<Trans>Health Factor ({market.marketTitle} v2)</Trans>}
+          caption={<Trans>Health Factor (Aave V2)</Trans>}
           hfCurrent={hfV2Current}
           hfAfter={hfV2AfterChange}
           loading={loading}
         />
 
         <HFChange
-          caption={<Trans>Health Factor ({market.marketTitle} v3)</Trans>}
+          caption={<Trans>Health Factor (Spark Protocol)</Trans>}
           hfCurrent={hfV3Current}
           hfAfter={hfV3AfterChange}
           loading={loading}
@@ -196,13 +192,13 @@ export const MigrationBottomPanel = ({
         <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
           <Trans>
             Please always be aware of your <b>Health Factor (HF)</b> when partially migrating a
-            position and that your rates will be updated to V3 rates.
+            position and that your rates will be updated to Spark Protocol rates.
           </Trans>
         </Typography>
         <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
           <Trans>
             Migrating multiple collaterals and borrowed assets at the same time can be an expensive
-            operation and might fail in certain situations.
+            operation and might fail in certain situations. 
             <b>
               Therefore it’s not recommended to migrate positions with more than 5 assets (deposited
               + borrowed) at the same time.
