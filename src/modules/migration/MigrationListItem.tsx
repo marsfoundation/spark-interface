@@ -244,13 +244,15 @@ export const MigrationListItem = ({
           {!!borrowApyType && apyChange.isLessThan(1) && (
             <Box>
               <Typography variant="main14" fontSize={12} fontWeight={400}>
-                (<FormattedNumber
+                (
+                <FormattedNumber
                   value={apyChange.toString()}
                   percent
                   color={'#4CAF50'}
                   symbolsColor={'#4CAF50'}
                   sx={{ fontSize: '14px', fontWeight: '600' }}
-                /> in savings)
+                />{' '}
+                in savings)
               </Typography>
             </Box>
           )}
