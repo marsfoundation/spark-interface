@@ -124,7 +124,7 @@ export const DashboardTopPanel = () => {
                 <Link href={ROUTES.migrationTool}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
                     <Typography variant="buttonS" data-cy={`migration-button`}>
-                      <Trans>Migrate to v3</Trans>
+                      <Trans>Migrate to Spark Protocol</Trans>
                     </Typography>
                   </Button>
                 </Link>
