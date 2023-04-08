@@ -698,6 +698,8 @@ export const selectMigrationBorrowPermitPayloads = (
   } else if (usdcBorrow) {
     // Change usdc to dai approval if dai doesn't exist
     usdcBorrow.underlyingAsset = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
+    usdcBorrow.debtKey = '0xf705d2B7e92B3F38e6ae7afaDAA2fEE110fE5914';
+    usdcBorrow.reserve.decimals = 18;
   }
 
   return borrowUserReserves
