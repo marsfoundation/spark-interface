@@ -6,7 +6,6 @@ import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
@@ -34,8 +33,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { market } = getMarketInfoById(currentMarket);
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
@@ -43,7 +41,7 @@ export const DashboardTopPanel = () => {
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
   const showMigrateButton =
-    isMigrateToV3Available && currentAccount !== '' /* && Number(user.totalLiquidityUSD) > 0 */;
+    isMigrateToV3Available && currentAccount !== ''; /* && Number(user.totalLiquidityUSD) > 0 */
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 

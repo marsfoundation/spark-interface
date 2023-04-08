@@ -18,7 +18,6 @@ import { MigrationLists } from 'src/modules/migration/MigrationLists';
 import { MigrationTopPanel } from 'src/modules/migration/MigrationTopPanel';
 import { selectCurrentChainIdV3PoolReserve } from 'src/store/poolSelectors';
 import { usePoolDataV3Subscription, useRootStore } from 'src/store/root';
-import { useProtocolDataContext } from '../src/hooks/useProtocolDataContext';
 import {
   selectUserReservesForMigration,
   selectV2UserSummaryAfterMigration,
@@ -26,6 +25,8 @@ import {
   selectV3UserSummaryAfterMigration,
 } from 'src/store/v3MigrationSelectors';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+
+import { useProtocolDataContext } from '../src/hooks/useProtocolDataContext';
 
 export default function V3Migration() {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();

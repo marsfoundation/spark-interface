@@ -68,16 +68,16 @@ export const MigrationBottomPanel = ({
       case ErrorType.V2_HF_TOO_LOW:
         return (
           <Trans>
-            This action will reduce Aave V2 health factor below liquidation threshold. retain collateral
-            or migrate borrow position to continue.
+            This action will reduce Aave V2 health factor below liquidation threshold. retain
+            collateral or migrate borrow position to continue.
           </Trans>
         );
       case ErrorType.V3_HF_TOO_LOW:
         return (
           <>
             <Trans>
-              This action will reduce health factor of Spark Protocol below liquidation threshold. Increase
-              migrated collateral or reduce migrated borrow to continue.
+              This action will reduce health factor of Spark Protocol below liquidation threshold.
+              Increase migrated collateral or reduce migrated borrow to continue.
             </Trans>
           </>
         );
@@ -198,7 +198,7 @@ export const MigrationBottomPanel = ({
         <Typography sx={{ mb: { xs: 3, lg: 4 } }}>
           <Trans>
             Migrating multiple collaterals and borrowed assets at the same time can be an expensive
-            operation and might fail in certain situations. 
+            operation and might fail in certain situations.
             <b>
               Therefore it’s not recommended to migrate positions with more than 5 assets (deposited
               + borrowed) at the same time.
