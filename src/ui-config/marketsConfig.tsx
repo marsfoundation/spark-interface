@@ -104,7 +104,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_mainnet]: {
-    marketTitle: 'Ethereum',
+    marketTitle: 'Aave V2',
     chainId: ChainId.mainnet,
     enabledFeatures: {},
     addresses: {

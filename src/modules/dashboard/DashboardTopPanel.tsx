@@ -11,7 +11,8 @@ import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
+import { selectCurrentChainIdV2PoolReserve } from 'src/store/poolSelectors';
+import { usePoolDataV2Subscription, useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
@@ -33,6 +34,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
+  usePoolDataV2Subscription();
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
@@ -40,8 +42,11 @@ export const DashboardTopPanel = () => {
   const { openClaimRewards } = useModalContext();
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-  const showMigrateButton =
-    isMigrateToV3Available && currentAccount !== ''; /* && Number(user.totalLiquidityUSD) > 0 */
+  const v2Reserve = useRootStore((state) => selectCurrentChainIdV2PoolReserve(state));
+  const hasV2Positions = v2Reserve?.userReserves?.some(
+    (reserve) => reserve.scaledATokenBalance !== '0' || reserve.scaledVariableDebt !== '0'
+  );
+  const showMigrateButton = isMigrateToV3Available && currentAccount !== '' && hasV2Positions;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 

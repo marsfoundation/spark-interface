@@ -75,6 +75,10 @@ export const usePoolDataV3Subscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshPoolV3Data();
 }, 60000);
 
+export const usePoolDataV2Subscription = createSingletonSubscriber(() => {
+  return useRootStore.getState().refreshPoolV2Data();
+}, 60000);
+
 export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshIncentiveData();
 }, 60000);
