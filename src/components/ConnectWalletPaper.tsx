@@ -34,9 +34,9 @@ export const ConnectWalletPaper = ({
       }}
     >
       {theme.palette.mode === 'light' ? (
-        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '600px' }} />
+        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '500px' }} />
       ) : (
-        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '600px' }} />
+        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '500px' }} />
       )}
       <>
         {loading ? (
@@ -49,7 +49,7 @@ export const ConnectWalletPaper = ({
             <Typography sx={{ mb: 6 }} color="text.secondary">
               {description || (
                 <Trans>
-                  Please connect your wallet to see your supplies, borrowings, and open positions.
+                  !!! By connecting your wallet you confirm that you are not a US citizen !!!
                 </Trans>
               )}
             </Typography>
