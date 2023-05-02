@@ -34,22 +34,24 @@ export const ConnectWalletPaper = ({
       }}
     >
       {theme.palette.mode === 'light' ? (
-        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '500px' }} />
+        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '400px' }} />
       ) : (
-        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '500px' }} />
+        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '400px' }} />
       )}
       <>
         {loading ? (
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 2 }}>
-              <Trans>Please, connect your wallet</Trans>
-            </Typography>
-            <Typography sx={{ mb: 6 }} color="text.secondary">
+            <Typography sx={{ mb: 6, textAlign: 'left', maxWidth: '700px', marginBottom: '50px', background: '#3F3E37', color: '#ffffff', padding: '15px 20px', borderRadius: '6px' }}>
               {description || (
                 <Trans>
-                  !!! By connecting your wallet you confirm that you are not a US citizen !!!
+                  By using this Site, I have read and agree to the Terms of Use and Privacy Policy.<br/><br/>
+                  - I am not the person or entities who reside in, are citizens of, are incorporated in, or have a registered office in the United States of America or any Prohibited Localities, as defined in the Terms of Use.<br/>
+                  - I will not in the future access this site while located within the United States or any Prohibited Localities, as defined in the Terms of Use.<br/>
+                  - I am not using, and will not in the future use, a VPN to mask my physical location from a restricted territory.<br/>
+                  - I am lawfully permitted to access this site and use it's services under the laws of the jurisdiction in which I reside and am located.<br/>
+                  - I understand the risks associated with entering into using the Spark Protocol.
                 </Trans>
               )}
             </Typography>
