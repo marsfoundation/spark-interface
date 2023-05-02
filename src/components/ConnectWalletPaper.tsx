@@ -51,7 +51,7 @@ export const ConnectWalletPaper = ({
                   - I will not in the future access this site while located within the United States or any Prohibited Localities, as defined in the Terms of Use.<br/>
                   - I am not using, and will not in the future use, a VPN to mask my physical location from a restricted territory.<br/>
                   - I am lawfully permitted to access this site and use it's services under the laws of the jurisdiction in which I reside and am located.<br/>
-                  - I understand the risks associated with entering into using the Spark Protocol.
+                  - I understand the risks associated with entering into using the Spark.
                 </Trans>
               )}
             </Typography>
