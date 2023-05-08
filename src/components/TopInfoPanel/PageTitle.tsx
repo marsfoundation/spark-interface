@@ -61,7 +61,7 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: 
         {isMigrateToV3Available && withMigrateButton && (
           <Link href={ROUTES.migrationTool} sx={{ mt: { xs: 2, xsm: 0 } }}>
             <Button variant="gradient" size="small">
-              <Trans>Migrate to V3</Trans>
+              <Trans>Migrate to Spark Protocol</Trans>
             </Button>
           </Link>
         )}

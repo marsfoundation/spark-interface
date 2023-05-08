@@ -69,7 +69,7 @@ export const MigrationLists = ({
         onSelectAllClick={onSelectAllSupplies}
         allSelected={activeSupplyUnselected.length === 0}
         isAvailable={isSupplyPositionsAvailable}
-        titleComponent={<Trans>Select v2 supplies to migrate</Trans>}
+        titleComponent={<Trans>Select Aave V2 supplies to migrate</Trans>}
         emodeCategoryId={emodeCategoryId}
         withCollateral
         disabled={allSuppliesDisabled}
@@ -87,7 +87,7 @@ export const MigrationLists = ({
         isBottomOnMobile
         withBorrow
         disabled={allBorrowsDisabled}
-        titleComponent={<Trans>Select v2 borrows to migrate</Trans>}
+        titleComponent={<Trans>Select Aave V2 borrows to migrate</Trans>}
         numSelected={activeBorrowSelections.length || 0}
         numAvailable={borrowReserves.length || 0}
       >

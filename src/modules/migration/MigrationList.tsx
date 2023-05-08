@@ -118,14 +118,14 @@ export const MigrationList = ({
             </ListColumn>
 
             {withCollateral && (
-              <ListColumn align="right">
+              <ListColumn>
                 <ListHeaderTitle>
                   <Trans>Collateral change</Trans>
                 </ListHeaderTitle>
               </ListColumn>
             )}
 
-            <ListColumn align="right">
+            <ListColumn>
               <ListHeaderTitle>
                 <Trans>APY change</Trans>
               </ListHeaderTitle>

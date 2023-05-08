@@ -20,6 +20,7 @@ import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { StETHMigrationWarning } from './StETHMigrationWarning';
+import { USDCMigrationWarning } from './USDCMigrationWarning';
 
 interface MigrationListMobileItemProps {
   checked: boolean;
@@ -303,6 +304,12 @@ export const MigrationListMobileItem = ({
             v2Amount={amount}
             v3Price={v3Rates?.priceInUSD}
           />
+        </Box>
+      )}
+
+      {userReserve.reserve.symbol === 'USDC' && (
+        <Box sx={{ pl: '16px', width: '100%' }}>
+          <USDCMigrationWarning />
         </Box>
       )}
     </ListItem>

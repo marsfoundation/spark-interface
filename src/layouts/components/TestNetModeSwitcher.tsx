@@ -19,8 +19,6 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
     window.location.href = '/';
   };
 
-  if (localStorage.getItem(testnetsEnabledId) === null) toggleTestnetsEnabled(); // ADDING THIS FOR TESTNET
-
   return (
     <Box
       component={component}

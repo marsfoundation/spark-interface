@@ -6,13 +6,13 @@ import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore } from 'src/store/root';
+import { selectCurrentChainIdV2PoolReserve } from 'src/store/poolSelectors';
+import { usePoolDataV2Subscription, useRootStore } from 'src/store/root';
 import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
 
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
@@ -34,16 +34,19 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { market } = getMarketInfoById(currentMarket);
+  usePoolDataV2Subscription();
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
 
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-  const showMigrateButton =
-    isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0;
+  const v2Reserve = useRootStore((state) => selectCurrentChainIdV2PoolReserve(state));
+  const hasV2Positions = v2Reserve?.userReserves?.some(
+    (reserve) => reserve.scaledATokenBalance !== '0' || reserve.scaledVariableDebt !== '0'
+  );
+  const showMigrateButton = isMigrateToV3Available && currentAccount !== '' && hasV2Positions;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -96,7 +99,7 @@ export const DashboardTopPanel = () => {
 
   return (
     <>
-      {showMigrateButton && downToSM && (
+      {showMigrateButton && (
         <Box sx={{ width: '100%' }}>
           <Link href={ROUTES.migrationTool}>
             <Button
@@ -107,7 +110,7 @@ export const DashboardTopPanel = () => {
               }}
             >
               <Typography variant="buttonM">
-                <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
+                <Trans>Migrate Your Aave V2 Position to Spark Protocol</Trans>
               </Typography>
             </Button>
           </Link>
@@ -126,7 +129,7 @@ export const DashboardTopPanel = () => {
                 <Link href={ROUTES.migrationTool}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
                     <Typography variant="buttonS" data-cy={`migration-button`}>
-                      <Trans>Migrate to v3</Trans>
+                      <Trans>Migrate to Spark Protocol</Trans>
                     </Typography>
                   </Button>
                 </Link>

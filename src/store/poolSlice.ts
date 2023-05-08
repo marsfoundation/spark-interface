@@ -51,7 +51,11 @@ import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
-import { selectCurrentChainIdV3MarketData, selectFormattedReserves } from './poolSelectors';
+import {
+  selectCurrentChainIdV2MarketData,
+  selectCurrentChainIdV3MarketData,
+  selectFormattedReserves,
+} from './poolSelectors';
 import { RootStore } from './root';
 
 // TODO: what is the better name for this type?
@@ -72,6 +76,7 @@ export interface PoolSlice {
   data: Map<number, Map<string, PoolReserve>>;
   refreshPoolData: (marketData?: MarketDataType) => Promise<void>;
   refreshPoolV3Data: () => Promise<void>;
+  refreshPoolV2Data: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
   isFaucetPermissioned: boolean;
@@ -292,6 +297,10 @@ export const createPoolSlice: StateCreator<
     refreshPoolV3Data: async () => {
       const v3MarketData = selectCurrentChainIdV3MarketData(get());
       get().refreshPoolData(v3MarketData);
+    },
+    refreshPoolV2Data: async () => {
+      const v2MarketData = selectCurrentChainIdV2MarketData(get());
+      get().refreshPoolData(v2MarketData);
     },
     isFaucetPermissioned: true,
     setIsFaucetPermissioned: (value: boolean) => set({ isFaucetPermissioned: value }),

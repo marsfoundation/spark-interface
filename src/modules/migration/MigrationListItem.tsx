@@ -1,4 +1,5 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -20,6 +21,7 @@ import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { MigrationListMobileItem } from './MigrationListMobileItem';
 import { StETHMigrationWarning } from './StETHMigrationWarning';
+import { USDCMigrationWarning } from './USDCMigrationWarning';
 
 interface MigrationListItemProps {
   checked: boolean;
@@ -79,6 +81,8 @@ export const MigrationListItem = ({
   const v3Incentives = borrowApyType
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
+
+  const apyChange = valueToBigNumber(1).minus(valueToBigNumber(v3APY).div(valueToBigNumber(v2APY)));
 
   const showCollateralToggle = userControlledCollateral && isIsolated && canBeEnforced;
 
@@ -166,7 +170,7 @@ export const MigrationListItem = ({
         </Box>
 
         {!!enableAsCollateral && (
-          <ListColumn align="right">
+          <ListColumn>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {userReserve.usageAsCollateralEnabledOnUser &&
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
@@ -212,7 +216,7 @@ export const MigrationListItem = ({
           </ListColumn>
         )}
 
-        <ListColumn align="right">
+        <ListColumn>
           <Box sx={{ display: 'flex' }}>
             <IncentivesCard
               value={v2APY}
@@ -237,10 +241,25 @@ export const MigrationListItem = ({
               color={baseColor}
             />
           </Box>
+          {!!borrowApyType && apyChange.isLessThan(1) && (
+            <Box>
+              <Typography variant="main14" fontSize={12} fontWeight={400}>
+                (
+                <FormattedNumber
+                  value={apyChange.toString()}
+                  percent
+                  color={'#4CAF50'}
+                  symbolsColor={'#4CAF50'}
+                  sx={{ fontSize: '14px', fontWeight: '600' }}
+                />{' '}
+                in savings)
+              </Typography>
+            </Box>
+          )}
         </ListColumn>
 
         {!!borrowApyType && (
-          <ListColumn align="right">
+          <ListColumn>
             <Box sx={{ display: 'flex' }}>
               <Button
                 variant="outlined"
@@ -297,6 +316,12 @@ export const MigrationListItem = ({
             v2Amount={amount}
             v3Price={v3Rates?.priceInUSD}
           />
+        </Box>
+      )}
+
+      {userReserve.reserve.symbol === 'USDC' && (
+        <Box sx={{ pl: '16px', width: '100%' }}>
+          <USDCMigrationWarning />
         </Box>
       )}
     </ListItem>
