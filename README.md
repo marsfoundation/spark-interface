@@ -28,8 +28,7 @@ There's a github action commenting the appropriate IPFS hash embedded in the Clo
 
 For ease of use:
 
-- the DNS of [https://staging.sparkprotocol.io](https://staging.sparkprotocol.io) will always point to the latest main IPFS hash with all networks enabled
-- the DNS of [https://app.sparkprotocol.io](https://app.sparkprotocol.io) will always point to the latest main IPFS hash with disabled test networks
+- the DNS of [https://app.sparkprotocol.io](https://app.sparkprotocol.io) will always point to the latest `spark` IPFS hash with disabled test networks
 
 ### Troubleshooting
 
