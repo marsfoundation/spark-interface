@@ -70,7 +70,7 @@ export const ConnectWalletPaper = ({
                   - I am not using, and will not in the future use, a VPN to mask my physical
                   location from a restricted territory.
                   <br />
-                  - I am lawfully permitted to access this site and use it's services under the laws
+                  - I am lawfully permitted to access this site and use it&#39;s services under the laws
                   of the jurisdiction in which I reside and am located.
                   <br />- I understand the risks associated with entering into using the Spark.
                 </Trans>
