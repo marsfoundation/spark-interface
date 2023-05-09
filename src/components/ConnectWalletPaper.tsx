@@ -49,8 +49,6 @@ export const ConnectWalletPaper = ({
                 textAlign: 'left',
                 maxWidth: '700px',
                 marginBottom: '50px',
-                background: '#3F3E37',
-                color: '#ffffff',
                 padding: '15px 20px',
                 borderRadius: '6px',
               }}
