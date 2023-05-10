@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
@@ -96,31 +95,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           />
           {!reserve.borrowingEnabled &&
             Number(reserve.totalVariableDebt) > 0 &&
-            !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-        </Box>
-      </Row>
-      <Row
-        caption={
-          <StableAPYTooltip
-            text={<Trans>Borrow APY, stable</Trans>}
-            key="APY_list_mob_stable_type"
-            variant="description"
-          />
-        }
-        captionVariant="description"
-        mb={4}
-        align="flex-start"
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <IncentivesCard
-            align="flex-end"
-            value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
-            incentives={reserve.sIncentivesData || []}
-            symbol={reserve.symbol}
-            variant="secondary14"
-          />
-          {!reserve.borrowingEnabled &&
-            Number(reserve.totalStableDebt) > 0 &&
             !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
         </Box>
       </Row>

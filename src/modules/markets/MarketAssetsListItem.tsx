@@ -87,19 +87,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
-      <ListColumn>
-        <IncentivesCard
-          value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
-          incentives={reserve.sIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
-        />
-        {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && !reserve.isFrozen && (
-          <ReserveSubheader value={'Disabled'} />
-        )}
-      </ListColumn>
-
       <ListColumn maxWidth={95} minWidth={95} align="right">
         <Button
           variant="outlined"

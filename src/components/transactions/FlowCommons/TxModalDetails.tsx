@@ -381,7 +381,7 @@ export const DetailsPSMSwap = ({
         {switchToHandle && (
           <Box sx={{ paddingLeft: '4px' }}>
             (
-            <Link href="#" onClick={switchToHandle}>
+            <Link sx={{ fontWeight: 'bold' }} href="#" onClick={switchToHandle}>
               Switch
             </Link>
             )
