@@ -14,6 +14,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ListAPRColumn } from '../dashboard/lists/ListAPRColumn';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
@@ -74,18 +75,25 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         )}
       </ListColumn>
 
-      <ListColumn>
-        <IncentivesCard
-          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
-          incentives={reserve.vIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
-        />
+      <ListAPRColumn
+        value={parseFloat(
+          Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'
+        )}
+        incentives={reserve.vIncentivesData || []}
+        symbol={reserve.symbol}
+        tooltip={
+          reserve.symbol === 'DAI' ? (
+            <Trans>
+              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
+              unless Maker needs to reclaim capital.
+            </Trans>
+          ) : null
+        }
+      >
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-      </ListColumn>
+      </ListAPRColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">
         <Button

@@ -10,9 +10,16 @@ interface ListAPRColumnProps {
   incentives?: ReserveIncentiveResponse[];
   symbol: string;
   tooltip?: ReactNode;
+  children?: ReactNode;
 }
 
-export const ListAPRColumn = ({ value, incentives, symbol, tooltip }: ListAPRColumnProps) => {
+export const ListAPRColumn = ({
+  value,
+  incentives,
+  symbol,
+  tooltip,
+  children,
+}: ListAPRColumnProps) => {
   return (
     <ListColumn>
       {tooltip != null ? (
@@ -52,6 +59,7 @@ export const ListAPRColumn = ({ value, incentives, symbol, tooltip }: ListAPRCol
       ) : (
         <IncentivesCard value={value} incentives={incentives} symbol={symbol} data-cy={`apyType`} />
       )}
+      {children}
     </ListColumn>
   );
 };
