@@ -12,7 +12,7 @@ export const PSMSwapModal = () => {
   }>;
   return (
     <BasicModal open={type === ModalType.PSMSwap} setOpen={close}>
-      <ModalWrapper title={<Trans>Swap</Trans>} underlyingAsset={args.underlyingAsset}>
+      <ModalWrapper title={<Trans>Swap to</Trans>} underlyingAsset={args.underlyingAsset}>
         {(params) => <PSMSwapModalContent {...params} />}
       </ModalWrapper>
     </BasicModal>
