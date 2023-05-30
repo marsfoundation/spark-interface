@@ -67,8 +67,8 @@ export const marketsData: {
     v3: true,
     chainId: ChainId.mainnet,
     enabledFeatures: {
-      liquiditySwap: true,
-      collateralRepay: true,
+      liquiditySwap: false,
+      collateralRepay: false,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x02C3eA4e34C0cBd694D2adFa2c690EECbC1793eE'.toLowerCase(),
