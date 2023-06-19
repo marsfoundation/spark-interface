@@ -6,7 +6,7 @@ export const ReadOnlyModeTooltip = ({ ...rest }: TextWithTooltipProps) => {
   return (
     <TextWithTooltip {...rest}>
       <Trans>
-        Read-only mode allows to see address positions in Aave, but you won&apos;t be able to
+        Read-only mode allows to see address positions in Spark, but you won&apos;t be able to
         perform transactions.
       </Trans>
     </TextWithTooltip>

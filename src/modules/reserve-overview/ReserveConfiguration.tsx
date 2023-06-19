@@ -257,14 +257,6 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     <PanelItem title={<Trans>Dai Savings Rate (APY)</Trans>} className="borderless">
                       <FormattedNumber value={dsr.toNumber()} percent variant="main16" compact />
                     </PanelItem>
-                    <PanelItem title={<Trans>Borrow Rate (APY)</Trans>} className="borderless">
-                      <FormattedNumber
-                        value={dsr.toNumber() / 0.9}
-                        percent
-                        variant="main16"
-                        compact
-                      />
-                    </PanelItem>
                   </>
                 )}
                 <Button
