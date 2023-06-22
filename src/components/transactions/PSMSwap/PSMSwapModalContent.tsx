@@ -96,7 +96,7 @@ export const PSMSwapModalContent = ({ poolReserve, isWrongNetwork }: ModalWrappe
       <TxSuccessView
         action={<Trans>Swapped</Trans>}
         amount={amountRef.current}
-        symbol={poolReserve.symbol}
+        symbol={poolReserveSwapFrom.symbol}
       />
     );
 
