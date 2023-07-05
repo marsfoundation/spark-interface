@@ -8,18 +8,21 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { SDAITopPanel } from 'src/modules/sdai/SDAITopPanel';
 
 export default function SDAI() {
-  const { loading } = useAppDataContext();
+  const { loading, reserves } = useAppDataContext();
+
+  const daiMarket = reserves.find((reserve) => reserve.symbol === 'DAI');
+  const sDaiMarket = reserves.find((reserve) => reserve.symbol === 'sDAI');
 
   return (
     <>
       <>
         <SDAITopPanel />
         <ContentContainer>
-          {!loading && (
+          {!loading && daiMarket && (
             <ListWrapper titleComponent={'sDAI'}>
               <ModalWrapper
                 title={<Trans>Swap to</Trans>}
-                underlyingAsset={'0x11fe4b6ae13d2a6055c8d9cf65c55bac32b5d844'}
+                underlyingAsset={daiMarket.underlyingAsset.toString()}
               >
                 {(params) => <PSMSwapModalContent {...params} />}
               </ModalWrapper>
