@@ -95,6 +95,9 @@ export const selectCurrentReserves = (state: RootStore) => {
 export const selectDSR = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.dsr;
 };
+export const selectSDaiTotalAssets = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.sDaiTotalAssets;
+};
 
 export const selectChi = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.chi;

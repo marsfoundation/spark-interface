@@ -21,6 +21,7 @@ import {
   selectDSR,
   selectEmodes,
   selectFormattedReserves,
+  selectSDaiTotalAssets,
   selectTin,
   selectTout,
   selectUserSummaryAndIncentives,
@@ -70,6 +71,7 @@ export interface AppDataContextType {
   chi?: BigNumber;
   tin?: BigNumber;
   tout?: BigNumber;
+  sDaiTotalAssets?: BigNumber;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -93,6 +95,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     tout,
     formattedPoolReserves,
     user,
+    sDaiTotalAssets,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -105,6 +108,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     selectTout(state),
     selectFormattedReserves(state, currentTimestamp),
     selectUserSummaryAndIncentives(state, currentTimestamp),
+    selectSDaiTotalAssets(state),
   ]);
 
   const proportions = user.userReservesData.reduce(
@@ -199,6 +203,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         chi,
         tin,
         tout,
+        sDaiTotalAssets,
       }}
     >
       {children}
