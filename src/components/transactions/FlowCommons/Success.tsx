@@ -3,6 +3,7 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -42,6 +43,8 @@ export const TxSuccessView = ({
   const { currentNetworkConfig } = useProtocolDataContext();
   const [base64, setBase64] = useState('');
   const theme = useTheme();
+  const router = useRouter();
+  const isOnSDaiPage = router.pathname === '/sdai';
 
   return (
     <>
@@ -190,7 +193,7 @@ export const TxSuccessView = ({
           sx={{ minHeight: '44px' }}
           data-cy="closeButton"
         >
-          <Trans>Ok, Close</Trans>
+          <Trans>Ok, {isOnSDaiPage ? 'Done' : 'Close'}</Trans>
         </Button>
       </Box>
     </>
