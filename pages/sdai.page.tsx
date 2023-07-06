@@ -19,7 +19,7 @@ export default function SDAI() {
 
   const daiMarket = reserves.find((reserve) => reserve.symbol === 'DAI')!;
   const sDaiMarket = reserves.find((reserve) => reserve.symbol === 'sDAI')!;
-  const currentMarket = mode === 'dai-to-sdai' ? daiMarket : sDaiMarket;
+  const currentMarket = mode === 'dai-to-sdai' ? sDaiMarket : daiMarket;
 
   const loading = globalLoading || !dsr || !reserves;
 
