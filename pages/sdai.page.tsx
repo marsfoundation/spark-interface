@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Warning } from 'src/components/primitives/Warning';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
@@ -12,6 +12,7 @@ import { BigNumber } from 'bignumber.js';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import { useState } from 'react';
+import { SDAIEtherscanLink } from 'src/modules/sdai/SDAIEtherscanLink';
 
 export default function SDAI() {
   const { loading: globalLoading, reserves, dsr } = useAppDataContext();
@@ -38,9 +39,17 @@ export default function SDAI() {
             >
               <ListWrapper
                 titleComponent={
-                  <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-                    <Trans>Savings DAI</Trans>
-                  </Typography>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: '100%' }}
+                  >
+                    <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+                      <Trans>Savings DAI</Trans>
+                    </Typography>
+                    <SDAIEtherscanLink />
+                  </Stack>
                 }
               >
                 <Box sx={{ px: { xs: 4, xsm: 6 } }}>
