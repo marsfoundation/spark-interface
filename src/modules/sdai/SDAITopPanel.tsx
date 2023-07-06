@@ -5,14 +5,20 @@ import * as React from 'react';
 
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
+import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { DSRTooltip } from './DSRTooltip';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 export const SDAITopPanel = () => {
-  const { loading, dsr, sDaiTotalAssets } = useAppDataContext();
+  const { loading: appDataLoading, dsr, sDaiTotalAssets, reserves } = useAppDataContext();
+  const { loading: walletLoading, walletBalances } = useWalletBalances();
+  const loading = appDataLoading || walletLoading;
+  const sDaiReserve = reserves.find((reserve) => reserve.symbol === 'sDAI');
+  const sDaiBalance = walletBalances[sDaiReserve?.underlyingAsset!]?.amount;
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -35,17 +41,18 @@ export const SDAITopPanel = () => {
           />
         )}
       </TopInfoPanelItem>
-      {dsr && (
-        <TopInfoPanelItem
-          icon={<NetAPYIcon />}
-          title={
-            <div style={{ display: 'flex' }}>
-              <Trans>DSR Rate</Trans>
-              <DSRTooltip />
-            </div>
-          }
-          loading={loading}
-        >
+
+      <TopInfoPanelItem
+        icon={<NetAPYIcon />}
+        title={
+          <div style={{ display: 'flex' }}>
+            <Trans>DSR Rate</Trans>
+            <DSRTooltip />
+          </div>
+        }
+        loading={loading}
+      >
+        {dsr && (
           <FormattedNumber
             value={dsr}
             variant={valueTypographyVariant}
@@ -54,8 +61,26 @@ export const SDAITopPanel = () => {
             symbolsColor="#A5A8B6"
             symbolsVariant={symbolsVariant}
           />
-        </TopInfoPanelItem>
-      )}
+        )}
+      </TopInfoPanelItem>
+
+      <TopInfoPanelItem
+        icon={<WalletIcon />}
+        title={<Trans>Your sDAI balance</Trans>}
+        loading={loading}
+      >
+        {sDaiBalance && (
+          <FormattedNumber
+            value={sDaiBalance}
+            symbol="sDAI"
+            variant={valueTypographyVariant}
+            visibleDecimals={2}
+            compact
+            symbolsColor="#A5A8B6"
+            symbolsVariant={symbolsVariant}
+          />
+        )}
+      </TopInfoPanelItem>
     </TopInfoPanel>
   );
 };
