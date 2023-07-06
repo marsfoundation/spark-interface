@@ -9,12 +9,17 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { MainLayout } from 'src/layouts/MainLayout';
 import { SDAITopPanel } from 'src/modules/sdai/SDAITopPanel';
 import { BigNumber } from 'bignumber.js';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import { useState } from 'react';
 
 export default function SDAI() {
   const { loading: globalLoading, reserves, dsr } = useAppDataContext();
+  const [mode, setMode] = useState<'dai-to-sdai' | 'sdai-to-dai'>('dai-to-sdai');
 
   const daiMarket = reserves.find((reserve) => reserve.symbol === 'DAI')!;
   const sDaiMarket = reserves.find((reserve) => reserve.symbol === 'sDAI')!;
+  const currentMarket = mode === 'dai-to-sdai' ? daiMarket : sDaiMarket;
 
   const loading = globalLoading || !dsr || !reserves;
 
@@ -57,9 +62,32 @@ export default function SDAI() {
                     borderRadius: '8px',
                   }}
                 >
+                  <StyledToggleButtonGroup
+                    color="primary"
+                    value={mode}
+                    exclusive
+                    onChange={(_, value) => setMode(value)}
+                    sx={{
+                      width: '100%',
+                      height: '44px',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <StyledToggleButton value="dai-to-sdai" disabled={mode === 'dai-to-sdai'}>
+                      <Typography variant="subheader1">
+                        <Trans>DAI → sDAI</Trans>
+                      </Typography>
+                    </StyledToggleButton>
+                    <StyledToggleButton value="sdai-to-dai" disabled={mode === 'sdai-to-dai'}>
+                      <Typography variant="subheader1">
+                        <Trans>sDAI → DAI</Trans>
+                      </Typography>
+                    </StyledToggleButton>
+                  </StyledToggleButtonGroup>
+
                   <ModalWrapper
                     title={<Trans>Swap to</Trans>}
-                    underlyingAsset={daiMarket.underlyingAsset.toString()}
+                    underlyingAsset={currentMarket.underlyingAsset.toString()}
                   >
                     {(params) => <PSMSwapModalContent {...params} />}
                   </ModalWrapper>
