@@ -88,8 +88,9 @@ export default function SDAI() {
                   <ModalWrapper
                     title={<Trans>Swap to</Trans>}
                     underlyingAsset={currentMarket.underlyingAsset.toString()}
+                    key={mode} // forces component to be destroyed and recreated from scratch. These modal components are not written to handle re-renders with different props.
                   >
-                    {(params) => <PSMSwapModalContent {...params} />}
+                    {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
                   </ModalWrapper>
                 </Box>
               </ListWrapper>

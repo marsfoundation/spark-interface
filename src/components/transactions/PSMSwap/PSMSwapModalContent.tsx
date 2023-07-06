@@ -22,7 +22,11 @@ import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { PSMSwapActions, PSMSwapActionType } from './PSMSwapActions';
 
-export const PSMSwapModalContent = ({ poolReserve, isWrongNetwork }: ModalWrapperProps) => {
+export const PSMSwapModalContent = ({
+  poolReserve,
+  isWrongNetwork,
+  hideSwitchSourceToken,
+}: ModalWrapperProps) => {
   const { marketReferencePriceInUsd, reserves, chi, tin, tout } = useAppDataContext();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
   const { walletBalances } = useWalletBalances();
@@ -102,7 +106,7 @@ export const PSMSwapModalContent = ({ poolReserve, isWrongNetwork }: ModalWrappe
 
   return (
     <>
-      {currentValidTypes.length > 1 ? (
+      {currentValidTypes.length > 1 && !hideSwitchSourceToken ? (
         <Link sx={{ fontWeight: 'bold' }} href="#" onClick={handleTypeChange}>
           Switch Source Token
         </Link>

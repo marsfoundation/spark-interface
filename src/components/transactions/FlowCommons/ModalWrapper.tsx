@@ -27,6 +27,7 @@ export interface ModalWrapperProps {
   tokenBalance: string;
   nativeBalance: string;
   isWrongNetwork: boolean;
+  hideSwitchSourceToken?: boolean;
 }
 
 export const ModalWrapper: React.FC<{
