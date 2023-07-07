@@ -28,6 +28,11 @@ export const navigation: Navigation[] = [
     dataCy: 'menuMarkets',
   },
   {
+    link: ROUTES.sDAI,
+    title: `sDAI`,
+    dataCy: 'menuSDAI',
+  },
+  {
     link: ROUTES.staking,
     title: t`Stake`,
     dataCy: 'menuStake',

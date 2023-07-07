@@ -69,6 +69,7 @@ export type PoolReserve = {
   chi?: BigNumber;
   tin?: BigNumber;
   tout?: BigNumber;
+  sDaiTotalAssets?: BigNumber;
 };
 
 // TODO: add chain/provider/account mapping
@@ -183,6 +184,12 @@ export const createPoolSlice: StateCreator<
         provider: get().jsonRpcProvider(),
         chainId: currentChainId,
       });
+      async function getSDaiTotalAssets(): Promise<BigNumber> {
+        const savingsDaiContract = savingsDaiService.getContractInstance(
+          savingsDaiService.savingsDaiAddress
+        );
+        return new BigNumber((await savingsDaiContract.totalAssets())._hex).div(1e18);
+      }
       const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
         uiIncentiveDataProviderAddress:
           currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
@@ -204,9 +211,10 @@ export const createPoolSlice: StateCreator<
                 savingsDaiService.previewDeposit('1'),
                 psmService.tin(),
                 psmService.tout(),
+                getSDaiTotalAssets(),
               ]);
             }),
-          ]).then(([reservesResponse, [dsr, chi, tin, tout]]) =>
+          ]).then(([reservesResponse, [dsr, chi, tin, tout, sDaiTotalAssets]]) =>
             set((state) =>
               produce(state, (draft) => {
                 if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
@@ -218,6 +226,7 @@ export const createPoolSlice: StateCreator<
                     chi,
                     tin,
                     tout,
+                    sDaiTotalAssets,
                   });
                 } else {
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
@@ -230,6 +239,8 @@ export const createPoolSlice: StateCreator<
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.chi = chi;
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tin = tin;
                   draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tout = tout;
+                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.sDaiTotalAssets =
+                    sDaiTotalAssets;
                 }
               })
             )
