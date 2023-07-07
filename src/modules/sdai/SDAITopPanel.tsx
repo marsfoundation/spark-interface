@@ -1,7 +1,7 @@
-import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
@@ -11,7 +11,6 @@ import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { DSRTooltip } from './DSRTooltip';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 export const SDAITopPanel = () => {
   const { loading: appDataLoading, dsr, sDaiTotalAssets, reserves } = useAppDataContext();
@@ -31,7 +30,7 @@ export const SDAITopPanel = () => {
       <TopInfoPanelItem icon={<PieIcon />} title={<Trans>sDAI Market cap</Trans>} loading={loading}>
         {sDaiTotalAssets && (
           <FormattedNumber
-            value={sDaiTotalAssets}
+            value={sDaiTotalAssets.toString()}
             symbol="DAI"
             variant={valueTypographyVariant}
             visibleDecimals={2}
@@ -54,7 +53,7 @@ export const SDAITopPanel = () => {
       >
         {dsr && (
           <FormattedNumber
-            value={dsr}
+            value={dsr.toString()}
             variant={valueTypographyVariant}
             visibleDecimals={2}
             percent

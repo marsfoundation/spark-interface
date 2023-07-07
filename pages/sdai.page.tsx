@@ -1,18 +1,18 @@
 import { Trans } from '@lingui/macro';
-import { Warning } from 'src/components/primitives/Warning';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
+import { useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { Warning } from 'src/components/primitives/Warning';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
 import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { SDAITopPanel } from 'src/modules/sdai/SDAITopPanel';
-import { BigNumber } from 'bignumber.js';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import { useState } from 'react';
 import { SDAIEtherscanLink } from 'src/modules/sdai/SDAIEtherscanLink';
+import { SDAITopPanel } from 'src/modules/sdai/SDAITopPanel';
 
 export default function SDAI() {
   const { loading: globalLoading, reserves, dsr } = useAppDataContext();

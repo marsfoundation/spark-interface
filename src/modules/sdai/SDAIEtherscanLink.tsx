@@ -1,11 +1,10 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { Link } from 'src/components/primitives/Link';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export const SDAIEtherscanLink = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
