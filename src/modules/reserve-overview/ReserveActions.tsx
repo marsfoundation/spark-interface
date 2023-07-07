@@ -133,13 +133,15 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         <>
           <Divider sx={{ my: 6 }} />
           <Stack gap={3}>
-            <SupplyAction
-              value={maxAmountToSupply.toString()}
-              usdValue={maxAmountToSupplyUsd}
-              symbol={selectedAsset}
-              disable={disableSupplyButton}
-              onActionClicked={onSupplyClicked}
-            />
+            {reserve.symbol !== 'sDAI' && (
+              <SupplyAction
+                value={maxAmountToSupply.toString()}
+                usdValue={maxAmountToSupplyUsd}
+                symbol={selectedAsset}
+                disable={disableSupplyButton}
+                onActionClicked={onSupplyClicked}
+              />
+            )}
             <BorrowAction
               value={maxAmountToBorrow.toString()}
               usdValue={maxAmountToBorrowUsd}
