@@ -33,7 +33,7 @@
     "@aave/contract-helpers": "npm:@marsfoundation/contract-helpers@1.13.7",
     "@aave/math-utils": "^1.13.5",
     "@bgd-labs/aave-address-book": "^1.13.1",
-    "@emotion/cache": "11.10.3",
+    "@emotion/cache": "11.11.0",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
     "@emotion/styled": "11.10.4",
