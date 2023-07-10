@@ -3,6 +3,7 @@ import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { useRootStore } from 'src/store/root';
 
+import { valueToBigNumber } from '@aave/math-utils';
 import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
 import { selectCurrentWalletBalances } from '../../store/walletSelectors';
 import { useProtocolDataContext } from '../useProtocolDataContext';
