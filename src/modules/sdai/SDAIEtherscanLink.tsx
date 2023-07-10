@@ -21,7 +21,7 @@ export const SDAIEtherscanLink = () => {
       <Button
         startIcon={
           <img
-            src={currentNetworkConfig.networkLogoPath}
+            src={'/icons/tokens/sdai.svg'}
             alt={currentNetworkConfig.name}
             style={{ width: 14, height: 14 }}
           />
