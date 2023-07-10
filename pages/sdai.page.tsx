@@ -57,7 +57,8 @@ export default function SDAI() {
                     sDAI is similar to DAI but with the added benefit of earning interest (currently
                     at <strong>{formatPercent(dsr)}</strong>). You can use it just like DAI - own,
                     transfer, and use it in the DeFi ecosystem. Swapping between sDAI and DAI incurs
-                    no additional costs, and there is no slippage.
+                    no additional costs and no slippage as is deposited or withdrawn from the DSR
+                    contract.
                   </Warning>
                 </Box>
 
