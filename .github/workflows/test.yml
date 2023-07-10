@@ -1,0 +1,21 @@
+name: Test PR
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          persist-credentials: false
+
+      - name: Build App
+        uses: ./.github/actions/build
+        with:
+          NEXT_PUBLIC_ENV: 'prod'

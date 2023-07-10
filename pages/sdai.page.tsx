@@ -54,12 +54,10 @@ export default function SDAI() {
               >
                 <Box sx={{ px: { xs: 4, xsm: 6 } }}>
                   <Warning severity="info">
-                    <Trans>
-                      sDAI is similar to DAI but with the added benefit of earning interest
-                      (currently at <strong>{formatPercent(dsr)}</strong>). You can use it just like
-                      DAI - own, transfer, and use it in the DeFi ecosystem. Swapping between sDAI
-                      and DAI incurs no additional costs, and there is no slippage.
-                    </Trans>
+                    sDAI is similar to DAI but with the added benefit of earning interest (currently
+                    at <strong>{formatPercent(dsr)}</strong>). You can use it just like DAI - own,
+                    transfer, and use it in the DeFi ecosystem. Swapping between sDAI and DAI incurs
+                    no additional costs, and there is no slippage.
                   </Warning>
                 </Box>
 
