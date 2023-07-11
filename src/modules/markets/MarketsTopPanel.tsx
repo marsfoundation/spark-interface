@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
@@ -10,9 +10,13 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
+import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
+import { ROUTES } from 'src/components/primitives/Link';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -34,7 +38,17 @@ export const MarketsTopPanel = () => {
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (
-    <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
+    <TopInfoPanel
+      titleComponent={
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <PageTitle
+            pageTitle={<Trans>Dashboard</Trans>}
+            withMarketSwitcher={true}
+            bridge={currentNetworkConfig.bridge}
+          />
+        </Box>
+      }
+    >
       <TopInfoPanelItem
         icon={<PieIcon />}
         title={<Trans>Total market size</Trans>}
