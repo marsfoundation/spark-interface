@@ -30,7 +30,8 @@ export default function Home() {
   }, [lg]);
 
   useEffect(() => {
-    if (currentMarket === CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_spark_v3);
+    if (currentMarket === CustomMarket.proto_mainnet)
+      setCurrentMarket(CustomMarket.proto_spark_v3_mainnet);
   }, [setCurrentMarket, currentMarket]);
 
   return (

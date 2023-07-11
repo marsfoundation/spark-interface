@@ -10,7 +10,8 @@ export default function Markets() {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
 
   useEffect(() => {
-    if (currentMarket === CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_spark_v3);
+    if (currentMarket === CustomMarket.proto_mainnet)
+      setCurrentMarket(CustomMarket.proto_spark_v3_mainnet);
   }, [setCurrentMarket, currentMarket]);
 
   return (

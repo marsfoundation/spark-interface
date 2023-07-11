@@ -102,14 +102,6 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const isV3MarketsAvailable = availableMarkets
-    .map((marketId: CustomMarket) => {
-      const { market } = getMarketInfoById(marketId);
-
-      return market.v3;
-    })
-    .some((item) => !!item);
-
   return (
     <TextField
       select
