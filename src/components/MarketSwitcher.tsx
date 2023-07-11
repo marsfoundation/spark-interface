@@ -97,9 +97,7 @@ enum SelectedMarketVersion {
 
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-    SelectedMarketVersion.V3
-  );
+  const selectedMarketVersion = SelectedMarketVersion.V3;
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -154,18 +152,6 @@ export const MarketSwitcher = () => {
                   {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
-                {market.v3 && (
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <Typography variant="subheader2">Version 3</Typography>
-                  </Box>
-                )}
               </Box>
             </Box>
           );
@@ -193,97 +179,13 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
+        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
           <Trans>
             {ENABLE_TESTNET || STAGING_ENV ? 'Select Spark Testnet Market' : 'Select Spark Market'}
           </Trans>
         </Typography>
       </Box>
 
-      {isV3MarketsAvailable && (
-        <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
-          <StyledToggleButtonGroup
-            value={selectedMarketVersion}
-            exclusive
-            onChange={(_, value) => {
-              if (value !== null) {
-                setSelectedMarketVersion(value);
-              }
-            }}
-            sx={{
-              width: '100%',
-              height: '36px',
-              background: theme.palette.primary.main,
-              border: `1px solid ${
-                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
-              }`,
-              borderRadius: '6px',
-              marginTop: '16px',
-              marginBottom: '12px',
-              padding: '2px',
-            }}
-          >
-            <StyledToggleButton
-              value={SelectedMarketVersion.V3}
-              data-cy={`markets_switch_button_v3`}
-              sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-                borderRadius: '4px',
-              }}
-            >
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V3
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
-                }
-              >
-                <Trans>Version 3</Trans>
-              </Typography>
-            </StyledToggleButton>
-            <StyledToggleButton
-              value={SelectedMarketVersion.V2}
-              data-cy={`markets_switch_button_v2`}
-              sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-                borderRadius: '4px',
-              }}
-            >
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V2
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
-                }
-              >
-                <Trans>Version 2</Trans>
-              </Typography>
-            </StyledToggleButton>
-          </StyledToggleButtonGroup>
-        </Box>
-      )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
