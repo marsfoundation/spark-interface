@@ -20,15 +20,12 @@ export function LiveSDAIBalance() {
   const sDaiReserve = reserves.find((reserve) => reserve.symbol === 'sDAI');
   const sDaiBalance = walletBalances[sDaiReserve?.underlyingAsset!]?.amount;
   const daiBalance =
-    dsr &&
-    rho &&
-    chi &&
-    convertToAssets(new BigNumber(sDaiBalance).multipliedBy(WEI), rho, dsr, chi);
+    dsr && rho && chi && convertToAssets(new BigNumber(sDaiBalance), rho, dsr, chi);
+
   useRefresh(500);
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
@@ -46,6 +43,7 @@ export function LiveSDAIBalance() {
         compact
         symbolsColor="#A5A8B6"
         symbolsVariant={symbolsVariant}
+        style={{ fontVariantNumeric: 'tabular-nums' }}
       />
     </TopInfoPanelItem>
   );
@@ -63,8 +61,7 @@ function convertToAssets(
     .pow(utcTimestamp - rho.toNumber())
     .multipliedBy(chi)
     .dividedBy(RAY);
-  const out = shares.multipliedBy(updated_chi);
-  return out.dividedBy(WEI).toString();
+  return shares.multipliedBy(WEI).multipliedBy(updated_chi).dividedBy(WEI).toString();
 }
 
 const WEI = new BigNumber(10).pow(18);
