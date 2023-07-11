@@ -66,10 +66,13 @@ export type PoolReserve = {
   userEmodeCategoryId?: number;
   userReserves?: UserReserveDataHumanized[];
   dsr?: BigNumber;
+  rho?: BigNumber;
   chi?: BigNumber;
   tin?: BigNumber;
   tout?: BigNumber;
   sDaiTotalAssets?: BigNumber;
+  realChi?: BigNumber;
+  realDSR?: BigNumber;
 };
 
 // TODO: add chain/provider/account mapping
@@ -184,12 +187,14 @@ export const createPoolSlice: StateCreator<
         provider: get().jsonRpcProvider(),
         chainId: currentChainId,
       });
+
       async function getSDaiTotalAssets(): Promise<BigNumber> {
         const savingsDaiContract = savingsDaiService.getContractInstance(
           savingsDaiService.savingsDaiAddress
         );
         return new BigNumber((await savingsDaiContract.totalAssets())._hex).div(1e18);
       }
+
       const uiIncentiveDataProviderContract = new UiIncentiveDataProvider({
         uiIncentiveDataProviderAddress:
           currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER || '',
@@ -206,44 +211,74 @@ export const createPoolSlice: StateCreator<
             }),
             chainlogService.getAddress('MCD_POT').then((potAddress) => {
               const potService = new PotService(get().jsonRpcProvider(), potAddress);
+
+              async function getRho(): Promise<BigNumber> {
+                const pot = potService.getContractInstance(potService.potAddress);
+                const rho = await pot.rho();
+                return new BigNumber(rho._hex);
+              }
+              async function getRealChi(): Promise<BigNumber> {
+                const pot = potService.getContractInstance(potService.potAddress);
+                const chi = await pot.chi();
+                return new BigNumber(chi._hex);
+              }
+              async function getRealDSR(): Promise<BigNumber> {
+                const pot = potService.getContractInstance(potService.potAddress);
+                const dsr = await pot.dsr();
+                return new BigNumber(dsr._hex);
+              }
+
               return Promise.all([
                 potService.getDaiSavingsRate(),
                 savingsDaiService.previewDeposit('1'),
                 psmService.tin(),
                 psmService.tout(),
                 getSDaiTotalAssets(),
+                getRho(),
+                getRealChi(),
+                getRealDSR(),
               ]);
             }),
-          ]).then(([reservesResponse, [dsr, chi, tin, tout, sDaiTotalAssets]]) =>
-            set((state) =>
-              produce(state, (draft) => {
-                if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
-                if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
-                  draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
-                    reserves: reservesResponse.reservesData,
-                    baseCurrencyData: reservesResponse.baseCurrencyData,
-                    dsr,
-                    chi,
-                    tin,
-                    tout,
-                    sDaiTotalAssets,
-                  });
-                } else {
-                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
-                    reservesResponse.reservesData;
-                  draft.data
-                    .get(currentChainId)!
-                    .get(lendingPoolAddressProvider)!.baseCurrencyData =
-                    reservesResponse.baseCurrencyData;
-                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.dsr = dsr;
-                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.chi = chi;
-                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tin = tin;
-                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tout = tout;
-                  draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.sDaiTotalAssets =
-                    sDaiTotalAssets;
-                }
-              })
-            )
+          ]).then(
+            ([reservesResponse, [dsr, chi, tin, tout, sDaiTotalAssets, rho, realChi, realDSR]]) =>
+              set((state) =>
+                produce(state, (draft) => {
+                  if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
+                  if (!draft.data.get(currentChainId)?.get(lendingPoolAddressProvider)) {
+                    draft.data.get(currentChainId)!.set(lendingPoolAddressProvider, {
+                      reserves: reservesResponse.reservesData,
+                      baseCurrencyData: reservesResponse.baseCurrencyData,
+                      dsr,
+                      chi,
+                      tin,
+                      tout,
+                      sDaiTotalAssets,
+                      rho,
+                      realChi,
+                      realDSR,
+                    });
+                  } else {
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
+                      reservesResponse.reservesData;
+                    draft.data
+                      .get(currentChainId)!
+                      .get(lendingPoolAddressProvider)!.baseCurrencyData =
+                      reservesResponse.baseCurrencyData;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.dsr = dsr;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.chi = chi;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tin = tin;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.tout = tout;
+                    draft.data
+                      .get(currentChainId)!
+                      .get(lendingPoolAddressProvider)!.sDaiTotalAssets = sDaiTotalAssets;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.rho = rho;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.realChi =
+                      realChi;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.realDSR =
+                      realDSR;
+                  }
+                })
+              )
           )
         );
         promises.push(
