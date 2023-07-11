@@ -11,6 +11,7 @@ import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { DSRTooltip } from './DSRTooltip';
+import { LiveSDAIBalance } from './LiveSDAIBalance';
 
 export const SDAITopPanel = () => {
   const { loading: appDataLoading, dsr, sDaiTotalAssets, reserves } = useAppDataContext();
@@ -80,6 +81,7 @@ export const SDAITopPanel = () => {
           />
         )}
       </TopInfoPanelItem>
+      <LiveSDAIBalance />
     </TopInfoPanel>
   );
 };

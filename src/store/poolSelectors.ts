@@ -98,11 +98,18 @@ export const selectDSR = (state: RootStore) => {
 export const selectSDaiTotalAssets = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.sDaiTotalAssets;
 };
-
+export const selectRho = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.rho;
+};
+export const selectRealChi = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.realChi;
+};
+export const selectRealDSR = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.realDSR;
+};
 export const selectChi = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.chi;
 };
-
 export const selectTin = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.tin;
 };
