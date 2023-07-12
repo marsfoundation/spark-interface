@@ -1,19 +1,9 @@
-import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export default function Markets() {
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-
-  useEffect(() => {
-    if (currentMarket === CustomMarket.proto_mainnet)
-      setCurrentMarket(CustomMarket.proto_spark_v3_mainnet);
-  }, [setCurrentMarket, currentMarket]);
-
   return (
     <>
       <MarketsTopPanel />

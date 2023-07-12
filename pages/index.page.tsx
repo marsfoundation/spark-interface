@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { usePermissions } from 'src/hooks/usePermissions';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -15,7 +13,6 @@ import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardConte
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
@@ -28,11 +25,6 @@ export default function Home() {
     if (!mode) setMode('supply');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);
-
-  useEffect(() => {
-    if (currentMarket === CustomMarket.proto_mainnet)
-      setCurrentMarket(CustomMarket.proto_spark_v3_mainnet);
-  }, [setCurrentMarket, currentMarket]);
 
   return (
     <>

@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
@@ -24,8 +24,6 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
-import StyledToggleButton from './StyledToggleButton';
-import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -90,14 +88,8 @@ export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
   );
 };
 
-enum SelectedMarketVersion {
-  V2,
-  V3,
-}
-
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
-  const selectedMarketVersion = SelectedMarketVersion.V3;
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -188,11 +180,7 @@ export const MarketSwitcher = () => {
             value={marketId}
             sx={{
               '.MuiListItemIcon-root': { minWidth: 'unset' },
-              display:
-                (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
-                  ? 'none'
-                  : 'flex',
+              display: 'flex',
             }}
           >
             <MarketLogo

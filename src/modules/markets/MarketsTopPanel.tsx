@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
@@ -11,7 +11,6 @@ import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
-import { ROUTES } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export const MarketsTopPanel = () => {
