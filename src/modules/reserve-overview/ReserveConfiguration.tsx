@@ -279,18 +279,15 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               {reserve.symbol === 'DAI' && dsr != null && (
                 <Typography variant="caption" color="text.secondary" paddingTop="24px">
                   <Trans>
-                    Please note that unlike other markets, the Dai borrow rate does not depend on
-                    the utilization. The rate will always be anchored to the Dai Savings Rate (DSR)
-                    which is set by Maker Governance. The DSR is expected to track below the US
-                    Federal Funds Rate, but may deviate from this based on Maker Governance
-                    requirements. You can read more about the DSR your{' '}
+                    Please note that unlike other markets, the DAI borrow rate does not depend on
+                    the utilization. The rate is set by MakerDAO Governance's{' '}
                     <Link
-                      href="https://manual.makerdao.com/parameter-index/core/param-dai-savings-rate"
+                      href="https://forum.makerdao.com/tag/stability-scope"
                       sx={{ textDecoration: 'underline' }}
                       variant="caption"
                       color="text.secondary"
                     >
-                      here
+                      Stability Scope
                     </Link>
                     .
                   </Trans>

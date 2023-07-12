@@ -16,6 +16,7 @@ import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfi
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
 import { PanelItem } from './ReservePanels';
+import { PredictableAPYTooltip } from 'src/components/infoTooltips/PredictableAPYTooltip';
 
 interface BorrowInfoProps {
   reserve: ComputedReserveData;
@@ -34,6 +35,8 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
+  const symbol = reserve.symbol;
+
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -135,11 +138,19 @@ export const BorrowInfo = ({
         )}
         <PanelItem
           title={
-            <VariableAPYTooltip
-              text={<Trans>APY, variable</Trans>}
-              key="APY_res_variable_type"
-              variant="description"
-            />
+            symbol === 'DAI' ? (
+              <PredictableAPYTooltip
+                text={<Trans>APY, predictable</Trans>}
+                key="APY_res_predictable_type"
+                variant="description"
+              />
+            ) : (
+              <VariableAPYTooltip
+                text={<Trans>APY, variable</Trans>}
+                key="APY_res_variable_type"
+                variant="description"
+              />
+            )
           }
         >
           <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
