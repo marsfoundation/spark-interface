@@ -193,7 +193,7 @@ export const TxSuccessView = ({
           sx={{ minHeight: '44px' }}
           data-cy="closeButton"
         >
-          <Trans>Ok, {isOnSDaiPage ? 'Done' : 'Close'}</Trans>
+          Ok, {isOnSDaiPage ? 'Done' : 'Close'}
         </Button>
       </Box>
     </>
