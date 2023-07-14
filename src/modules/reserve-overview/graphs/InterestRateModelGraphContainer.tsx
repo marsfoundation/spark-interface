@@ -53,7 +53,7 @@ export const InterestRateModelGraphContainer = ({
               baseStableBorrowRate: reserve.baseStableBorrowRate,
               baseVariableBorrowRate:
                 reserve.symbol === 'DAI' && dsr != null
-                  ? dsr.div(0.9).multipliedBy(1e27).toString()
+                  ? dsr.multipliedBy(1e27).toString()
                   : reserve.baseVariableBorrowRate,
               optimalUsageRatio: reserve.optimalUsageRatio,
               stableRateSlope1: reserve.stableRateSlope1,
