@@ -8,7 +8,7 @@ import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
+import { ConnectWalletPaper, Disclaimers } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
@@ -18,6 +18,9 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { uiConfig } from 'src/uiConfig';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
+import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 
 export default function Home() {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
@@ -104,12 +107,12 @@ const ContentWrapper = () => {
 
 function BorrowPaper() {
   const { reserves, loading } = useAppDataContext();
+  // @todo: fix
   if (loading) {
     return null;
   }
 
   const daiReserve = reserves.find((reserve) => reserve.symbol === 'DAI')!;
-  const daiBorrowRate = daiReserve.variableBorrowRate;
   const daiBorrowRateHumanReadable =
     (parseInt(daiReserve.variableBorrowRate.slice(0, 3)) / 100).toFixed(2) + '%';
 
@@ -153,13 +156,18 @@ function BorrowPaper() {
 }
 
 function SDaiPaper() {
-  const { reserves, loading } = useAppDataContext();
+  const { loading, reserves, dsr } = useAppDataContext();
+  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { isPermissionsLoading } = usePermissions();
+
   if (loading) {
     return null;
   }
+  const dsrHumanReadable = dsr!.times(100).toFixed(2) + '%';
 
-  const daiReserve = reserves.find((reserve) => reserve.symbol === 'DAI')!;
-  const daiBorrowRate = daiReserve.variableBorrowRate;
+  const daiMarket = reserves.find((reserve) => reserve.symbol === 'DAI')!;
+  const sDaiMarket = reserves.find((reserve) => reserve.symbol === 'sDAI')!;
+  const currentMarket = sDaiMarket;
 
   return (
     <Paper
@@ -177,7 +185,43 @@ function SDaiPaper() {
         },
       })}
     >
-      <h2>sDAI</h2>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          m: 10,
+        }}
+      >
+        <Typography component="div" variant="h3" sx={{ fontWeight: 'normal' }}>
+          Deposit DAI, earn <span style={{ fontWeight: 'bold' }}>{dsrHumanReadable}</span>!
+        </Typography>
+
+        {currentAccount && !isPermissionsLoading ? (
+          <Box
+            sx={{
+              m: 10,
+              p: { xs: 4, xsm: 6 },
+              bgcolor: 'white',
+              borderRadius: '8px',
+            }}
+          >
+            <ModalWrapper
+              title={<Trans>Swap to</Trans>}
+              underlyingAsset={currentMarket.underlyingAsset.toString()}
+            >
+              {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
+            </ModalWrapper>
+          </Box>
+        ) : (
+          <>
+            <Disclaimers />
+
+            <ConnectWalletButton />
+          </>
+        )}
+      </Box>
     </Paper>
   );
 }
