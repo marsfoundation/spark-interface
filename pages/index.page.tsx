@@ -228,11 +228,13 @@ function SDaiPaper() {
                 p: { xs: 4, xsm: 6 },
                 bgcolor: 'white',
                 borderRadius: '8px',
+                width: 1,
               }}
             >
               <ModalWrapper
                 title={<Trans>Swap to</Trans>}
                 underlyingAsset={currentMarket.underlyingAsset.toString()}
+                minimal
               >
                 {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
               </ModalWrapper>

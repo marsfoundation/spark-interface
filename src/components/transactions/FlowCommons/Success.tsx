@@ -44,7 +44,7 @@ export const TxSuccessView = ({
   const [base64, setBase64] = useState('');
   const theme = useTheme();
   const router = useRouter();
-  const isOnSDaiPage = router.pathname === '/sdai';
+  const isNotAModal = router.pathname === '/sdai' || router.pathname === '/';
 
   return (
     <>
@@ -193,7 +193,7 @@ export const TxSuccessView = ({
           sx={{ minHeight: '44px' }}
           data-cy="closeButton"
         >
-          Ok, {isOnSDaiPage ? 'Done' : 'Close'}
+          Ok, {isNotAModal ? 'Done' : 'Close'}
         </Button>
       </Box>
     </>
