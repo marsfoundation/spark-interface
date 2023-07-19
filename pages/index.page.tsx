@@ -1,5 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
@@ -22,9 +30,8 @@ export default function Home() {
   useEffect(() => {
     if (currentMarket === CustomMarket.proto_mainnet) setCurrentMarket(CustomMarket.proto_spark_v3);
   }, [setCurrentMarket, currentMarket]);
-
-  // @todo improve this
-  // if (loading) return null;
+  const { breakpoints } = useTheme();
+  const isAboveSmall = useMediaQuery(breakpoints.up('sm'));
 
   return (
     <>
@@ -47,7 +54,12 @@ export default function Home() {
           </Box>
         </Box>
         <Box
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}
+          sx={{
+            display: isAboveSmall ? 'flex' : 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+          }}
         >
           <Typography component="div" variant="h3" sx={{ mr: 4, fontWeight: 'normal' }}>
             The advanced lending engine powered by
@@ -93,7 +105,7 @@ const ContentWrapper = () => {
         <BorrowPaper />
       </Box>
 
-      <Box sx={{ width: paperWidth }}>
+      <Box sx={{ width: paperWidth, mt: isDesktop ? 0 : 5 }}>
         <SDaiPaper />
       </Box>
     </Box>
@@ -102,14 +114,10 @@ const ContentWrapper = () => {
 
 function BorrowPaper() {
   const { reserves, loading } = useAppDataContext();
-  // @todo: fix
-  if (loading) {
-    return null;
-  }
 
-  const daiReserve = reserves.find((reserve) => reserve.symbol === 'DAI')!;
+  const daiReserve = reserves.find((reserve) => reserve.symbol === 'DAI');
   const daiBorrowRateHumanReadable =
-    (parseInt(daiReserve.variableBorrowRate.slice(0, 3)) / 100).toFixed(2) + '%';
+    daiReserve && (parseFloat(daiReserve.variableBorrowAPY) * 100).toFixed(2) + '%';
 
   return (
     <Paper
@@ -127,25 +135,42 @@ function BorrowPaper() {
         },
       })}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          m: 10,
-        }}
-      >
-        <Typography component="div" variant="h3" sx={{ fontWeight: 'normal' }}>
-          Borrow DAI at <span style={{ fontWeight: 'bold' }}>{daiBorrowRateHumanReadable}</span>!
-        </Typography>
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress sx={{ my: 10 }} />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            m: 10,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="div" variant="h2" sx={{ fontWeight: 'normal' }}>
+              Borrow DAI at <span style={{ fontWeight: 'bold' }}>{daiBorrowRateHumanReadable}</span>
+              !
+            </Typography>
+            <Typography component="div" variant="h3" sx={{ fontWeight: 'normal' }}>
+              Borrow and supply other assets at market rates.
+            </Typography>
+          </Box>
 
-        <Link href="/dashboard">
-          <Button variant="contained" sx={{ mt: 5 }}>
-            <Trans>Borrow</Trans>
-          </Button>
-        </Link>
-      </Box>
+          <Link href="/dashboard">
+            <Button variant="contained" sx={{ mt: 5 }}>
+              <Trans>Dashboard</Trans>
+            </Button>
+          </Link>
+        </Box>
+      )}
     </Paper>
   );
 }
@@ -154,12 +179,10 @@ function SDaiPaper() {
   const { loading, reserves, dsr } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
+  const { breakpoints } = useTheme();
+  const isMid = useMediaQuery(breakpoints.up('md'));
 
-  if (loading) {
-    return null;
-  }
-  const dsrHumanReadable = dsr!.times(100).toFixed(2) + '%';
-
+  const dsrHumanReadable = dsr && dsr.times(100).toFixed(2) + '%';
   const sDaiMarket = reserves.find((reserve) => reserve.symbol === 'sDAI')!;
   const currentMarket = sDaiMarket;
 
@@ -179,43 +202,50 @@ function SDaiPaper() {
         },
       })}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          m: 10,
-        }}
-      >
-        <Typography component="div" variant="h3" sx={{ fontWeight: 'normal' }}>
-          Deposit DAI, earn <span style={{ fontWeight: 'bold' }}>{dsrHumanReadable}</span>!
-        </Typography>
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress sx={{ my: 10 }} />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            m: isMid ? 10 : 0,
+            mt: 10,
+          }}
+        >
+          <Typography component="div" variant="h2" sx={{ fontWeight: 'normal' }}>
+            Deposit DAI, earn <span style={{ fontWeight: 'bold' }}>{dsrHumanReadable}</span>!
+          </Typography>
 
-        {currentAccount && !isPermissionsLoading ? (
-          <Box
-            sx={{
-              m: 10,
-              p: { xs: 4, xsm: 6 },
-              bgcolor: 'white',
-              borderRadius: '8px',
-            }}
-          >
-            <ModalWrapper
-              title={<Trans>Swap to</Trans>}
-              underlyingAsset={currentMarket.underlyingAsset.toString()}
+          {currentAccount && !isPermissionsLoading ? (
+            <Box
+              sx={{
+                m: 10,
+                p: { xs: 4, xsm: 6 },
+                bgcolor: 'white',
+                borderRadius: '8px',
+              }}
             >
-              {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
-            </ModalWrapper>
-          </Box>
-        ) : (
-          <>
-            <Disclaimers />
+              <ModalWrapper
+                title={<Trans>Swap to</Trans>}
+                underlyingAsset={currentMarket.underlyingAsset.toString()}
+              >
+                {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
+              </ModalWrapper>
+            </Box>
+          ) : (
+            <Box sx={{ p: 10, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <Disclaimers />
 
-            <ConnectWalletButton />
-          </>
-        )}
-      </Box>
+              <ConnectWalletButton />
+            </Box>
+          )}
+        </Box>
+      )}
     </Paper>
   );
 }
