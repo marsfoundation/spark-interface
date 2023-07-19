@@ -77,6 +77,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   inputTitle?: ReactNode;
   balanceText?: ReactNode;
   loading?: boolean;
+  dsr?: boolean;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -94,6 +95,7 @@ export const AssetInput = <T extends Asset = Asset>({
   inputTitle,
   balanceText,
   loading = false,
+  dsr,
 }: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
@@ -112,7 +114,7 @@ export const AssetInput = <T extends Asset = Asset>({
         <Typography color="text.secondary">
           {inputTitle ? inputTitle : <Trans>Amount</Trans>}
         </Typography>
-        {capType && <AvailableTooltip capType={capType} />}
+        {capType && !dsr && <AvailableTooltip capType={capType} />}
       </Box>
 
       <Box
