@@ -1,26 +1,21 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { usePermissions } from 'src/hooks/usePermissions';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
-
-import { ConnectWalletPaper, Disclaimers } from '../src/components/ConnectWalletPaper';
-import { ContentContainer } from '../src/components/ContentContainer';
-import { MainLayout } from '../src/layouts/MainLayout';
-import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
-import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
-import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { uiConfig } from 'src/uiConfig';
+import { useEffect } from 'react';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
 import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { usePermissions } from 'src/hooks/usePermissions';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { MainLayout } from 'src/layouts/MainLayout';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { uiConfig } from 'src/uiConfig';
+
+import { Disclaimers } from '../src/components/ConnectWalletPaper';
+import { ContentContainer } from '../src/components/ContentContainer';
+import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Home() {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
@@ -157,7 +152,7 @@ function BorrowPaper() {
 
 function SDaiPaper() {
   const { loading, reserves, dsr } = useAppDataContext();
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
 
   if (loading) {
@@ -165,7 +160,6 @@ function SDaiPaper() {
   }
   const dsrHumanReadable = dsr!.times(100).toFixed(2) + '%';
 
-  const daiMarket = reserves.find((reserve) => reserve.symbol === 'DAI')!;
   const sDaiMarket = reserves.find((reserve) => reserve.symbol === 'sDAI')!;
   const currentMarket = sDaiMarket;
 
