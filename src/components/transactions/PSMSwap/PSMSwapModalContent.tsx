@@ -6,6 +6,7 @@ import { AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import {
   DetailsNumberLine,
+  DetailsPSMDeposit,
   DetailsPSMSwap,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
@@ -138,13 +139,20 @@ export const PSMSwapModalContent = ({
           futureValue={currentExchangeRate.toNumber()}
           visibleDecimals={4}
         />
-        <DetailsPSMSwap
-          description={<Trans>You receive</Trans>}
-          symbol={poolReserve.symbol}
-          iconSymbol={poolReserve.iconSymbol}
-          visibleDecimals={2}
-          value={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
-        />
+        {poolReserveSwapFrom.symbol === 'DAI' ? (
+          <DetailsPSMDeposit
+            sDAIValue={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
+            DAIValue={amount ? amount : 0}
+          />
+        ) : (
+          <DetailsPSMSwap
+            description={<Trans>You receive</Trans>}
+            symbol={poolReserve.symbol}
+            iconSymbol={poolReserve.iconSymbol}
+            visibleDecimals={2}
+            value={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
+          />
+        )}
       </TxModalDetails>
       {txError && <GasEstimationError txError={txError} />}
 
