@@ -1,5 +1,6 @@
 import { USD_DECIMALS } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { AssetInput } from 'src/components/transactions/AssetInput';
@@ -22,7 +23,6 @@ import { Link } from '../../primitives/Link';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { PSMSwapActions, PSMSwapActionType } from './PSMSwapActions';
-import { Box, Button } from '@mui/material';
 
 export const PSMSwapModalContent = ({
   poolReserve,

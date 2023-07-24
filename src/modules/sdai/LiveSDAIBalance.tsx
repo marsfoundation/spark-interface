@@ -1,11 +1,12 @@
-import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
-import BigNumber from 'bignumber.js';
-import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 import { useMediaQuery, useTheme } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { useEffect, useState } from 'react';
+
+import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 
 export function LiveSDAIBalance() {
   const {
