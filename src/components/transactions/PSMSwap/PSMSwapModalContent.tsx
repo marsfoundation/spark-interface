@@ -127,6 +127,7 @@ export const PSMSwapModalContent = ({
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
         maxValue={maxAmountToSwap.toString(10)}
+        dsr
       />
 
       <TxModalDetails gasLimit={gasLimit}>

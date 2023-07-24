@@ -110,6 +110,7 @@ export default function SDAI() {
                   title={<Trans>Swap to</Trans>}
                   underlyingAsset={currentMarket.underlyingAsset.toString()}
                   key={mode} // forces component to be destroyed and recreated from scratch. These modal components are not written to handle re-renders with different props.
+                  minimal
                 >
                   {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
                 </ModalWrapper>

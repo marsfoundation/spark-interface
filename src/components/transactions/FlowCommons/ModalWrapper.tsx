@@ -39,6 +39,7 @@ export const ModalWrapper: React.FC<{
   hideTitleSymbol?: boolean;
   requiredPermission?: PERMISSION;
   children: (props: ModalWrapperProps) => React.ReactNode;
+  minimal?: boolean;
 }> = ({
   hideTitleSymbol,
   underlyingAsset,
@@ -47,6 +48,7 @@ export const ModalWrapper: React.FC<{
   title,
   requiredPermission,
   keepWrappedSymbol,
+  minimal,
 }) => {
   const { readOnlyModeAddress } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
@@ -89,7 +91,7 @@ export const ModalWrapper: React.FC<{
 
   return (
     <AssetCapsProvider asset={poolReserve}>
-      {!mainTxState.success && (
+      {!mainTxState.success && !minimal && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
       {isWrongNetwork && !readOnlyModeAddress && (
