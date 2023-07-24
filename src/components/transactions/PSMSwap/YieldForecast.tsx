@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -28,9 +29,10 @@ export function YieldForecast(props: YieldForecastProps) {
 
   return (
     <Box sx={{ pt: 5 }}>
-      <Typography sx={{ mb: 1 }} color="text.secondary">
-        Yield Forecast
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Typography color="text.secondary">Yield Forecast</Typography>
+        <YieldTooltip />
+      </Box>
       <Box
         sx={(theme) => ({
           p: 3,
@@ -103,4 +105,13 @@ function forecastYields(
       now.plus(new BigNumber(DAY * 365))
     ),
   };
+}
+
+function YieldTooltip() {
+  return (
+    <TextWithTooltip>
+      Yield is calculated based on the current parameters of the MakerDAO protocol. These parameters
+      can change based on the will of MakerDAO governance, rendering this forecast obsolete.
+    </TextWithTooltip>
+  );
 }
