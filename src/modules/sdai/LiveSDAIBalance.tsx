@@ -20,8 +20,13 @@ export function LiveSDAIBalance() {
   const loading = appDataLoading || walletLoading;
   const sDaiReserve = reserves.find((reserve) => reserve.symbol === 'sDAI');
   const sDaiBalance = walletBalances[sDaiReserve?.underlyingAsset!]?.amount;
+  const utcTimestamp = Math.floor(new Date().getTime() / 1000);
+
   const daiBalance =
-    dsr && rho && chi && convertToAssets(new BigNumber(sDaiBalance), rho, dsr, chi);
+    dsr &&
+    rho &&
+    chi &&
+    convertToAssets(new BigNumber(sDaiBalance), rho, dsr, chi, new BigNumber(utcTimestamp));
 
   useRefresh(500);
 
@@ -50,18 +55,14 @@ export function LiveSDAIBalance() {
   );
 }
 
-function convertToAssets(
+export function convertToAssets(
   shares: BigNumber,
   rho: BigNumber,
   dsr: BigNumber,
-  chi: BigNumber
+  chi: BigNumber,
+  now: BigNumber
 ): string {
-  const utcTimestamp = Math.floor(new Date().getTime() / 1000);
-  const updated_chi = dsr
-    .dividedBy(RAY)
-    .pow(utcTimestamp - rho.toNumber())
-    .multipliedBy(chi)
-    .dividedBy(RAY);
+  const updated_chi = dsr.dividedBy(RAY).pow(now.minus(rho)).multipliedBy(chi).dividedBy(RAY);
   return shares.multipliedBy(WEI).multipliedBy(updated_chi).dividedBy(WEI).toString();
 }
 

@@ -23,6 +23,7 @@ import { Link } from '../../primitives/Link';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { PSMSwapActions, PSMSwapActionType } from './PSMSwapActions';
+import { YieldForecast } from './YieldForecast';
 
 export const PSMSwapModalContent = ({
   poolReserve,
@@ -98,6 +99,7 @@ export const PSMSwapModalContent = ({
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
 
   const insufficientFunds = maxAmountToSwap.isLessThan(amount);
+  const sDAIAmount = currentExchangeRate.multipliedBy(amount ? amount : 0);
 
   if (supplyTxState.success)
     return (
@@ -140,10 +142,7 @@ export const PSMSwapModalContent = ({
           visibleDecimals={4}
         />
         {poolReserveSwapFrom.symbol === 'DAI' ? (
-          <DetailsPSMDeposit
-            sDAIValue={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
-            DAIValue={amount ? amount : 0}
-          />
+          <DetailsPSMDeposit sDAIValue={sDAIAmount.toNumber()} DAIValue={amount ? amount : 0} />
         ) : (
           <DetailsPSMSwap
             description={<Trans>You receive</Trans>}
@@ -154,6 +153,8 @@ export const PSMSwapModalContent = ({
           />
         )}
       </TxModalDetails>
+
+      <YieldForecast sharesAmount={sDAIAmount} />
       {txError && <GasEstimationError txError={txError} />}
 
       {insufficientFunds ? (
