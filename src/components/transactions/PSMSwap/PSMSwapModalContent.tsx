@@ -154,7 +154,7 @@ export const PSMSwapModalContent = ({
         )}
       </TxModalDetails>
 
-      <YieldForecast sharesAmount={sDAIAmount} />
+      {poolReserveSwapFrom.symbol === 'DAI' && <YieldForecast sharesAmount={sDAIAmount} />}
       {txError && <GasEstimationError txError={txError} />}
 
       {insufficientFunds ? (

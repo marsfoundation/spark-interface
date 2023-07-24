@@ -110,8 +110,11 @@ function forecastYields(
 function YieldTooltip() {
   return (
     <TextWithTooltip>
-      Yield is calculated based on the current parameters of the MakerDAO protocol. These parameters
-      can change based on the will of MakerDAO governance, rendering this forecast obsolete.
+      <>
+        Yield is calculated based on the current parameters of the MakerDAO protocol. These
+        parameters can change based on the will of MakerDAO governance, rendering this forecast
+        obsolete.
+      </>
     </TextWithTooltip>
   );
 }
