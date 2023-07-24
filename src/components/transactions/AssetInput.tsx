@@ -139,7 +139,7 @@ export const AssetInput = <T extends Asset = Asset>({
               autoFocus
               onChange={(e) => {
                 if (!onChange) return;
-                if (Number(e.target.value) > Number(maxValue)) {
+                if (maxValue !== undefined && Number(e.target.value) > Number(maxValue)) {
                   onChange('-1');
                 } else {
                   onChange(e.target.value);

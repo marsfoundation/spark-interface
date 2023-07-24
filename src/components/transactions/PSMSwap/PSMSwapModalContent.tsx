@@ -21,6 +21,7 @@ import { Link } from '../../primitives/Link';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { PSMSwapActions, PSMSwapActionType } from './PSMSwapActions';
+import { Box, Button } from '@mui/material';
 
 export const PSMSwapModalContent = ({
   poolReserve,
@@ -95,6 +96,8 @@ export const PSMSwapModalContent = ({
   // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
 
+  const insufficientFunds = maxAmountToSwap.isLessThan(amount);
+
   if (supplyTxState.success)
     return (
       <TxSuccessView
@@ -126,11 +129,9 @@ export const PSMSwapModalContent = ({
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        maxValue={maxAmountToSwap.toString(10)}
         dsr
       />
-
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} hideGasCalc={insufficientFunds}>
         <DetailsNumberLine
           description={<Trans>Exchange Rate</Trans>}
           value={1}
@@ -145,16 +146,23 @@ export const PSMSwapModalContent = ({
           value={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
         />
       </TxModalDetails>
-
       {txError && <GasEstimationError txError={txError} />}
 
-      <PSMSwapActions
-        type={type}
-        poolReserve={poolReserve}
-        amountToSwap={amount}
-        isWrongNetwork={isWrongNetwork}
-        exchangeRate={currentExchangeRate.toNumber()}
-      />
+      {insufficientFunds ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+          <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
+            Insufficient funds
+          </Button>
+        </Box>
+      ) : (
+        <PSMSwapActions
+          type={type}
+          poolReserve={poolReserve}
+          amountToSwap={amount}
+          isWrongNetwork={isWrongNetwork}
+          exchangeRate={currentExchangeRate.toNumber()}
+        />
+      )}
     </>
   );
 };
