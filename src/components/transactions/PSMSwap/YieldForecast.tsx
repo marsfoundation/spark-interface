@@ -1,9 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { convertToAssets } from 'src/modules/sdai/LiveSDAIBalance';
 
