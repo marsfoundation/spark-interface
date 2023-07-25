@@ -1,11 +1,12 @@
-import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
-import BigNumber from 'bignumber.js';
-import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 import { useMediaQuery, useTheme } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { useEffect, useState } from 'react';
+
+import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 
 export function LiveSDAIBalance() {
   const {
@@ -19,8 +20,19 @@ export function LiveSDAIBalance() {
   const loading = appDataLoading || walletLoading;
   const sDaiReserve = reserves.find((reserve) => reserve.symbol === 'sDAI');
   const sDaiBalance = walletBalances[sDaiReserve?.underlyingAsset!]?.amount;
+  const utcTimestamp = Math.floor(new Date().getTime() / 1000);
+
   const daiBalance =
-    dsr && rho && chi && convertToAssets(new BigNumber(sDaiBalance), rho, dsr, chi);
+    dsr &&
+    rho &&
+    chi &&
+    convertToAssets(
+      new BigNumber(sDaiBalance),
+      rho,
+      dsr,
+      chi,
+      new BigNumber(utcTimestamp)
+    ).toString();
 
   useRefresh(500);
 
@@ -49,19 +61,15 @@ export function LiveSDAIBalance() {
   );
 }
 
-function convertToAssets(
+export function convertToAssets(
   shares: BigNumber,
   rho: BigNumber,
   dsr: BigNumber,
-  chi: BigNumber
-): string {
-  const utcTimestamp = Math.floor(new Date().getTime() / 1000);
-  const updated_chi = dsr
-    .dividedBy(RAY)
-    .pow(utcTimestamp - rho.toNumber())
-    .multipliedBy(chi)
-    .dividedBy(RAY);
-  return shares.multipliedBy(WEI).multipliedBy(updated_chi).dividedBy(WEI).toString();
+  chi: BigNumber,
+  now: BigNumber
+): BigNumber {
+  const updated_chi = dsr.dividedBy(RAY).pow(now.minus(rho)).multipliedBy(chi).dividedBy(RAY);
+  return shares.multipliedBy(WEI).multipliedBy(updated_chi).dividedBy(WEI);
 }
 
 const WEI = new BigNumber(10).pow(18);

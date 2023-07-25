@@ -18,6 +18,7 @@ import { GasStation } from '../GasStation/GasStation';
 export interface TxModalDetailsProps {
   gasLimit?: string;
   slippageSelector?: ReactNode;
+  hideGasCalc?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -30,6 +31,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   gasLimit,
   slippageSelector,
   children,
+  hideGasCalc,
 }) => {
   return (
     <Box sx={{ pt: 5 }}>
@@ -50,7 +52,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         {children}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+        {!hideGasCalc && <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />}
         {slippageSelector}
       </Box>
     </Box>
@@ -387,6 +389,25 @@ export const DetailsPSMSwap = ({
             )
           </Box>
         )}
+      </Box>
+    </Row>
+  );
+};
+
+interface DetailsPSMDepositProps {
+  sDAIValue: FormattedNumberProps['value'];
+  DAIValue: FormattedNumberProps['value'];
+}
+
+export const DetailsPSMDeposit = ({ sDAIValue, DAIValue }: DetailsPSMDepositProps) => {
+  return (
+    <Row caption={'You receive'} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <FormattedNumber value={sDAIValue} variant="secondary14" sx={{ margin: '0 8px' }} />
+        <TokenIcon symbol="sDAI" sx={{ mr: 1, fontSize: '16px', display: { xs: 'none' } }} />
+        sDAI worth{' '}
+        <FormattedNumber value={DAIValue} variant="secondary14" sx={{ margin: '0 8px' }} />{' '}
+        <TokenIcon symbol="DAI" sx={{ mr: 1, fontSize: '16px', display: { xs: 'none' } }} /> DAI
       </Box>
     </Row>
   );
