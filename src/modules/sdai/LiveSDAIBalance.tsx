@@ -26,7 +26,13 @@ export function LiveSDAIBalance() {
     dsr &&
     rho &&
     chi &&
-    convertToAssets(new BigNumber(sDaiBalance), rho, dsr, chi, new BigNumber(utcTimestamp));
+    convertToAssets(
+      new BigNumber(sDaiBalance),
+      rho,
+      dsr,
+      chi,
+      new BigNumber(utcTimestamp)
+    ).toString();
 
   useRefresh(500);
 
@@ -61,9 +67,9 @@ export function convertToAssets(
   dsr: BigNumber,
   chi: BigNumber,
   now: BigNumber
-): string {
+): BigNumber {
   const updated_chi = dsr.dividedBy(RAY).pow(now.minus(rho)).multipliedBy(chi).dividedBy(RAY);
-  return shares.multipliedBy(WEI).multipliedBy(updated_chi).dividedBy(WEI).toString();
+  return shares.multipliedBy(WEI).multipliedBy(updated_chi).dividedBy(WEI);
 }
 
 const WEI = new BigNumber(10).pow(18);
