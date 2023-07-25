@@ -93,7 +93,7 @@ export const PSMSwapModalContent = ({
 
   // Calculation of future HF
   const amountIntEth = new BigNumber(amount).multipliedBy(
-    poolReserve.formattedPriceInMarketReferenceCurrency
+    poolReserveSwapFrom.formattedPriceInMarketReferenceCurrency
   );
   // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
