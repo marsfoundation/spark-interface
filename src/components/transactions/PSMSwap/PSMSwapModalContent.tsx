@@ -95,7 +95,6 @@ export const PSMSwapModalContent = ({
   const amountIntEth = new BigNumber(amount).multipliedBy(
     poolReserveSwapFrom.formattedPriceInMarketReferenceCurrency
   );
-  // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
 
   const insufficientFunds = maxAmountToSwap.isLessThan(amount);
