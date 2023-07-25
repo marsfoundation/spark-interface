@@ -11,7 +11,7 @@ interface YieldForecastProps {
   sharesAmount: BigNumber;
 }
 
-export function YieldForecast(props: YieldForecastProps) {
+export function YieldForecast({ sharesAmount }: YieldForecastProps) {
   const { loading, realDSR: dsr, rho, realChi: chi } = useAppDataContext();
   const currentTimestamp = Math.floor(new Date().getTime() / 1000);
 
@@ -19,13 +19,22 @@ export function YieldForecast(props: YieldForecastProps) {
     return null;
   }
 
-  const forecast = forecastYields(
-    props.sharesAmount,
-    rho,
-    dsr,
-    chi,
-    new BigNumber(currentTimestamp)
-  );
+  const forecast = forecastYields(sharesAmount, rho, dsr, chi, new BigNumber(currentTimestamp));
+
+  const rows = [
+    {
+      caption: '30 days',
+      daiValue: forecast.thirtyDays,
+    },
+    {
+      caption: '90 days',
+      daiValue: forecast.ninetyDays,
+    },
+    {
+      caption: '1 year',
+      daiValue: forecast.oneYear,
+    },
+  ];
 
   return (
     <Box sx={{ pt: 5 }}>
@@ -43,32 +52,26 @@ export function YieldForecast(props: YieldForecastProps) {
           },
         })}
       >
-        <Row caption="30 days" captionVariant="description" mb={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <>
-              <FormattedNumber value={forecast.thirtyDays} variant="secondary14" />{' '}
-              <TokenIcon symbol={'DAI'} sx={{ ml: 1, fontSize: '16px' }} />
-            </>
-          </Box>
-        </Row>
-
-        <Row caption="90 days" captionVariant="description" mb={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <>
-              <FormattedNumber value={forecast.ninetyDays} variant="secondary14" />{' '}
-              <TokenIcon symbol={'DAI'} sx={{ ml: 1, fontSize: '16px' }} />
-            </>
-          </Box>
-        </Row>
-
-        <Row caption="1 year" captionVariant="description" mb={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <>
-              <FormattedNumber value={forecast.oneYear} variant="secondary14" />{' '}
-              <TokenIcon symbol={'DAI'} sx={{ ml: 1, fontSize: '16px' }} />
-            </>
-          </Box>
-        </Row>
+        {rows.map((row, index) => (
+          <Row caption={row.caption} captionVariant="description" mb={4} key={index}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <>
+                <FormattedNumber
+                  value={sharesAmount.toString()}
+                  variant="secondary14"
+                  sx={{ fontVariantNumeric: 'tabular-nums' }}
+                />{' '}
+                <TokenIcon symbol={'sDAI'} sx={{ mx: 1, fontSize: '16px' }} /> worth{' '}
+                <FormattedNumber
+                  value={row.daiValue}
+                  variant="secondary14"
+                  sx={{ ml: 1, fontSize: '16px', fontVariantNumeric: 'tabular-nums' }}
+                />{' '}
+                <TokenIcon symbol={'DAI'} sx={{ ml: 1, fontSize: '16px' }} />
+              </>
+            </Box>
+          </Row>
+        ))}
       </Box>
     </Box>
   );
