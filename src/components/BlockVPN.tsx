@@ -58,7 +58,7 @@ function VPNDetected() {
         <Link href="https://ptb.discord.com/channels/893112320329396265/1105430019058184212">
           Discord
         </Link>
-        . Don`t forget to send us your current IP address.
+        . Don't forget to send us your current IP address.
       </Typography>
     </Box>
   );
