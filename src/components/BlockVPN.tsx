@@ -9,19 +9,24 @@ export function BlockVPN({ children }: { children: React.ReactNode }): React.Rea
   useEffect(() => {
     // executes only on client
     if (typeof window !== 'undefined') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const geoip2 = (window as any).geoip2;
+      const geoipScript = document.querySelector('#geoip-script');
+      geoipScript?.addEventListener('load', function () {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const geoip2 = (window as any).geoip2;
 
-      geoip2.insights(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (insights: any) => {
-          setIsVpn(insights.traits.user_type.toLowerCase() === 'hosting');
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error: any) => {
-          console.error('Error while detecting VPN', error);
-        }
-      );
+        geoip2.insights(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (insights: any) => {
+            const isVpn = insights.traits.user_type.toLowerCase() === 'hosting';
+            console.log('Vpn detected: ', isVpn);
+            setIsVpn(isVpn);
+          },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (error: any) => {
+            console.error('Error while detecting VPN', error);
+          }
+        );
+      });
     }
   }, []);
 
