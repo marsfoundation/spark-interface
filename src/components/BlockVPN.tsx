@@ -9,12 +9,15 @@ export function BlockVPN({ children }: { children: React.ReactNode }): React.Rea
   useEffect(() => {
     // executes only on client
     if (typeof window !== 'undefined') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const geoip2 = (window as any).geoip2;
 
       geoip2.insights(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (insights: any) => {
           setIsVpn(insights.traits.user_type.toLowerCase() === 'hosting');
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error: any) => {
           console.error('Error while detecting VPN', error);
         }
@@ -50,7 +53,7 @@ function VPNDetected() {
         <Link href="https://ptb.discord.com/channels/893112320329396265/1105430019058184212">
           Discord
         </Link>
-        . Don't forget to send us your current IP address.
+        . Don`t forget to send us your current IP address.
       </Typography>
     </Box>
   );
