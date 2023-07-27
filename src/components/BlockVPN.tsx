@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
