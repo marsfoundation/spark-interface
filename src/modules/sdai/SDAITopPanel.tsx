@@ -60,28 +60,35 @@ export const SDAITopPanel = () => {
             percent
             symbolsColor="#A5A8B6"
             symbolsVariant={symbolsVariant}
+            style={{
+              background: '-webkit-linear-gradient(#ce7c00, #ffe073)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
           />
         )}
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        icon={<WalletIcon />}
-        title={<Trans>Your sDAI balance</Trans>}
-        loading={loading}
-      >
-        {sDaiBalance && (
-          <FormattedNumber
-            value={sDaiBalance}
-            symbol="sDAI"
-            variant={valueTypographyVariant}
-            visibleDecimals={2}
-            compact
-            symbolsColor="#A5A8B6"
-            symbolsVariant={symbolsVariant}
-          />
-        )}
-      </TopInfoPanelItem>
-      <LiveSDAIBalance />
+      {sDaiBalance !== '0' && (
+        <TopInfoPanelItem
+          icon={<WalletIcon />}
+          title={<Trans>Your sDAI balance</Trans>}
+          loading={loading}
+        >
+          {sDaiBalance && (
+            <FormattedNumber
+              value={sDaiBalance}
+              symbol="sDAI"
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              compact
+              symbolsColor="#A5A8B6"
+              symbolsVariant={symbolsVariant}
+            />
+          )}
+        </TopInfoPanelItem>
+      )}
+      {sDaiBalance !== '0' && <LiveSDAIBalance />}
     </TopInfoPanel>
   );
 };
