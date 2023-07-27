@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import createEmotionServer from '@emotion/server/create-instance';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import * as React from 'react';
@@ -22,7 +23,6 @@ export default class MyDocument extends Document {
             src="//geoip-js.com/js/apis/geoip2/v2.1/geoip2.js"
             type="text/javascript"
             id="geoip-script"
-            async
           />
         </Head>
         <body>
