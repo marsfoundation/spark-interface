@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import WalletConnectLogo from '/public/walletConnectLogo.svg';
 
 export function BlockVPN({ children }: { children: React.ReactNode }): React.ReactElement {
+  if (process.env.NEXT_PUBLIC_VPN_PROTECTION !== '1') {
+    return <>{children}</>;
+  }
+
   const [isVpn, setIsVpn] = useState(false);
 
   useEffect(() => {
