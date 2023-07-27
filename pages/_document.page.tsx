@@ -19,11 +19,7 @@ export default class MyDocument extends Document {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (this.props as any).emotionStyleTags
           }
-          <script
-            src="//geoip-js.com/js/apis/geoip2/v2.1/geoip2.js"
-            type="text/javascript"
-            id="geoip-script"
-          />
+          <script src="//geoip-js.com/js/apis/geoip2/v2.1/geoip2.js" type="text/javascript" />
         </Head>
         <body>
           <Main />
