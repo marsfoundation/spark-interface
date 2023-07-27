@@ -38,6 +38,8 @@ export const SupplyInfo = ({
   supplyCap,
   debtCeiling,
 }: SupplyInfoProps) => {
+  const isDAI = reserve.symbol !== 'DAI';
+
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -159,51 +161,53 @@ export const SupplyInfo = ({
           currentMarketData={currentMarketData}
         />
       )}
-      <div>
-        {reserve.isIsolated ? (
-          <Box sx={{ pt: '42px', pb: '12px' }}>
-            <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
-              <Trans>Collateral usage</Trans>
-            </Typography>
-            <Warning severity="warning">
-              <Typography variant="subheader1">
-                <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
+      {isDAI && (
+        <div>
+          {reserve.isIsolated ? (
+            <Box sx={{ pt: '42px', pb: '12px' }}>
+              <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
+                <Trans>Collateral usage</Trans>
               </Typography>
-              <Typography variant="caption">
-                In Isolation mode you cannot supply other assets as collateral for borrowing. Assets
-                used as collateral in Isolation mode can only be borrowed to a specific debt
-                ceiling.{' '}
-                <Link href="https://docs.sparkprotocol.io/faq/spark-lend-features#isolation-mode">
-                  Learn more
-                </Link>
+              <Warning severity="warning">
+                <Typography variant="subheader1">
+                  <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
+                </Typography>
+                <Typography variant="caption">
+                  In Isolation mode you cannot supply other assets as collateral for borrowing.
+                  Assets used as collateral in Isolation mode can only be borrowed to a specific
+                  debt ceiling.{' '}
+                  <Link href="https://docs.sparkprotocol.io/faq/spark-lend-features#isolation-mode">
+                    Learn more
+                  </Link>
+                </Typography>
+              </Warning>
+            </Box>
+          ) : reserve.reserveLiquidationThreshold !== '0' ? (
+            <Box
+              sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+              paddingTop={'42px'}
+            >
+              <Typography variant="subheader1" color="text.main">
+                <Trans>Collateral usage</Trans>
               </Typography>
-            </Warning>
-          </Box>
-        ) : reserve.reserveLiquidationThreshold !== '0' ? (
-          <Box
-            sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
-            paddingTop={'42px'}
-          >
-            <Typography variant="subheader1" color="text.main">
-              <Trans>Collateral usage</Trans>
-            </Typography>
-            <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-            <Typography variant="subheader1" sx={{ color: '#46BC4B' }}>
-              <Trans>Can be collateral</Trans>
-            </Typography>
-          </Box>
-        ) : (
-          <Box sx={{ pt: '42px', pb: '12px' }}>
-            <Typography variant="subheader1" color="text.main">
-              <Trans>Collateral usage</Trans>
-            </Typography>
-            <Warning sx={{ my: '12px' }} severity="warning">
-              <Trans>Asset cannot be used as collateral.</Trans>
-            </Warning>
-          </Box>
-        )}
-      </div>
-      {reserve.reserveLiquidationThreshold !== '0' && (
+              <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+              <Typography variant="subheader1" sx={{ color: '#46BC4B' }}>
+                <Trans>Can be collateral</Trans>
+              </Typography>
+            </Box>
+          ) : (
+            <Box sx={{ pt: '42px', pb: '12px' }}>
+              <Typography variant="subheader1" color="text.main">
+                <Trans>Collateral usage</Trans>
+              </Typography>
+              <Warning sx={{ my: '12px' }} severity="warning">
+                <Trans>Asset cannot be used as collateral.</Trans>
+              </Warning>
+            </Box>
+          )}
+        </div>
+      )}
+      {isDAI && reserve.reserveLiquidationThreshold !== '0' && (
         <Box
           sx={{
             display: 'flex',
