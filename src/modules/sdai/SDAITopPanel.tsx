@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
@@ -12,7 +13,6 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { DSRTooltip } from './DSRTooltip';
 import { LiveSDAIBalance } from './LiveSDAIBalance';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export const SDAITopPanel = () => {
   const { loading: appDataLoading, dsr, sDaiTotalAssets, reserves } = useAppDataContext();
