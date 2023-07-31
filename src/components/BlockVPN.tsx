@@ -18,13 +18,9 @@ export function BlockVPN({ children }: { children: React.ReactNode }): React.Rea
         const ip = await getMyIp();
         console.log('IP: ', ip);
 
-        if (localStorage.getItem(getLocalStorageKey(ip)) === null) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const geoip2 = (window as any).geoip2;
-          const vpnStatus = await fetchVPNStatus(geoip2);
-          localStorage.setItem(getLocalStorageKey(ip), JSON.stringify(vpnStatus));
-        }
-        const isVPN = JSON.parse(localStorage.getItem(getLocalStorageKey(ip)) ?? 'false');
+        const isAllowed = await fetchIpStatus(ip);
+        const isVPN = !isAllowed;
+
         console.log('isVPN: ', isVPN);
         setIsVpn(isVPN);
       }
@@ -71,22 +67,9 @@ async function getMyIp(): Promise<string> {
   return jsonResponse.ip;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function fetchVPNStatus(geoip2: any): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    console.log('Fetching VPN status...');
-    geoip2.insights(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (insights: any) => {
-        const isVpn = insights.traits.user_type.toLowerCase() === 'hosting';
-        resolve(isVpn);
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      reject
-    );
-  });
-}
-
-function getLocalStorageKey(ip: string): string {
-  return `vpn_${ip}`;
+async function fetchIpStatus(ip: string): Promise<boolean> {
+  const url = `${process.env.NEXT_PUBLIC_API_BASEURL}/ip/status?ip=${ip}`;
+  const response = await fetch(url);
+  const jsonResponse = await response.json();
+  return jsonResponse.allowed;
 }
