@@ -14,21 +14,18 @@ export function BlockVPN({ children }: { children: React.ReactNode }): React.Rea
   useEffect(() => {
     // executes only on client
     if (typeof window !== 'undefined') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const geoip2 = (window as any).geoip2;
+      async function run() {
+        const ip = await getMyIp();
+        console.log('IP: ', ip);
 
-      geoip2.insights(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (insights: any) => {
-          const isVpn = insights.traits.user_type.toLowerCase() === 'hosting';
-          console.log('Vpn detected: ', isVpn);
-          setIsVpn(isVpn);
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error: any) => {
-          console.error('Error while detecting VPN', error);
-        }
-      );
+        const isAllowed = await fetchIpStatus(ip);
+        const isVPN = !isAllowed;
+
+        console.log('isVPN: ', isVPN);
+        setIsVpn(isVPN);
+      }
+
+      run().catch(console.error);
     }
   }, []);
 
@@ -56,12 +53,23 @@ function VPNDetected() {
         Accessing this website via VPN is not allowed!
       </Typography>
       <Typography variant="h3" sx={{ fontSize: 20 }}>
-        If you believe this is a mistake, contact us via{' '}
-        <Link href="https://ptb.discord.com/channels/893112320329396265/1105430019058184212">
-          Discord
-        </Link>
-        . Don't forget to send us your current IP address.
+        If you believe this is a mistake, contact us via email{' '}
+        <Link href="mailto:contact@marsfoundation.xyz">contact@marsfoundation.xyz</Link>. Don't
+        forget to send us your current IP address.
       </Typography>
     </Box>
   );
+}
+
+async function getMyIp(): Promise<string> {
+  const response = await fetch('https://api64.ipify.org?format=json');
+  const jsonResponse = await response.json();
+  return jsonResponse.ip;
+}
+
+async function fetchIpStatus(ip: string): Promise<boolean> {
+  const url = `${process.env.NEXT_PUBLIC_API_BASEURL}/ip/status?ip=${ip}`;
+  const response = await fetch(url);
+  const jsonResponse = await response.json();
+  return jsonResponse.allowed;
 }

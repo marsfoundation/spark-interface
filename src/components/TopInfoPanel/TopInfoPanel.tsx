@@ -19,18 +19,17 @@ export const TopInfoPanel = ({ children }: TopInfoPanelProps) => {
       })}
     >
       <Container sx={{ pb: 0 }}>
-        <Box sx={{ px: { xs: 4, xsm: 6 } }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: { xs: 3, xsm: 8 },
-              flexWrap: 'wrap',
-              width: '100%',
-            }}
-          >
-            {children}
-          </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            gap: { xs: 3, xsm: 8 },
+            flexWrap: 'wrap',
+            width: '100%',
+          }}
+        >
+          {children}
         </Box>
       </Container>
     </Box>

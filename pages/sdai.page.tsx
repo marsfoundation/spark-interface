@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
-import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { Disclaimers } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Warning } from 'src/components/primitives/Warning';
@@ -10,8 +10,8 @@ import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
 import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { SDAIEtherscanLink } from 'src/modules/sdai/SDAIEtherscanLink';
@@ -31,16 +31,7 @@ export default function SDAI() {
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { isPermissionsLoading } = usePermissions();
-
-  if (isPermissionsLoading || !currentAccount) {
-    return (
-      <ContentContainer>
-        <ConnectWalletPaper loading={web3Loading} />
-      </ContentContainer>
-    );
-  }
+  const { currentAccount } = useWeb3Context();
 
   return (
     <>
@@ -75,46 +66,50 @@ export default function SDAI() {
                 </Warning>
               </Box>
 
-              <Box
-                sx={{
-                  m: 10,
-                  p: { xs: 4, xsm: 6 },
-                  bgcolor: 'background.paper',
-                  borderRadius: '8px',
-                }}
-              >
-                <StyledToggleButtonGroup
-                  color="primary"
-                  value={mode}
-                  exclusive
-                  onChange={(_, value) => setMode(value)}
+              {currentAccount ? (
+                <Box
                   sx={{
-                    width: '100%',
-                    height: '44px',
-                    marginBottom: '20px',
+                    m: 10,
+                    p: { xs: 4, xsm: 6 },
+                    bgcolor: 'background.paper',
+                    borderRadius: '8px',
                   }}
                 >
-                  <StyledToggleButton value="dai-to-sdai" disabled={mode === 'dai-to-sdai'}>
-                    <Typography variant="subheader1">
-                      <Trans>DAI → sDAI</Trans>
-                    </Typography>
-                  </StyledToggleButton>
-                  <StyledToggleButton value="sdai-to-dai" disabled={mode === 'sdai-to-dai'}>
-                    <Typography variant="subheader1">
-                      <Trans>sDAI → DAI</Trans>
-                    </Typography>
-                  </StyledToggleButton>
-                </StyledToggleButtonGroup>
+                  <StyledToggleButtonGroup
+                    color="primary"
+                    value={mode}
+                    exclusive
+                    onChange={(_, value) => setMode(value)}
+                    sx={{
+                      width: '100%',
+                      height: '44px',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <StyledToggleButton value="dai-to-sdai" disabled={mode === 'dai-to-sdai'}>
+                      <Typography variant="subheader1">
+                        <Trans>DAI → sDAI</Trans>
+                      </Typography>
+                    </StyledToggleButton>
+                    <StyledToggleButton value="sdai-to-dai" disabled={mode === 'sdai-to-dai'}>
+                      <Typography variant="subheader1">
+                        <Trans>sDAI → DAI</Trans>
+                      </Typography>
+                    </StyledToggleButton>
+                  </StyledToggleButtonGroup>
 
-                <ModalWrapper
-                  title={<Trans>Swap to</Trans>}
-                  underlyingAsset={currentMarket.underlyingAsset.toString()}
-                  key={mode} // forces component to be destroyed and recreated from scratch. These modal components are not written to handle re-renders with different props.
-                  minimal
-                >
-                  {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
-                </ModalWrapper>
-              </Box>
+                  <ModalWrapper
+                    title={<Trans>Swap to</Trans>}
+                    underlyingAsset={currentMarket.underlyingAsset.toString()}
+                    key={mode} // forces component to be destroyed and recreated from scratch. These modal components are not written to handle re-renders with different props.
+                    minimal
+                  >
+                    {(params) => <PSMSwapModalContent {...params} hideSwitchSourceToken />}
+                  </ModalWrapper>
+                </Box>
+              ) : (
+                <NotAuthorized />
+              )}
             </ListWrapper>
           </Box>
         )}
@@ -129,4 +124,22 @@ SDAI.getLayout = function getLayout(page: React.ReactElement) {
 
 function formatPercent(value: BigNumber): string {
   return `${value.multipliedBy(100).toNumber().toFixed(2)}%`;
+}
+
+function NotAuthorized() {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        p: 2,
+        m: 1,
+        backgroundColor: 'white',
+        borderRadius: 2,
+      }}
+    >
+      <Disclaimers />
+      <ConnectWalletButton />
+    </Box>
+  );
 }

@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
@@ -16,9 +17,10 @@ import { LiveSDAIBalance } from './LiveSDAIBalance';
 export const SDAITopPanel = () => {
   const { loading: appDataLoading, dsr, sDaiTotalAssets, reserves } = useAppDataContext();
   const { loading: walletLoading, walletBalances } = useWalletBalances();
-  const loading = appDataLoading || walletLoading;
+  const { currentAccount } = useWeb3Context();
   const sDaiReserve = reserves.find((reserve) => reserve.symbol === 'sDAI');
   const sDaiBalance = walletBalances[sDaiReserve?.underlyingAsset!]?.amount;
+  const displayPersonalInfo = currentAccount && sDaiBalance !== '0';
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -28,7 +30,11 @@ export const SDAITopPanel = () => {
 
   return (
     <TopInfoPanel pageTitle={<Trans>sDAI</Trans>}>
-      <TopInfoPanelItem icon={<PieIcon />} title={<Trans>sDAI Market cap</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>sDAI Market cap</Trans>}
+        loading={appDataLoading}
+      >
         {sDaiTotalAssets && (
           <FormattedNumber
             value={sDaiTotalAssets.toString()}
@@ -50,7 +56,7 @@ export const SDAITopPanel = () => {
             <DSRTooltip />
           </div>
         }
-        loading={loading}
+        loading={appDataLoading}
       >
         {dsr && (
           <FormattedNumber
@@ -69,11 +75,11 @@ export const SDAITopPanel = () => {
         )}
       </TopInfoPanelItem>
 
-      {sDaiBalance !== '0' && (
+      {displayPersonalInfo && (
         <TopInfoPanelItem
           icon={<WalletIcon />}
           title={<Trans>Your sDAI balance</Trans>}
-          loading={loading}
+          loading={walletLoading}
         >
           {sDaiBalance && (
             <FormattedNumber
@@ -88,7 +94,7 @@ export const SDAITopPanel = () => {
           )}
         </TopInfoPanelItem>
       )}
-      {sDaiBalance !== '0' && <LiveSDAIBalance />}
+      {displayPersonalInfo && <LiveSDAIBalance />}
     </TopInfoPanel>
   );
 };
