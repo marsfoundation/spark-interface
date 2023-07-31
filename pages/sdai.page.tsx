@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
-import { ConnectWalletPaper, Disclaimers } from 'src/components/ConnectWalletPaper';
+import { Disclaimers } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Warning } from 'src/components/primitives/Warning';
@@ -12,7 +12,6 @@ import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapp
 import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { usePermissions } from 'src/hooks/usePermissions';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { SDAIEtherscanLink } from 'src/modules/sdai/SDAIEtherscanLink';
@@ -32,7 +31,7 @@ export default function SDAI() {
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
-  const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   return (
     <>

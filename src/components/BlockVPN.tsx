@@ -14,21 +14,22 @@ export function BlockVPN({ children }: { children: React.ReactNode }): React.Rea
   useEffect(() => {
     // executes only on client
     if (typeof window !== 'undefined') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const geoip2 = (window as any).geoip2;
+      async function run() {
+        const ip = await getMyIp();
+        console.log('IP: ', ip);
 
-      geoip2.insights(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (insights: any) => {
-          const isVpn = insights.traits.user_type.toLowerCase() === 'hosting';
-          console.log('Vpn detected: ', isVpn);
-          setIsVpn(isVpn);
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (error: any) => {
-          console.error('Error while detecting VPN', error);
+        if (localStorage.getItem(getLocalStorageKey(ip)) === null) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const geoip2 = (window as any).geoip2;
+          const vpnStatus = await fetchVPNStatus(geoip2);
+          localStorage.setItem(getLocalStorageKey(ip), JSON.stringify(vpnStatus));
         }
-      );
+        const isVPN = JSON.parse(localStorage.getItem(getLocalStorageKey(ip)) ?? 'false');
+        console.log('isVPN: ', isVPN);
+        setIsVpn(isVPN);
+      }
+
+      run().catch(console.error);
     }
   }, []);
 
@@ -62,4 +63,30 @@ function VPNDetected() {
       </Typography>
     </Box>
   );
+}
+
+async function getMyIp(): Promise<string> {
+  const response = await fetch('https://api64.ipify.org?format=json');
+  const jsonResponse = await response.json();
+  return jsonResponse.ip;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function fetchVPNStatus(geoip2: any): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    console.log('Fetching VPN status...');
+    geoip2.insights(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (insights: any) => {
+        const isVpn = insights.traits.user_type.toLowerCase() === 'hosting';
+        resolve(isVpn);
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      reject
+    );
+  });
+}
+
+function getLocalStorageKey(ip: string): string {
+  return `vpn_${ip}`;
 }
