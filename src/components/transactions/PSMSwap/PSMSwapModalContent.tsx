@@ -99,7 +99,10 @@ export const PSMSwapModalContent = ({
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
 
   const insufficientFunds = maxAmountToSwap.isLessThan(amount);
-  const issDAISwap = poolReserveSwapFrom.symbol === 'DAI' && poolReserve.symbol === 'sDAI';
+  const issDAIDeposit = poolReserveSwapFrom.symbol === 'DAI' && poolReserve.symbol === 'sDAI';
+  const issDAIPage =
+    (poolReserveSwapFrom.symbol === 'DAI' && poolReserve.symbol === 'sDAI') ||
+    (poolReserveSwapFrom.symbol === 'sDAI' && poolReserve.symbol === 'DAI');
   const sDAIAmount = currentExchangeRate.multipliedBy(amount ? amount : 0);
 
   if (supplyTxState.success)
@@ -152,14 +155,18 @@ export const PSMSwapModalContent = ({
         />
       )}
 
-      <TxModalDetails gasLimit={gasLimit} hideGasCalc={insufficientFunds} collapsible={issDAISwap}>
+      <TxModalDetails
+        gasLimit={gasLimit}
+        hideGasCalc={insufficientFunds}
+        collapsible={issDAIDeposit}
+      >
         <DetailsNumberLine
           description={<Trans>Exchange Rate</Trans>}
           value={1}
           futureValue={currentExchangeRate.toNumber()}
           visibleDecimals={4}
         />
-        {issDAISwap ? (
+        {issDAIDeposit ? (
           <DetailsPSMDeposit sDAIValue={sDAIAmount.toNumber()} DAIValue={amount ? amount : 0} />
         ) : (
           <DetailsPSMSwap
@@ -174,9 +181,9 @@ export const PSMSwapModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
-      {issDAISwap && <YieldForecast sharesAmount={sDAIAmount} />}
+      {issDAIDeposit && <YieldForecast sharesAmount={sDAIAmount} />}
 
-      <InfoBox />
+      {issDAIPage && <InfoBox />}
     </>
   );
 };
