@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Disclaimers } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
-import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
@@ -46,30 +45,24 @@ export default function SDAI() {
                 <Stack
                   direction="row"
                   alignItems="center"
-                  justifyContent="space-between"
+                  justifyContent="flex-end"
                   sx={{ width: '100%' }}
                 >
-                  <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-                    <Trans>Savings DAI</Trans>
-                  </Typography>
                   <SDAIEtherscanLink />
                 </Stack>
               }
             >
-              <Box sx={{ px: { xs: 4, xsm: 6 } }}>
-                <Warning severity="info">
-                  sDAI is similar to DAI but with the added benefit of earning interest (currently
-                  at <strong>{formatPercent(dsr)}</strong>). You can use it just like DAI - own,
-                  transfer, and use it in the DeFi ecosystem. Swapping between sDAI and DAI incurs
-                  no additional costs and no slippage as is deposited or withdrawn from the DSR
-                  contract.
-                </Warning>
+              <Box sx={{ display: 'flex', justifyContent: 'center', px: 5 }}>
+                <Typography variant="h2" sx={{ fontSize: '1.6125rem', textAlign: 'center' }}>
+                  Deposit your DAI to SavingsDAI and earn{' '}
+                  <span style={gradientAccentStyle}>{formatPercent(dsr)}</span> now
+                </Typography>
               </Box>
 
               {currentAccount ? (
                 <Box
                   sx={{
-                    m: 10,
+                    m: 5,
                     p: { xs: 4, xsm: 6 },
                     bgcolor: 'background.paper',
                     borderRadius: '8px',
@@ -88,12 +81,12 @@ export default function SDAI() {
                   >
                     <StyledToggleButton value="dai-to-sdai" disabled={mode === 'dai-to-sdai'}>
                       <Typography variant="subheader1">
-                        <Trans>DAI → sDAI</Trans>
+                        <Trans>Deposit</Trans>
                       </Typography>
                     </StyledToggleButton>
                     <StyledToggleButton value="sdai-to-dai" disabled={mode === 'sdai-to-dai'}>
                       <Typography variant="subheader1">
-                        <Trans>sDAI → DAI</Trans>
+                        <Trans>Withdraw</Trans>
                       </Typography>
                     </StyledToggleButton>
                   </StyledToggleButtonGroup>
@@ -133,7 +126,7 @@ function NotAuthorized() {
         display: 'flex',
         flexDirection: 'column',
         p: 2,
-        m: 1,
+        m: 5,
         backgroundColor: 'white',
         borderRadius: 2,
       }}
@@ -143,3 +136,9 @@ function NotAuthorized() {
     </Box>
   );
 }
+
+const gradientAccentStyle = {
+  background: '-webkit-linear-gradient(#ce7c00, #EDD06B)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+};

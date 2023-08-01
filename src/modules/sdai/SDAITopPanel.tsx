@@ -66,11 +66,7 @@ export const SDAITopPanel = () => {
             percent
             symbolsColor="#A5A8B6"
             symbolsVariant={symbolsVariant}
-            style={{
-              background: '-webkit-linear-gradient(#ce7c00, #ffe073)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+            style={gradientAccentStyle}
           />
         )}
       </TopInfoPanelItem>
@@ -97,4 +93,10 @@ export const SDAITopPanel = () => {
       {displayPersonalInfo && <LiveSDAIBalance />}
     </TopInfoPanel>
   );
+};
+
+const gradientAccentStyle = {
+  background: '-webkit-linear-gradient(#ce7c00, #ffe073)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
 };

@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import {
@@ -134,6 +135,7 @@ export const PSMSwapModalContent = ({
         disabled={supplyTxState.loading}
         dsr
       />
+
       <TxModalDetails gasLimit={gasLimit} hideGasCalc={insufficientFunds} collapsible={issDAISwap}>
         <DetailsNumberLine
           description={<Trans>Exchange Rate</Trans>}
@@ -154,7 +156,6 @@ export const PSMSwapModalContent = ({
         )}
       </TxModalDetails>
 
-      {issDAISwap && <YieldForecast sharesAmount={sDAIAmount} />}
       {txError && <GasEstimationError txError={txError} />}
 
       {insufficientFunds ? (
@@ -172,6 +173,20 @@ export const PSMSwapModalContent = ({
           exchangeRate={currentExchangeRate.toNumber()}
         />
       )}
+
+      {issDAISwap && <YieldForecast sharesAmount={sDAIAmount} />}
+
+      <InfoBox />
     </>
   );
 };
+
+function InfoBox() {
+  return (
+    <Warning severity="info">
+      sDAI is similar to DAI but with the added benefit of earning interest. You can use it just
+      like DAI - own, transfer, and use it in the DeFi ecosystem. Swapping between sDAI and DAI
+      incurs no additional costs and no slippage as is deposited or withdrawn from the DSR contract.
+    </Warning>
+  );
+}
