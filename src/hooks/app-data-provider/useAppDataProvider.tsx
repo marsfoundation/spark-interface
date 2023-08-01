@@ -18,6 +18,7 @@ import {
   selectCurrentReserves,
   selectCurrentUserEmodeCategoryId,
   selectCurrentUserReserves,
+  selectDaiInDSR,
   selectDSR,
   selectEmodes,
   selectFormattedReserves,
@@ -78,6 +79,7 @@ export interface AppDataContextType {
   sDaiTotalAssets?: BigNumber;
   realChi?: BigNumber;
   realDSR?: BigNumber;
+  daiInDSR?: BigNumber;
 }
 
 const AppDataContext = React.createContext<AppDataContextType>({} as AppDataContextType);
@@ -105,6 +107,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     rho,
     realChi,
     realDSR,
+    daiInDSR,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -121,6 +124,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     selectRho(state),
     selectRealChi(state),
     selectRealDSR(state),
+    selectDaiInDSR(state),
   ]);
 
   const proportions = user.userReservesData.reduce(
@@ -219,6 +223,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         rho,
         realChi,
         realDSR,
+        daiInDSR,
       }}
     >
       {children}

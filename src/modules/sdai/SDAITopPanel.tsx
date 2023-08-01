@@ -15,7 +15,7 @@ import { DSRTooltip } from './DSRTooltip';
 import { LiveSDAIBalance } from './LiveSDAIBalance';
 
 export const SDAITopPanel = () => {
-  const { loading: appDataLoading, dsr, sDaiTotalAssets, reserves } = useAppDataContext();
+  const { loading: appDataLoading, dsr, daiInDSR, reserves } = useAppDataContext();
   const { loading: walletLoading, walletBalances } = useWalletBalances();
   const { currentAccount } = useWeb3Context();
   const sDaiReserve = reserves.find((reserve) => reserve.symbol === 'sDAI');
@@ -32,12 +32,12 @@ export const SDAITopPanel = () => {
     <TopInfoPanel pageTitle={<Trans>sDAI</Trans>}>
       <TopInfoPanelItem
         icon={<PieIcon />}
-        title={<Trans>sDAI Market cap</Trans>}
+        title={<Trans>DAI in DSR</Trans>}
         loading={appDataLoading}
       >
-        {sDaiTotalAssets && (
+        {daiInDSR && (
           <FormattedNumber
-            value={sDaiTotalAssets.toString()}
+            value={daiInDSR.toString()}
             symbol="DAI"
             variant={valueTypographyVariant}
             visibleDecimals={2}
@@ -66,11 +66,7 @@ export const SDAITopPanel = () => {
             percent
             symbolsColor="#A5A8B6"
             symbolsVariant={symbolsVariant}
-            style={{
-              background: '-webkit-linear-gradient(#ce7c00, #ffe073)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+            style={gradientAccentStyle}
           />
         )}
       </TopInfoPanelItem>
@@ -97,4 +93,10 @@ export const SDAITopPanel = () => {
       {displayPersonalInfo && <LiveSDAIBalance />}
     </TopInfoPanel>
   );
+};
+
+const gradientAccentStyle = {
+  background: '-webkit-linear-gradient(#ce7c00, #ffe073)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
 };
