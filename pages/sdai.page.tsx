@@ -138,6 +138,7 @@ function NotAuthorized() {
 }
 
 const gradientAccentStyle = {
+  fontWeight: 700,
   background: '-webkit-linear-gradient(#ce7c00, #EDD06B)',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
