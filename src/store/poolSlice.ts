@@ -39,7 +39,7 @@ import {
 import { SignatureLike } from '@ethersproject/bytes';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
-import { Signature } from 'ethers';
+import { Contract, Signature } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { produce } from 'immer';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
@@ -73,6 +73,7 @@ export type PoolReserve = {
   sDaiTotalAssets?: BigNumber;
   realChi?: BigNumber;
   realDSR?: BigNumber;
+  daiInDSR?: BigNumber;
 };
 
 // TODO: add chain/provider/account mapping
@@ -209,7 +210,10 @@ export const createPoolSlice: StateCreator<
             poolDataProviderContract.getReservesHumanized({
               lendingPoolAddressProvider,
             }),
-            chainlogService.getAddress('MCD_POT').then((potAddress) => {
+            Promise.all([
+              chainlogService.getAddress('MCD_POT'),
+              chainlogService.getAddress('MCD_VAT'),
+            ]).then(([potAddress, vatAddress]) => {
               const potService = new PotService(get().jsonRpcProvider(), potAddress);
 
               async function getRho(): Promise<BigNumber> {
@@ -227,6 +231,15 @@ export const createPoolSlice: StateCreator<
                 const dsr = await pot.dsr();
                 return new BigNumber(dsr._hex);
               }
+              async function getDaiInDSR(): Promise<BigNumber> {
+                const vat = new Contract(
+                  vatAddress,
+                  ['function dai(address user) view returns (uint balance)'],
+                  get().jsonRpcProvider()
+                );
+                const daiInRad = await vat.dai(potAddress);
+                return new BigNumber(daiInRad._hex).div('1' + '0'.repeat(45));
+              }
 
               return Promise.all([
                 potService.getDaiSavingsRate(),
@@ -237,10 +250,14 @@ export const createPoolSlice: StateCreator<
                 getRho(),
                 getRealChi(),
                 getRealDSR(),
+                getDaiInDSR(),
               ]);
             }),
           ]).then(
-            ([reservesResponse, [dsr, chi, tin, tout, sDaiTotalAssets, rho, realChi, realDSR]]) =>
+            ([
+              reservesResponse,
+              [dsr, chi, tin, tout, sDaiTotalAssets, rho, realChi, realDSR, daiInDSR],
+            ]) =>
               set((state) =>
                 produce(state, (draft) => {
                   if (!draft.data.get(currentChainId)) draft.data.set(currentChainId, new Map());
@@ -256,6 +273,7 @@ export const createPoolSlice: StateCreator<
                       rho,
                       realChi,
                       realDSR,
+                      daiInDSR,
                     });
                   } else {
                     draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.reserves =
@@ -276,6 +294,8 @@ export const createPoolSlice: StateCreator<
                       realChi;
                     draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.realDSR =
                       realDSR;
+                    draft.data.get(currentChainId)!.get(lendingPoolAddressProvider)!.daiInDSR =
+                      daiInDSR;
                   }
                 })
               )
