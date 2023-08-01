@@ -136,6 +136,22 @@ export const PSMSwapModalContent = ({
         dsr
       />
 
+      {insufficientFunds ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+          <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
+            Insufficient funds
+          </Button>
+        </Box>
+      ) : (
+        <PSMSwapActions
+          type={type}
+          poolReserve={poolReserve}
+          amountToSwap={amount}
+          isWrongNetwork={isWrongNetwork}
+          exchangeRate={currentExchangeRate.toNumber()}
+        />
+      )}
+
       <TxModalDetails gasLimit={gasLimit} hideGasCalc={insufficientFunds} collapsible={issDAISwap}>
         <DetailsNumberLine
           description={<Trans>Exchange Rate</Trans>}
@@ -157,22 +173,6 @@ export const PSMSwapModalContent = ({
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
-
-      {insufficientFunds ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
-          <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
-            Insufficient funds
-          </Button>
-        </Box>
-      ) : (
-        <PSMSwapActions
-          type={type}
-          poolReserve={poolReserve}
-          amountToSwap={amount}
-          isWrongNetwork={isWrongNetwork}
-          exchangeRate={currentExchangeRate.toNumber()}
-        />
-      )}
 
       {issDAISwap && <YieldForecast sharesAmount={sDAIAmount} />}
 

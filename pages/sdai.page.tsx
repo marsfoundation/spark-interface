@@ -120,6 +120,8 @@ function formatPercent(value: BigNumber): string {
 }
 
 function NotAuthorized() {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -127,7 +129,7 @@ function NotAuthorized() {
         flexDirection: 'column',
         p: 2,
         m: 5,
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : 'white',
         borderRadius: 2,
       }}
     >
