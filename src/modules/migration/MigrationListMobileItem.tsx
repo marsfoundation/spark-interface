@@ -130,7 +130,7 @@ export const MigrationListMobileItem = ({
               {disabled !== undefined && (
                 <MigrationDisabledTooltip
                   dashboardLink={ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3'}
-                  marketName={currentMarketData.marketTitle}
+                  marketName={'Spark'}
                   warningType={disabled}
                   isolatedV3={enteringIsolation}
                 />
