@@ -23,7 +23,7 @@ export const TopInfoPanel = ({ children }: TopInfoPanelProps) => {
           sx={{
             display: 'flex',
             alignItems: 'flex-start',
-            justifyContent: 'center',
+            justifyContent: { sm: 'center' },
             gap: { xs: 3, xsm: 8 },
             flexWrap: 'wrap',
             width: '100%',
