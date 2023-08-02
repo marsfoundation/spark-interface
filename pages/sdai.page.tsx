@@ -55,7 +55,7 @@ export default function SDAI() {
               <Box sx={{ display: 'flex', justifyContent: 'center', px: 5 }}>
                 <Typography variant="h2" sx={{ fontSize: '1.6125rem', textAlign: 'center' }}>
                   Deposit your DAI to SavingsDAI and earn{' '}
-                  <span style={gradientAccentStyle}>{formatPercent(dsr)}</span> now
+                  <span style={gradientAccentStyle}>{formatPercent(dsr)}</span>
                 </Typography>
               </Box>
 

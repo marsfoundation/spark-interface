@@ -69,7 +69,7 @@ export const MigrationListMobileItem = ({
     ? v3Rates?.vIncentivesData || []
     : v3Rates?.aIncentivesData || [];
 
-  const { currentMarket, currentMarketData } = useRootStore();
+  const { currentMarket } = useRootStore();
   const theme = useTheme();
   const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
   const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';
@@ -130,7 +130,7 @@ export const MigrationListMobileItem = ({
               {disabled !== undefined && (
                 <MigrationDisabledTooltip
                   dashboardLink={ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3'}
-                  marketName={currentMarketData.marketTitle}
+                  marketName={'Spark'}
                   warningType={disabled}
                   isolatedV3={enteringIsolation}
                 />
