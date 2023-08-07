@@ -13,6 +13,7 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { AddTokenToWallet } from 'src/modules/sdai/AddTokenToWallet';
 import { SDAIEtherscanLink } from 'src/modules/sdai/SDAIEtherscanLink';
 import { SDAITopPanel } from 'src/modules/sdai/SDAITopPanel';
 
@@ -42,14 +43,25 @@ export default function SDAI() {
           >
             <ListWrapper
               titleComponent={
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                  sx={{ width: '100%' }}
-                >
-                  <SDAIEtherscanLink />
-                </Stack>
+                <>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                    sx={{ width: '100%' }}
+                  >
+                    <AddTokenToWallet
+                      address={sDaiMarket.underlyingAsset}
+                      decimals={sDaiMarket.decimals}
+                      symbol={sDaiMarket.symbol}
+                      image={sDaiIconUrl}
+                      imageLink="/icons/tokens/sdai.svg"
+                      style={{ marginRight: '5px' }}
+                    />
+                    {''}
+                    <SDAIEtherscanLink />
+                  </Stack>
+                </>
               }
             >
               <Box sx={{ display: 'flex', justifyContent: 'center', px: 5 }}>
@@ -145,3 +157,7 @@ const gradientAccentStyle = {
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
 };
+
+// sDAI svg encoded as base64
+const sDaiIconUrl =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iLjUiIHgyPSIuNSIgeTE9IjEuMTQyIiB5Mj0iLS4xMDUiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM0Y2FmNTAiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4YmMzNGEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNSIgZmlsbD0idXJsKCNhKSIgZGF0YS1uYW1lPSJFbGxpcHNlIDEyNzEiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMzkuODI1IDIwLjg3NWgtMi45NjdjLTEuNjMzLTQuNTMzLTYuMDI1LTcuNjQyLTExLjgxNy03LjY0MmgtOS41MjV2Ny42NDJoLTMuMzA4djIuNzQyaDMuMzA4djIuODc1aC0zLjMwOHYyLjc0MWgzLjMwOHY3LjU1aDkuNTI1YzUuNzI1IDAgMTAuMDgzLTMuMDgzIDExLjc1OC03LjU1aDMuMDI1di0yLjc0MmgtMi4zNThhMTIuNDMzIDEyLjQzMyAwIDAgMCAuMDkyLTEuNDgzdi0uMDY3YzAtLjQ1LS4wMjUtLjg5Mi0uMDY3LTEuMzI1aDIuMzQydi0yLjc0MnptLTIxLjY0Mi01LjJoNi44NThjNC4yNSAwIDcuNDA4IDIuMDkyIDguODY3IDUuMTkySDE4LjE4M3ptNi44NTggMTguNjQyaC02Ljg1OHYtNS4wOTJoMTUuNzA4Yy0xLjQ2NiAzLjA1LTQuNjE2IDUuMDkxLTguODUgNS4wOTF6bTkuNzU4LTkuMjVhOS44NTkgOS44NTkgMCAwIDEtLjEgMS40MTdIMTguMTgzdi0yLjg3NWgxNi41MjVhMTAuODQgMTAuODQgMCAwIDEgLjA5MiAxLjM5MnoiIGRhdGEtbmFtZT0iUGF0aCA3NTM2Ii8+PC9zdmc+Cg==';
