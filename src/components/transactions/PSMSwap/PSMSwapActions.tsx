@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -31,8 +32,10 @@ export const PSMSwapActions = ({
   sx,
   ...props
 }: PSMSwapActionProps) => {
+  const router = useRouter();
   const { buyGem, sellGem, sDAIDeposit, sDAIRedeem } = useRootStore();
   const { currentAccount } = useWeb3Context();
+  const isSDAIPage = router.pathname === '/sdai';
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
@@ -79,10 +82,23 @@ export const PSMSwapActions = ({
         approval([{ amount: amountToSwap, underlyingAsset: poolReserve.underlyingAsset }])
       }
       requiresApproval={requiresApproval}
-      actionText={<Trans>Swap</Trans>}
+      actionText={<Trans>{actionTypeToLabel(type, isSDAIPage)}</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
       sx={sx}
       {...props}
     />
   );
 };
+
+function actionTypeToLabel(action: PSMSwapActionType, isSDAIPage: boolean): string {
+  if (!isSDAIPage) return 'Swap';
+
+  switch (action) {
+    case PSMSwapActionType.SDAI_DEPOSIT:
+      return 'Deposit';
+    case PSMSwapActionType.SDAI_REDEEM:
+      return 'Withdraw';
+    default:
+      return 'Swap';
+  }
+}
