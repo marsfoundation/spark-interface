@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
+import { BigNumber } from 'bignumber.js';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { BigNumber } from 'bignumber.js';
 
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
