@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { BigNumber } from 'bignumber.js';
 
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
@@ -53,7 +54,7 @@ export const InterestRateModelGraphContainer = ({
               baseStableBorrowRate: reserve.baseStableBorrowRate,
               baseVariableBorrowRate:
                 reserve.symbol === 'DAI' && dsr != null
-                  ? dsr.multipliedBy(1e27).toString()
+                  ? new BigNumber(reserve.variableBorrowAPR).multipliedBy(1e27).toString()
                   : reserve.baseVariableBorrowRate,
               optimalUsageRatio: reserve.optimalUsageRatio,
               stableRateSlope1: reserve.stableRateSlope1,
