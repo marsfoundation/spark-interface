@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
+import { BigNumber } from 'bignumber.js';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
@@ -22,7 +23,7 @@ export const InterestRateModelGraphContainer = ({
   const fields: Fields = [
     {
       name: 'variableBorrowRate',
-      text: reserve.symbol === 'DAI' ? 'Borrow APY' : 'Borrow APR',
+      text: 'Borrow APR',
       color: '#B6509E',
     },
     ...(reserve.stableBorrowRateEnabled
@@ -53,7 +54,7 @@ export const InterestRateModelGraphContainer = ({
               baseStableBorrowRate: reserve.baseStableBorrowRate,
               baseVariableBorrowRate:
                 reserve.symbol === 'DAI' && dsr != null
-                  ? dsr.multipliedBy(1e27).toString()
+                  ? new BigNumber(reserve.variableBorrowAPR).multipliedBy(1e27).toString()
                   : reserve.baseVariableBorrowRate,
               optimalUsageRatio: reserve.optimalUsageRatio,
               stableRateSlope1: reserve.stableRateSlope1,

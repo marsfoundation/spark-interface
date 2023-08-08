@@ -19,13 +19,6 @@ export const SDAIEtherscanLink = () => {
   return (
     <DarkTooltip title="sDAI Contract">
       <Button
-        startIcon={
-          <img
-            src={'/icons/tokens/sdai.svg'}
-            alt={currentNetworkConfig.name}
-            style={{ width: 14, height: 14 }}
-          />
-        }
         endIcon={
           <SvgIcon sx={{ width: 14, height: 14 }}>
             <ExternalLinkIcon />
