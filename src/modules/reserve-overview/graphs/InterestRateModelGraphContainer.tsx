@@ -23,7 +23,7 @@ export const InterestRateModelGraphContainer = ({
   const fields: Fields = [
     {
       name: 'variableBorrowRate',
-      text: reserve.symbol === 'DAI' ? 'Borrow APY' : 'Borrow APR',
+      text: 'Borrow APR',
       color: '#B6509E',
     },
     ...(reserve.stableBorrowRateEnabled
