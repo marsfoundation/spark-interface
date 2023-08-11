@@ -56,6 +56,7 @@ export const BorrowAssetsListItem = ({
 
       <ListAPRColumn
         value={Number(variableBorrowRate)}
+        incentives={vIncentivesData}
         symbol={symbol}
         tooltip={
           symbol === 'DAI' ? (
