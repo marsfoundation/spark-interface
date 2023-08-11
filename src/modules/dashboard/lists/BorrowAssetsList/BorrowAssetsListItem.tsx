@@ -56,17 +56,18 @@ export const BorrowAssetsListItem = ({
 
       <ListAPRColumn
         value={Number(variableBorrowRate)}
-        incentives={vIncentivesData}
         symbol={symbol}
         tooltip={
           symbol === 'DAI' ? (
             <Trans>
-              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
-              unless Maker needs to reclaim capital.
+              This rate is set by MakerDAO Governance and will not change based on usage unless
+              Maker needs to reclaim capital.
             </Trans>
           ) : null
         }
-      />
+      >
+        {symbol === 'DAI' && <SpkAirdropNoteInline />}
+      </ListAPRColumn>
 
       <ListButtonsColumn>
         <Button
@@ -87,3 +88,14 @@ export const BorrowAssetsListItem = ({
     </ListItemWrapper>
   );
 };
+
+export function SpkAirdropNoteInline() {
+  return (
+    <a
+      href="https://forum.makerdao.com/t/sparkdao-spk-pre-farming-airdrop-general-subdao-farming-overview/21595"
+      style={{ textDecoration: 'none', color: 'inherit' }}
+    >
+      ⚡ Future Airdrop eligible
+    </a>
+  );
+}
