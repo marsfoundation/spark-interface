@@ -94,7 +94,8 @@ export function SpkAirdropNoteInline() {
   return (
     <a
       href="https://forum.makerdao.com/t/sparkdao-spk-pre-farming-airdrop-general-subdao-farming-overview/21595"
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
+      target="blank"
     >
       ⚡ Future Airdrop eligible
     </a>
