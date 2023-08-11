@@ -9,6 +9,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { SpkAirdropNote } from 'src/components/transactions/Borrow/BorrowModalContent';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
@@ -65,6 +66,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         <Typography variant="h3">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
+
+        <SpkAirdropNote />
       </Box>
 
       <Box>

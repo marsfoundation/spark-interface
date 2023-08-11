@@ -19,6 +19,7 @@ import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
+import { SpkAirdropNote } from '../Borrow/BorrowModalContent';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -215,6 +216,7 @@ export const RepayModalContent = ({
 
   return (
     <>
+      {tokenToRepayWith.symbol === 'DAI' && <SpkAirdropNote />}
       <AssetInput
         value={amount}
         onChange={handleChange}

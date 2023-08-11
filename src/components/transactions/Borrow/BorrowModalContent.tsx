@@ -221,6 +221,7 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
+      {symbol === 'DAI' && <SpkAirdropNote />}
       {borrowCap.determineWarningDisplay({ borrowCap })}
       <AssetInput
         value={amount}
@@ -332,3 +333,20 @@ export const BorrowModalContent = ({
     </>
   );
 };
+
+export function SpkAirdropNote() {
+  return (
+    <Warning severity="info" sx={{ my: 6 }}>
+      <Trans>
+        DAI borrowers will be eligible for a future ⚡ SPK airdrop. Please read the details on the{' '}
+        <a
+          href="https://forum.makerdao.com/t/sparkdao-spk-pre-farming-airdrop-general-subdao-farming-overview/21595"
+          target="blank"
+        >
+          Maker governance forum
+        </a>
+        .
+      </Trans>
+    </Warning>
+  );
+}
