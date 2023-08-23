@@ -15,5 +15,6 @@ namespace NodeJS {
     NEXT_PUBLIC_FORK_URL_RPC?: string;
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: string;
     NEXT_PUBLIC_VPN_PROTECTION: string;
+    NEXT_PUBLIC_DISABLE_SDAI_MARKET?: '1' | '0';
   }
 }

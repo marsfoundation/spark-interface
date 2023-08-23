@@ -67,7 +67,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
 
-        <SpkAirdropNote />
+        {reserve.symbol !== 'sDAI' && <SpkAirdropNote />}
       </Box>
 
       <Box>

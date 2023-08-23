@@ -139,7 +139,9 @@ export const SupplyAssetsList = () => {
             showSwap:
               reserve.symbol === 'DAI' || reserve.symbol === 'USDC' || reserve.symbol === 'sDAI',
             hideSupply:
-              reserve.symbol === 'DAI' || reserve.symbol === 'USDC' || reserve.symbol === 'sDAI',
+              reserve.symbol === 'DAI' ||
+              reserve.symbol === 'USDC' ||
+              (process.env.NEXT_PUBLIC_DISABLE_SDAI_MARKET === '1' && reserve.symbol === 'sDAI'),
           },
         ];
       }
@@ -158,7 +160,9 @@ export const SupplyAssetsList = () => {
         showSwap:
           reserve.symbol === 'DAI' || reserve.symbol === 'USDC' || reserve.symbol === 'sDAI',
         hideSupply:
-          reserve.symbol === 'DAI' || reserve.symbol === 'USDC' || reserve.symbol === 'sDAI',
+          reserve.symbol === 'DAI' ||
+          reserve.symbol === 'USDC' ||
+          (process.env.NEXT_PUBLIC_DISABLE_SDAI_MARKET === '1' && reserve.symbol === 'sDAI'),
       };
     })
     .flat();
