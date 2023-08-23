@@ -52,7 +52,7 @@ export function LiveSDAIBalance() {
         symbol="DAI"
         variant={valueTypographyVariant}
         visibleDecimals={7}
-        compact
+        compact={false}
         symbolsColor="#A5A8B6"
         symbolsVariant={symbolsVariant}
         style={{ fontVariantNumeric: 'tabular-nums' }}
