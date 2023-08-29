@@ -68,7 +68,7 @@ export const BorrowedPositionsListItem = ({
           ) : null
         }
       >
-        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline />}
+        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListButtonsColumn>

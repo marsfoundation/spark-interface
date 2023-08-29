@@ -9,6 +9,7 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -66,6 +67,11 @@ export const SuppliedPositionsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
+      {reserve.symbol === 'ETH' && (
+        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
+          <SpkAirdropNoteInline tokenAmount={6} />
+        </Row>
+      )}
 
       <Row
         caption={<Trans>Used as collateral</Trans>}

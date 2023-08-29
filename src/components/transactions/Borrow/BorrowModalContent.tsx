@@ -339,10 +339,10 @@ export function SpkAirdropNote() {
   return (
     <Warning severity="info" sx={{ my: 6 }}>
       <Trans>
-        DAI borrowers with volatile assets will be eligible for a future ⚡ SPK airdrop. Please read
-        the details on the{' '}
+        DAI borrowers with volatile assets and ETH depositors will be eligible for a future ⚡ SPK
+        airdrop. Please read the details on the{' '}
         <a
-          href="https://forum.makerdao.com/t/sparkdao-spk-pre-farming-airdrop-general-subdao-farming-overview/21595"
+          href="https://forum.makerdao.com/t/proposed-spark-pre-farming-airdrop-formula/21786"
           target="blank"
         >
           Maker governance forum
