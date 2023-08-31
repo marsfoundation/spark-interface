@@ -9,6 +9,7 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -77,7 +78,9 @@ export const SupplyAssetsListItem = ({
             </Trans>
           ) : null
         }
-      />
+      >
+        {symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
+      </ListAPRColumn>
 
       <ListButtonsColumn>
         {!hideSupply && (

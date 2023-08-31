@@ -63,6 +63,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {reserve.symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
       </ListColumn>
 
       <ListColumn>
