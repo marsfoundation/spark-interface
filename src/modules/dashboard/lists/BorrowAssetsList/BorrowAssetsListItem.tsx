@@ -67,7 +67,7 @@ export const BorrowAssetsListItem = ({
           ) : null
         }
       >
-        {symbol === 'DAI' && <SpkAirdropNoteInline />}
+        {symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListButtonsColumn>
@@ -90,14 +90,14 @@ export const BorrowAssetsListItem = ({
   );
 };
 
-export function SpkAirdropNoteInline() {
+export function SpkAirdropNoteInline({ tokenAmount }: { tokenAmount: number }) {
   return (
     <a
-      href="https://forum.makerdao.com/t/sparkdao-spk-pre-farming-airdrop-general-subdao-farming-overview/21595"
+      href="https://forum.makerdao.com/t/proposed-spark-pre-farming-airdrop-formula/21786"
       style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
       target="blank"
     >
-      ⚡ Future Airdrop eligible
+      Eligible for <strong>{tokenAmount}M</strong> SPK⚡ Airdrop
     </a>
   );
 }

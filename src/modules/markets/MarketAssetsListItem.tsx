@@ -63,6 +63,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {reserve.symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
       </ListColumn>
 
       <ListColumn>
@@ -94,7 +95,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline />}
+        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">

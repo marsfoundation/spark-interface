@@ -10,6 +10,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { SpkAirdropNoteInline } from '../dashboard/lists/BorrowAssetsList/BorrowAssetsListItem';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
@@ -98,6 +99,17 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
         </Box>
       </Row>
+
+      {reserve.symbol === 'DAI' && (
+        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
+          <SpkAirdropNoteInline tokenAmount={24} />
+        </Row>
+      )}
+      {reserve.symbol === 'ETH' && (
+        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
+          <SpkAirdropNoteInline tokenAmount={6} />
+        </Row>
+      )}
 
       <Button
         variant="outlined"

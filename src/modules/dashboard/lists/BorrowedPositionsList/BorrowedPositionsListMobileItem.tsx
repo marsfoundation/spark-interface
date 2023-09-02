@@ -9,6 +9,7 @@ import { IncentivesCard } from '../../../../components/incentives/IncentivesCard
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -84,6 +85,11 @@ export const BorrowedPositionsListMobileItem = ({
           currentMarket={currentMarket}
         />
       </Row>
+      {reserve.symbol === 'DAI' && (
+        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
+          <SpkAirdropNoteInline tokenAmount={24} />
+        </Row>
+      )}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
