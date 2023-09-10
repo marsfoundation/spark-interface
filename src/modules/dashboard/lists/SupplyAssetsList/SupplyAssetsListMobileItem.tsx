@@ -87,7 +87,7 @@ export const SupplyAssetsListMobileItem = ({
         />
       </Row>
 
-      {symbol === 'ETH' && (
+      {(symbol === 'ETH' || symbol === 'WETH') && (
         <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
           <SpkAirdropNoteInline tokenAmount={6} />
         </Row>

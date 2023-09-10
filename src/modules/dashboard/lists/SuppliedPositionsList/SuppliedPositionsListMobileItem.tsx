@@ -67,7 +67,7 @@ export const SuppliedPositionsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
-      {reserve.symbol === 'ETH' && (
+      {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
         <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
           <SpkAirdropNoteInline tokenAmount={6} />
         </Row>
