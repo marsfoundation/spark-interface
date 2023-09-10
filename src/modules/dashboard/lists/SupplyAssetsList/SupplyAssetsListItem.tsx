@@ -79,7 +79,7 @@ export const SupplyAssetsListItem = ({
           ) : null
         }
       >
-        {symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
+        {(symbol === 'ETH' || symbol === 'WETH') && <SpkAirdropNoteInline tokenAmount={6} />}
       </ListAPRColumn>
 
       <ListButtonsColumn>
