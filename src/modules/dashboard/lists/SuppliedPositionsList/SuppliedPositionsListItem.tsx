@@ -8,6 +8,7 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
@@ -70,7 +71,9 @@ export const SuppliedPositionsListItem = ({
             </Trans>
           ) : null
         }
-      />
+      >
+        {reserve.symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
+      </ListAPRColumn>
 
       <ListColumn>
         <ListItemUsedAsCollateral

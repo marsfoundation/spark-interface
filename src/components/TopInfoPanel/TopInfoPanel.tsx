@@ -26,6 +26,7 @@ export const TopInfoPanel = ({ children, titleComponent }: TopInfoPanelProps) =>
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
+              justifyContent: { sm: 'center' },
               gap: { xs: 3, xsm: 8 },
               flexWrap: 'wrap',
               width: '100%',

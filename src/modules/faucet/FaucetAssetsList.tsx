@@ -54,11 +54,26 @@ export default function FaucetAssetsList() {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Test Assets</Trans>
-        </Typography>
+        <>
+          <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+            <Trans>Test Assets</Trans>
+          </Typography>
+        </>
       }
     >
+      <Box px={downToXSM ? 4 : 6}>
+        Use{' '}
+        <Link
+          href="https://faucet.paradigm.xyz/"
+          sx={{ textDecoration: 'underline' }}
+          variant="caption"
+          color="text.secondary"
+        >
+          Paradigm Faucet
+        </Link>{' '}
+        to request testnet ether. With that you can borrow DAI or any other available asset.
+      </Box>
+
       <ListHeaderWrapper px={downToXSM ? 4 : 6}>
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>

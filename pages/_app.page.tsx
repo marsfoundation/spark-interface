@@ -10,6 +10,7 @@ import Head from 'next/head';
 import SparkMetaImage from 'public/sparkMetaLogo-min.jpg';
 import * as React from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
+import { BlockVPN } from 'src/components/BlockVPN';
 import { Meta } from 'src/components/Meta';
 import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
@@ -55,6 +56,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -66,37 +68,39 @@ export default function MyApp(props: MyAppProps) {
         imageUrl={SparkMetaImage.src}
       />
       <LanguageProvider>
-        <Web3ReactProvider getLibrary={getWeb3Library}>
-          <Web3ContextProvider>
-            <AppGlobalStyles>
-              <AddressBlocked>
-                <PermissionProvider>
-                  <ModalContextProvider>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <PSMSwapModal />
-                          <MigrateV3Modal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
-                  </ModalContextProvider>
-                </PermissionProvider>
-              </AddressBlocked>
-            </AppGlobalStyles>
-          </Web3ContextProvider>
-        </Web3ReactProvider>
+        <BlockVPN>
+          <Web3ReactProvider getLibrary={getWeb3Library}>
+            <Web3ContextProvider>
+              <AppGlobalStyles>
+                <AddressBlocked>
+                  <PermissionProvider>
+                    <ModalContextProvider>
+                      <BackgroundDataProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                            <PSMSwapModal />
+                            <MigrateV3Modal />
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </BackgroundDataProvider>
+                    </ModalContextProvider>
+                  </PermissionProvider>
+                </AddressBlocked>
+              </AppGlobalStyles>
+            </Web3ContextProvider>
+          </Web3ReactProvider>
+        </BlockVPN>
       </LanguageProvider>
     </CacheProvider>
   );

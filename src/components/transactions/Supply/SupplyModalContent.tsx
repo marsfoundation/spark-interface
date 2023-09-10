@@ -215,6 +215,7 @@ export const SupplyModalContent = ({
 
   return (
     <>
+      {symbol === 'sDAI' && <SDAIYieldNote />}
       {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
       {supplyCap.determineWarningDisplay({ supplyCap })}
       {debtCeiling.determineWarningDisplay({ debtCeiling })}
@@ -282,3 +283,11 @@ export const SupplyModalContent = ({
     </>
   );
 };
+
+function SDAIYieldNote() {
+  return (
+    <Warning severity="info" sx={{ my: 6 }}>
+      You do not have to deposit sDAI to earn DSR yield.
+    </Warning>
+  );
+}

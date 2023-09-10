@@ -1,11 +1,14 @@
 import { USD_DECIMALS } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import {
   DetailsNumberLine,
+  DetailsPSMDeposit,
   DetailsPSMSwap,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
@@ -21,6 +24,7 @@ import { Link } from '../../primitives/Link';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { PSMSwapActions, PSMSwapActionType } from './PSMSwapActions';
+import { YieldForecast } from './YieldForecast';
 
 export const PSMSwapModalContent = ({
   poolReserve,
@@ -90,10 +94,16 @@ export const PSMSwapModalContent = ({
 
   // Calculation of future HF
   const amountIntEth = new BigNumber(amount).multipliedBy(
-    poolReserve.formattedPriceInMarketReferenceCurrency
+    poolReserveSwapFrom.formattedPriceInMarketReferenceCurrency
   );
-  // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
+
+  const insufficientFunds = maxAmountToSwap.isLessThan(amount);
+  const issDAIDeposit = poolReserveSwapFrom.symbol === 'DAI' && poolReserve.symbol === 'sDAI';
+  const issDAIPage =
+    (poolReserveSwapFrom.symbol === 'DAI' && poolReserve.symbol === 'sDAI') ||
+    (poolReserveSwapFrom.symbol === 'sDAI' && poolReserve.symbol === 'DAI');
+  const sDAIAmount = currentExchangeRate.multipliedBy(amount ? amount : 0);
 
   if (supplyTxState.success)
     return (
@@ -126,34 +136,64 @@ export const PSMSwapModalContent = ({
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        maxValue={maxAmountToSwap.toString(10)}
+        dsr
       />
 
-      <TxModalDetails gasLimit={gasLimit}>
+      {insufficientFunds ? (
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+          <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
+            Insufficient funds
+          </Button>
+        </Box>
+      ) : (
+        <PSMSwapActions
+          type={type}
+          poolReserve={poolReserve}
+          amountToSwap={amount}
+          isWrongNetwork={isWrongNetwork}
+          exchangeRate={currentExchangeRate.toNumber()}
+        />
+      )}
+
+      <TxModalDetails
+        gasLimit={gasLimit}
+        hideGasCalc={insufficientFunds}
+        collapsible={issDAIDeposit}
+      >
         <DetailsNumberLine
           description={<Trans>Exchange Rate</Trans>}
           value={1}
           futureValue={currentExchangeRate.toNumber()}
           visibleDecimals={4}
         />
-        <DetailsPSMSwap
-          description={<Trans>You receive</Trans>}
-          symbol={poolReserve.symbol}
-          iconSymbol={poolReserve.iconSymbol}
-          visibleDecimals={2}
-          value={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
-        />
+        {issDAIDeposit ? (
+          <DetailsPSMDeposit sDAIValue={sDAIAmount.toNumber()} DAIValue={amount ? amount : 0} />
+        ) : (
+          <DetailsPSMSwap
+            description={<Trans>You receive</Trans>}
+            symbol={poolReserve.symbol}
+            iconSymbol={poolReserve.iconSymbol}
+            visibleDecimals={2}
+            value={currentExchangeRate.multipliedBy(amount ? amount : 0).toNumber()}
+          />
+        )}
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <PSMSwapActions
-        type={type}
-        poolReserve={poolReserve}
-        amountToSwap={amount}
-        isWrongNetwork={isWrongNetwork}
-        exchangeRate={currentExchangeRate.toNumber()}
-      />
+      {issDAIDeposit && <YieldForecast sharesAmount={sDAIAmount} />}
+
+      {issDAIPage && <InfoBox />}
     </>
   );
 };
+
+function InfoBox() {
+  return (
+    <Warning severity="info">
+      sDAI is similar to DAI but with the added benefit of earning interest. You can use it just
+      like DAI - own, transfer, and use it in the DeFi ecosystem. Swapping between sDAI and DAI
+      incurs no additional costs and no slippage as it is deposited or withdrawn from the DSR contract.
+    </Warning>
+  );
+}

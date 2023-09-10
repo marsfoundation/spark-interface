@@ -4,7 +4,7 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -18,6 +18,8 @@ import { GasStation } from '../GasStation/GasStation';
 export interface TxModalDetailsProps {
   gasLimit?: string;
   slippageSelector?: ReactNode;
+  hideGasCalc?: boolean;
+  collapsible?: boolean;
 }
 
 const ArrowRightIcon = (
@@ -30,27 +32,45 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   gasLimit,
   slippageSelector,
   children,
+  hideGasCalc,
+  collapsible,
 }) => {
+  const [collapsed, setCollapsed] = useState(true);
+
   return (
     <Box sx={{ pt: 5 }}>
-      <Typography sx={{ mb: 1 }} color="text.secondary">
-        <Trans>Transaction overview</Trans>
-      </Typography>
-
       <Box
-        sx={(theme) => ({
-          p: 3,
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '4px',
-          '.MuiBox-root:last-of-type': {
-            mb: 0,
-          },
-        })}
+        sx={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+        }}
       >
-        {children}
+        <Typography sx={{ mb: 1 }} color="text.secondary">
+          <Trans>Transaction overview</Trans>
+        </Typography>
+
+        {collapsible && (
+          <CollapsibleButton collapsed={collapsed} onClick={() => setCollapsed(!collapsed)} />
+        )}
       </Box>
+
+      {(!collapsible || !collapsed) && (
+        <Box
+          sx={(theme) => ({
+            p: 3,
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: '4px',
+            '.MuiBox-root:last-of-type': {
+              mb: 0,
+            },
+          })}
+        >
+          {children}
+        </Box>
+      )}
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+        {!hideGasCalc && <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />}
         {slippageSelector}
       </Box>
     </Box>
@@ -391,3 +411,66 @@ export const DetailsPSMSwap = ({
     </Row>
   );
 };
+
+interface DetailsPSMDepositProps {
+  sDAIValue: FormattedNumberProps['value'];
+  DAIValue: FormattedNumberProps['value'];
+}
+
+export const DetailsPSMDeposit = ({ sDAIValue, DAIValue }: DetailsPSMDepositProps) => {
+  return (
+    <Row caption={'You receive'} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <FormattedNumber value={sDAIValue} variant="secondary14" sx={{ margin: '0 8px' }} />
+        <TokenIcon symbol="sDAI" sx={{ mr: 1, fontSize: '16px', display: { xs: 'none' } }} />
+        sDAI worth{' '}
+        <FormattedNumber value={DAIValue} variant="secondary14" sx={{ margin: '0 8px' }} />{' '}
+        <TokenIcon symbol="DAI" sx={{ mr: 1, fontSize: '16px', display: { xs: 'none' } }} /> DAI
+      </Box>
+    </Row>
+  );
+};
+
+export function CollapsibleButton({
+  collapsed,
+  onClick,
+}: {
+  collapsed: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        cursor: 'pointer',
+        minHeight: '28px',
+        zIndex: '1',
+        pl: 3,
+        span: {
+          width: '14px',
+          height: '2px',
+          bgcolor: 'text.secondary',
+          position: 'relative',
+          ml: 1,
+          '&:after': {
+            content: "''",
+            position: 'absolute',
+            width: '14px',
+            height: '2px',
+            bgcolor: 'text.secondary',
+            transition: 'all 0.2s ease',
+            transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
+            opacity: collapsed ? 1 : 0,
+          },
+        },
+      }}
+      onClick={onClick}
+    >
+      <Typography variant="buttonM" color="text.secondary">
+        {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
+      </Typography>
+      <span />
+    </Box>
+  );
+}

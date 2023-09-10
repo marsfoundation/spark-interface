@@ -57,7 +57,7 @@ export const MigrationListItem = ({
   canBeEnforced,
 }: MigrationListItemProps) => {
   const theme = useTheme();
-  const { currentMarket, currentMarketData } = useRootStore();
+  const { currentMarket } = useRootStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isTablet = useMediaQuery(theme.breakpoints.up(655));
   const isMobile = useMediaQuery(theme.breakpoints.down(655));
@@ -159,7 +159,7 @@ export const MigrationListItem = ({
                 {disabled !== undefined && (
                   <MigrationDisabledTooltip
                     dashboardLink={ROUTES.dashboard + '/?marketName=' + currentMarket + '_v3'}
-                    marketName={currentMarketData.marketTitle}
+                    marketName={'Spark'}
                     warningType={disabled}
                     isolatedV3={!enteringIsolation}
                   />

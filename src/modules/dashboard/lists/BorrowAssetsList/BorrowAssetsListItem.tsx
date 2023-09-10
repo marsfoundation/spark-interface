@@ -61,12 +61,14 @@ export const BorrowAssetsListItem = ({
         tooltip={
           symbol === 'DAI' ? (
             <Trans>
-              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
-              unless Maker needs to reclaim capital.
+              This rate is set by MakerDAO Governance and will not change based on usage unless
+              Maker needs to reclaim capital.
             </Trans>
           ) : null
         }
-      />
+      >
+        {symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
+      </ListAPRColumn>
 
       <ListButtonsColumn>
         <Button
@@ -87,3 +89,15 @@ export const BorrowAssetsListItem = ({
     </ListItemWrapper>
   );
 };
+
+export function SpkAirdropNoteInline({ tokenAmount }: { tokenAmount: number }) {
+  return (
+    <a
+      href="https://forum.makerdao.com/t/proposed-spark-pre-farming-airdrop-formula/21786"
+      style={{ textDecoration: 'none', color: 'inherit', textAlign: 'center' }}
+      target="blank"
+    >
+      Eligible for <strong>{tokenAmount}M</strong> SPK⚡ Airdrop
+    </a>
+  );
+}

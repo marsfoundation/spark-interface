@@ -9,6 +9,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { SpkAirdropNote } from 'src/components/transactions/Borrow/BorrowModalContent';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
@@ -65,6 +66,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         <Typography variant="h3">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
+
+        {reserve.symbol !== 'sDAI' && <SpkAirdropNote />}
       </Box>
 
       <Box>
@@ -279,18 +282,15 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               {reserve.symbol === 'DAI' && dsr != null && (
                 <Typography variant="caption" color="text.secondary" paddingTop="24px">
                   <Trans>
-                    Please note that unlike other markets, the Dai borrow rate does not depend on
-                    the utilization. The rate will always be anchored to the Dai Savings Rate (DSR)
-                    which is set by Maker Governance. The DSR is expected to track below the US
-                    Federal Funds Rate, but may deviate from this based on Maker Governance
-                    requirements. You can read more about the DSR your{' '}
+                    Please note that unlike other markets, the DAI borrow rate does not depend on
+                    the utilization. The rate is set by MakerDAO Governance's{' '}
                     <Link
-                      href="https://manual.makerdao.com/parameter-index/core/param-dai-savings-rate"
+                      href="https://forum.makerdao.com/tag/stability-scope"
                       sx={{ textDecoration: 'underline' }}
                       variant="caption"
                       color="text.secondary"
                     >
-                      here
+                      Stability Scope
                     </Link>
                     .
                   </Trans>

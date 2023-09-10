@@ -104,6 +104,9 @@ export const selectRho = (state: RootStore) => {
 export const selectRealChi = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.realChi;
 };
+export const selectDaiInDSR = (state: RootStore) => {
+  return selectCurrentUserLendingPoolData(state)?.daiInDSR;
+};
 export const selectRealDSR = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.realDSR;
 };

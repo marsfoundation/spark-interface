@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { PredictableAPYTooltip } from 'src/components/infoTooltips/PredictableAPYTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -34,6 +35,8 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
+  const symbol = reserve.symbol;
+
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -135,11 +138,19 @@ export const BorrowInfo = ({
         )}
         <PanelItem
           title={
-            <VariableAPYTooltip
-              text={<Trans>APY, variable</Trans>}
-              key="APY_res_variable_type"
-              variant="description"
-            />
+            symbol === 'DAI' ? (
+              <PredictableAPYTooltip
+                text={<Trans>APY, predictable</Trans>}
+                key="APY_res_predictable_type"
+                variant="description"
+              />
+            ) : (
+              <VariableAPYTooltip
+                text={<Trans>APY, variable</Trans>}
+                key="APY_res_variable_type"
+                variant="description"
+              />
+            )
           }
         >
           <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />

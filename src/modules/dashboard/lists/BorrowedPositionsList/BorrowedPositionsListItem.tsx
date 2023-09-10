@@ -6,6 +6,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
@@ -61,12 +62,14 @@ export const BorrowedPositionsListItem = ({
         tooltip={
           reserve.symbol === 'DAI' ? (
             <Trans>
-              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
-              unless Maker needs to reclaim capital.
+              This rate is set by MakerDAO Governance and will not change based on usage unless
+              Maker needs to reclaim capital.
             </Trans>
           ) : null
         }
-      />
+      >
+        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
+      </ListAPRColumn>
 
       <ListButtonsColumn>
         <Button

@@ -34,50 +34,85 @@ export const ConnectWalletPaper = ({
       }}
     >
       {theme.palette.mode === 'light' ? (
-        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '400px' }} />
+        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '250px' }} />
       ) : (
-        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '400px' }} />
+        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '250px' }} />
       )}
       <>
         {loading ? (
           <CircularProgress />
         ) : (
           <>
-            <Typography
-              sx={{
-                mb: 6,
-                textAlign: 'left',
-                maxWidth: '700px',
-                marginBottom: '50px',
-                padding: '15px 20px',
-                borderRadius: '6px',
-              }}
-            >
-              {description || (
-                <Trans>
-                  By using this Site, I have read and agree to the Terms of Use and Privacy Policy.
-                  <br />
-                  <br />
-                  - I am not the person or entities who reside in, are citizens of, are incorporated
-                  in, or have a registered office in the United States of America or any Prohibited
-                  Localities, as defined in the Terms of Use.
-                  <br />
-                  - I will not in the future access this site while located within the United States
-                  or any Prohibited Localities, as defined in the Terms of Use.
-                  <br />
-                  - I am not using, and will not in the future use, a VPN to mask my physical
-                  location from a restricted territory.
-                  <br />
-                  - I am lawfully permitted to access this site and use it&#39;s services under the
-                  laws of the jurisdiction in which I reside and am located.
-                  <br />- I understand the risks associated with entering into using the Spark.
-                </Trans>
-              )}
-            </Typography>
+            {description ? (
+              <Typography
+                sx={{
+                  mb: 6,
+                  textAlign: 'left',
+                  maxWidth: '700px',
+                  marginBottom: '50px',
+                  padding: '15px 20px',
+                  borderRadius: '6px',
+                }}
+              >
+                {description}
+              </Typography>
+            ) : (
+              <Disclaimers />
+            )}
             <ConnectWalletButton />
           </>
         )}
       </>
     </Paper>
+  );
+};
+
+export const Disclaimers = () => {
+  return (
+    <Typography
+      sx={{
+        mb: 6,
+        textAlign: 'left',
+        maxWidth: '700px',
+        marginBottom: '50px',
+        padding: '15px 20px',
+        borderRadius: '6px',
+      }}
+    >
+      (
+      <Trans>
+        By using this Site, I have read and agree to the{' '}
+        <a href="https://www.sparkprotocol.io/terms-of-use.html" target="blank">
+          Terms of Use
+        </a>{' '}
+        and{' '}
+        <a href="https://www.sparkprotocol.io/privacy-policy.html" target="blank">
+          Privacy Policy
+        </a>
+        .
+        <br />
+        <br />- I am not the person or entities who reside in, are citizens of, are incorporated in,
+        or have a registered office in the United States of America or any Prohibited Localities, as
+        defined in the{' '}
+        <a href="https://www.sparkprotocol.io/terms-of-use.html" target="blank">
+          Terms of Use
+        </a>
+        .
+        <br />- I will not in the future access this site while located within the United States or
+        any Prohibited Localities, as defined in the{' '}
+        <a href="https://www.sparkprotocol.io/terms-of-use.html" target="blank">
+          Terms of Use
+        </a>
+        .
+        <br />
+        - I am not using, and will not in the future use, a VPN to mask my physical location from a
+        restricted territory.
+        <br />
+        - I am lawfully permitted to access this site and use it&#39;s services under the laws of
+        the jurisdiction in which I reside and am located.
+        <br />- I understand the risks associated with entering into using the Spark.
+      </Trans>
+      )
+    </Typography>
   );
 };

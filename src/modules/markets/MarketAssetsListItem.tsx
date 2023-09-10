@@ -14,6 +14,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { SpkAirdropNoteInline } from '../dashboard/lists/BorrowAssetsList/BorrowAssetsListItem';
 import { ListAPRColumn } from '../dashboard/lists/ListAPRColumn';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
@@ -62,6 +63,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {reserve.symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
       </ListColumn>
 
       <ListColumn>
@@ -84,8 +86,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         tooltip={
           reserve.symbol === 'DAI' ? (
             <Trans>
-              This rate is anchored to the Dai Savings Rate (DSR) and will not change based on usage
-              unless Maker needs to reclaim capital.
+              This rate is set by MakerDAO Governance and will not change based on usage unless
+              Maker needs to reclaim capital.
             </Trans>
           ) : null
         }
@@ -93,6 +95,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
+        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">

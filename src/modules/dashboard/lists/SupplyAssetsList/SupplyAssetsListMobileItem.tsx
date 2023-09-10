@@ -14,6 +14,7 @@ import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 
 export const SupplyAssetsListMobileItem = ({
   symbol,
@@ -85,6 +86,12 @@ export const SupplyAssetsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
+
+      {symbol === 'ETH' && (
+        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
+          <SpkAirdropNoteInline tokenAmount={6} />
+        </Row>
+      )}
 
       <Row
         caption={<Trans>Can be collateral</Trans>}

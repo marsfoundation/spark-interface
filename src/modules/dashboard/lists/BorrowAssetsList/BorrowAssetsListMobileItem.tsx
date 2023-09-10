@@ -13,6 +13,7 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
+import { SpkAirdropNoteInline } from './BorrowAssetsListItem';
 
 export const BorrowAssetsListMobileItem = ({
   symbol,
@@ -75,6 +76,12 @@ export const BorrowAssetsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
+
+      {symbol === 'DAI' && (
+        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
+          <SpkAirdropNoteInline tokenAmount={24} />
+        </Row>
+      )}
 
       <Row
         caption={

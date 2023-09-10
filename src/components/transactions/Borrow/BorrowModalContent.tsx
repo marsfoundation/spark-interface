@@ -219,8 +219,10 @@ export const BorrowModalContent = ({
     interestRateMode === InterestRate.Stable
       ? poolReserve.sIncentivesData
       : poolReserve.vIncentivesData;
+
   return (
     <>
+      {symbol === 'DAI' && <SpkAirdropNote />}
       {borrowCap.determineWarningDisplay({ borrowCap })}
       <AssetInput
         value={amount}
@@ -332,3 +334,21 @@ export const BorrowModalContent = ({
     </>
   );
 };
+
+export function SpkAirdropNote() {
+  return (
+    <Warning severity="info" sx={{ my: 6 }}>
+      <Trans>
+        DAI borrowers with volatile assets and ETH depositors will be eligible for a future ⚡ SPK
+        airdrop. Please read the details on the{' '}
+        <a
+          href="https://forum.makerdao.com/t/proposed-spark-pre-farming-airdrop-formula/21786"
+          target="blank"
+        >
+          Maker governance forum
+        </a>
+        .
+      </Trans>
+    </Warning>
+  );
+}
