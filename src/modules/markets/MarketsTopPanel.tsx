@@ -2,6 +2,8 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
+import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
 import TotalBorrowIcon from '../../../public/icons/markets/total-borrow-indicator.svg';
@@ -10,8 +12,6 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
-import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();

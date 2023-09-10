@@ -180,7 +180,7 @@ export const MarketSwitcher = () => {
             value={marketId}
             sx={{
               '.MuiListItemIcon-root': { minWidth: 'unset' },
-              display: 'flex',
+              display: market.v3 ? 'flex' : 'none',
             }}
           >
             <MarketLogo

@@ -11,10 +11,10 @@ import { IncentivesCard } from '../../../../components/incentives/IncentivesCard
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 
 export const SupplyAssetsListMobileItem = ({
   symbol,

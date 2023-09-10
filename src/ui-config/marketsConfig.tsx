@@ -53,8 +53,8 @@ export enum CustomMarket {
   // v3 test networks
   proto_spark_goerli_v3 = 'proto_spark_goerli_v3',
   // v3 mainnets
-  proto_spark_v3_mainnet = 'proto_spark_v3_mainnet',
-
+  proto_spark_v3 = 'proto_spark_v3',
+  proto_mainnet = 'proto_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -62,8 +62,8 @@ export enum CustomMarket {
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
-  [CustomMarket.proto_spark_v3_mainnet]: {
-    marketTitle: 'Spark Protocol Mainnet',
+  [CustomMarket.proto_spark_v3]: {
+    marketTitle: 'Spark Protocol',
     v3: true,
     chainId: ChainId.mainnet,
     enabledFeatures: {
@@ -83,8 +83,6 @@ export const marketsData: {
       V3_MIGRATOR: '0xe2a3C1ff038E14d401cA6dE0673a598C33168460',
     },
   },
-
-  // --- testnets
   [CustomMarket.proto_spark_goerli_v3]: {
     marketTitle: 'Spark Protocol Görli',
     v3: true,
@@ -103,6 +101,23 @@ export const marketsData: {
       COLLECTOR: '0x0D56700c90a690D8795D6C148aCD94b12932f4E3',
       CHAINLOG: '0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F',
       SAVINGS_DAI: '0xd8134205b0328f5676aaefb3b2a0dc15f4029d8c',
+    },
+  },
+  [CustomMarket.proto_mainnet]: {
+    marketTitle: 'Aave V2',
+    chainId: ChainId.mainnet,
+    enabledFeatures: {},
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
+      LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
+      WETH_GATEWAY: '0xEFFC18fC3b7eb8E676dac549E0c693ad50D1Ce31',
+      WALLET_BALANCE_PROVIDER: '0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922',
+      UI_POOL_DATA_PROVIDER: '0x00e50FAB64eBB37b87df06Aa46b8B35d5f1A4e1A',
+      UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
+      COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
+      CHAINLOG: '0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F',
+      SAVINGS_DAI: '0x83f20f44975d03b1b09e64809b757c47f942beea',
+      V3_MIGRATOR: '0xe2a3C1ff038E14d401cA6dE0673a598C33168460',
     },
   },
 } as const;

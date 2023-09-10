@@ -193,7 +193,8 @@ function InfoBox() {
     <Warning severity="info">
       sDAI is similar to DAI but with the added benefit of earning interest. You can use it just
       like DAI - own, transfer, and use it in the DeFi ecosystem. Swapping between sDAI and DAI
-      incurs no additional costs and no slippage as it is deposited or withdrawn from the DSR contract.
+      incurs no additional costs and no slippage as it is deposited or withdrawn from the DSR
+      contract.
     </Warning>
   );
 }
