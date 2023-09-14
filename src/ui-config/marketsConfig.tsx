@@ -34,8 +34,8 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
     COLLECTOR?: string;
-    CHAINLOG: string;
-    SAVINGS_DAI: string;
+    CHAINLOG?: string;
+    SAVINGS_DAI?: string;
     V3_MIGRATOR?: string;
   };
   /**
@@ -57,6 +57,7 @@ export enum CustomMarket {
   proto_mainnet = 'proto_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
+  gnosis = 'gnosis',
 }
 
 export const marketsData: {
@@ -118,6 +119,24 @@ export const marketsData: {
       CHAINLOG: '0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F',
       SAVINGS_DAI: '0x83f20f44975d03b1b09e64809b757c47f942beea',
       V3_MIGRATOR: '0xe2a3C1ff038E14d401cA6dE0673a598C33168460',
+    },
+  },
+  [CustomMarket.gnosis]: {
+    marketTitle: 'Gnosis',
+    chainId: ChainId.xdai,
+    v3: true,
+    enabledFeatures: {
+      liquiditySwap: false,
+      collateralRepay: false,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xA98DaCB3fC964A6A0d2ce3B77294241585EAbA6d'.toLowerCase(),
+      LENDING_POOL: '0x2Dae5307c5E3FD1CF5A72Cb6F698f915860607e0',
+      WETH_GATEWAY: '0xBD7D6a9ad7865463DE44B05F04559f65e3B11704',
+      WALLET_BALANCE_PROVIDER: '0xd2AeF86F51F92E8e49F42454c287AE4879D1BeDc',
+      UI_POOL_DATA_PROVIDER: '0xF028c2F4b19898718fD0F77b9b881CbfdAa5e8Bb',
+      UI_INCENTIVE_DATA_PROVIDER: '0xA7F8A757C4f7696c015B595F51B2901AC0121B18',
+      COLLECTOR: '0xb9E6DBFa4De19CCed908BcbFe1d015190678AB5f',
     },
   },
 } as const;

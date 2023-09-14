@@ -170,19 +170,15 @@ export const createPoolSlice: StateCreator<
       const account = get().account;
       const currentChainId = get().currentChainId;
       const currentMarketData = marketData || get().currentMarketData;
-      const chainlogService = new ChainlogService(
-        get().jsonRpcProvider(),
-        currentMarketData.addresses.CHAINLOG
-      );
-      const savingsDaiService = new SavingsDaiService(
-        get().jsonRpcProvider(),
-        currentMarketData.addresses.SAVINGS_DAI
-      );
-      const psmService = new PsmService(
-        get().jsonRpcProvider(),
-        currentMarketData.addresses.CHAINLOG,
-        'USDC'
-      );
+      const chainlogService = currentMarketData.addresses.CHAINLOG
+        ? new ChainlogService(get().jsonRpcProvider(), currentMarketData.addresses.CHAINLOG)
+        : undefined;
+      const savingsDaiService = currentMarketData.addresses.SAVINGS_DAI
+        ? new SavingsDaiService(get().jsonRpcProvider(), currentMarketData.addresses.SAVINGS_DAI)
+        : undefined;
+      const psmService = currentMarketData.addresses.CHAINLOG
+        ? new PsmService(get().jsonRpcProvider(), currentMarketData.addresses.CHAINLOG, 'USDC')
+        : undefined;
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
         provider: get().jsonRpcProvider(),
@@ -190,6 +186,7 @@ export const createPoolSlice: StateCreator<
       });
 
       async function getSDaiTotalAssets(): Promise<BigNumber> {
+        if (!savingsDaiService) return new BigNumber(0);
         const savingsDaiContract = savingsDaiService.getContractInstance(
           savingsDaiService.savingsDaiAddress
         );
@@ -210,49 +207,51 @@ export const createPoolSlice: StateCreator<
             poolDataProviderContract.getReservesHumanized({
               lendingPoolAddressProvider,
             }),
-            Promise.all([
-              chainlogService.getAddress('MCD_POT'),
-              chainlogService.getAddress('MCD_VAT'),
-            ]).then(([potAddress, vatAddress]) => {
-              const potService = new PotService(get().jsonRpcProvider(), potAddress);
+            chainlogService
+              ? Promise.all([
+                  chainlogService.getAddress('MCD_POT'),
+                  chainlogService.getAddress('MCD_VAT'),
+                ]).then(([potAddress, vatAddress]) => {
+                  const potService = new PotService(get().jsonRpcProvider(), potAddress);
 
-              async function getRho(): Promise<BigNumber> {
-                const pot = potService.getContractInstance(potService.potAddress);
-                const rho = await pot.rho();
-                return new BigNumber(rho._hex);
-              }
-              async function getRealChi(): Promise<BigNumber> {
-                const pot = potService.getContractInstance(potService.potAddress);
-                const chi = await pot.chi();
-                return new BigNumber(chi._hex);
-              }
-              async function getRealDSR(): Promise<BigNumber> {
-                const pot = potService.getContractInstance(potService.potAddress);
-                const dsr = await pot.dsr();
-                return new BigNumber(dsr._hex);
-              }
-              async function getDaiInDSR(): Promise<BigNumber> {
-                const vat = new Contract(
-                  vatAddress,
-                  ['function dai(address user) view returns (uint balance)'],
-                  get().jsonRpcProvider()
-                );
-                const daiInRad = await vat.dai(potAddress);
-                return new BigNumber(daiInRad._hex).div('1' + '0'.repeat(45));
-              }
+                  async function getRho(): Promise<BigNumber> {
+                    const pot = potService.getContractInstance(potService.potAddress);
+                    const rho = await pot.rho();
+                    return new BigNumber(rho._hex);
+                  }
+                  async function getRealChi(): Promise<BigNumber> {
+                    const pot = potService.getContractInstance(potService.potAddress);
+                    const chi = await pot.chi();
+                    return new BigNumber(chi._hex);
+                  }
+                  async function getRealDSR(): Promise<BigNumber> {
+                    const pot = potService.getContractInstance(potService.potAddress);
+                    const dsr = await pot.dsr();
+                    return new BigNumber(dsr._hex);
+                  }
+                  async function getDaiInDSR(): Promise<BigNumber> {
+                    const vat = new Contract(
+                      vatAddress,
+                      ['function dai(address user) view returns (uint balance)'],
+                      get().jsonRpcProvider()
+                    );
+                    const daiInRad = await vat.dai(potAddress);
+                    return new BigNumber(daiInRad._hex).div('1' + '0'.repeat(45));
+                  }
 
-              return Promise.all([
-                potService.getDaiSavingsRate(),
-                savingsDaiService.previewDeposit('1'),
-                psmService.tin(),
-                psmService.tout(),
-                getSDaiTotalAssets(),
-                getRho(),
-                getRealChi(),
-                getRealDSR(),
-                getDaiInDSR(),
-              ]);
-            }),
+                  return Promise.all([
+                    potService.getDaiSavingsRate(),
+                    savingsDaiService?.previewDeposit('1'),
+                    psmService?.tin(),
+                    psmService?.tout(),
+                    getSDaiTotalAssets(),
+                    getRho(),
+                    getRealChi(),
+                    getRealDSR(),
+                    getDaiInDSR(),
+                  ]);
+                })
+              : Promise.resolve([]),
           ]).then(
             ([
               reservesResponse,
@@ -389,43 +388,36 @@ export const createPoolSlice: StateCreator<
     },
     buyGem: async (args) => {
       const userAddress = get().account;
-      const service = new PsmService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG,
-        'USDC'
-      );
+      const chainlog = get().currentMarketData.addresses.CHAINLOG;
+      if (!chainlog) return [];
+      const service = new PsmService(get().jsonRpcProvider(), chainlog, 'USDC');
       return service.buyGem({ ...args, userAddress });
     },
     sellGem: async (args) => {
       const userAddress = get().account;
-      const service = new PsmService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG,
-        'USDC'
-      );
+      const chainlog = get().currentMarketData.addresses.CHAINLOG;
+      if (!chainlog) return [];
+      const service = new PsmService(get().jsonRpcProvider(), chainlog, 'USDC');
       return service.sellGem({ ...args, userAddress });
     },
     sDAIDeposit: async (args) => {
       const userAddress = get().account;
-      const service = new SavingsDaiService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.SAVINGS_DAI
-      );
+      const savingsDai = get().currentMarketData.addresses.SAVINGS_DAI;
+      if (!savingsDai) return [];
+      const service = new SavingsDaiService(get().jsonRpcProvider(), savingsDai);
       return service.deposit({ ...args, userAddress });
     },
     sDAIRedeem: async (args) => {
       const userAddress = get().account;
-      const service = new SavingsDaiService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.SAVINGS_DAI
-      );
+      const savingsDai = get().currentMarketData.addresses.SAVINGS_DAI;
+      if (!savingsDai) return [];
+      const service = new SavingsDaiService(get().jsonRpcProvider(), savingsDai);
       return service.redeem({ ...args, userAddress });
     },
     getDaiSavingsRate: async () => {
-      const chainlogService = new ChainlogService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG
-      );
+      const chainlog = get().currentMarketData.addresses.CHAINLOG;
+      if (!chainlog) return;
+      const chainlogService = new ChainlogService(get().jsonRpcProvider(), chainlog);
       const service = new PotService(
         get().jsonRpcProvider(),
         await chainlogService.getAddress('MCD_POT')
@@ -433,10 +425,9 @@ export const createPoolSlice: StateCreator<
       return service.getDaiSavingsRate();
     },
     getChi: async () => {
-      const chainlogService = new ChainlogService(
-        get().jsonRpcProvider(),
-        get().currentMarketData.addresses.CHAINLOG
-      );
+      const chainlog = get().currentMarketData.addresses.CHAINLOG;
+      if (!chainlog) return;
+      const chainlogService = new ChainlogService(get().jsonRpcProvider(), chainlog);
       const service = new PotService(
         get().jsonRpcProvider(),
         await chainlogService.getAddress('MCD_POT')
