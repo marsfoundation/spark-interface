@@ -10,6 +10,7 @@ import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
 import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
@@ -53,10 +54,13 @@ export default function SDAI() {
             </Box>
           }
         >
-          <Warning severity="warning" sx={{ my: 6 }}>
-            <Trans>sDAI is not available in this market, please switch to another one.</Trans>
-          </Warning>
+          <TopInfoPanelItem hideIcon title={null}>
+            <Warning severity="warning">
+              <Trans>sDAI is not available in this market, please switch to another one.</Trans>
+            </Warning>
+          </TopInfoPanelItem>
         </TopInfoPanel>
+        <ContentContainer />
       </>
     );
   }
