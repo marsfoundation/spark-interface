@@ -34,9 +34,10 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
 
   const isEModeDisabled = userEmodeCategoryId === 0;
 
-  const EModeLabelMessage = () => (
-    <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
-  );
+  const EModeLabelMessage = () =>
+    _eModes[userEmodeCategoryId] ? (
+      <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
+    ) : null;
 
   const eModes = Object.keys(_eModes).length;
 

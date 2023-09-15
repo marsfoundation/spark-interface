@@ -197,7 +197,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        loading: !reserves.length || (!!currentAccount && userReserves === undefined),
+        loading: !reserves || (!!currentAccount && userReserves === undefined),
         reserves: formattedPoolReserves,
         eModes,
         user: {
