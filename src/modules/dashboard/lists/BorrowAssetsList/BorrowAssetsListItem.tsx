@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -27,6 +28,7 @@ export const BorrowAssetsListItem = ({
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
+  const showAirdropInfo = useShowAirdropInfo();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
@@ -67,7 +69,7 @@ export const BorrowAssetsListItem = ({
           ) : null
         }
       >
-        {symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
+        {symbol === 'DAI' && showAirdropInfo && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListButtonsColumn>

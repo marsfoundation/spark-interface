@@ -17,6 +17,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 
@@ -112,6 +113,7 @@ export const BorrowModalContent = ({
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
+  const showAirdropInfo = useShowAirdropInfo();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -222,7 +224,7 @@ export const BorrowModalContent = ({
 
   return (
     <>
-      {symbol === 'DAI' && <SpkAirdropNote />}
+      {symbol === 'DAI' && showAirdropInfo && <SpkAirdropNote />}
       {borrowCap.determineWarningDisplay({ borrowCap })}
       <AssetInput
         value={amount}

@@ -350,7 +350,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://gnosisscan.io',
     isTestnet: false,
-    networkLogoPath: 'https://docs.gnosischain.com/img/tokens/xdai.png',
+    networkLogoPath: '/icons/networks/gnosis.png',
     bridge: undefined, //todo
   },
 } as const;

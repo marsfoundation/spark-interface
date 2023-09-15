@@ -5,17 +5,22 @@ import { useState } from 'react';
 import { Disclaimers } from 'src/components/ConnectWalletPaper';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
+import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { ModalWrapper } from 'src/components/transactions/FlowCommons/ModalWrapper';
 import { PSMSwapModalContent } from 'src/components/transactions/PSMSwap/PSMSwapModalContent';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { AddTokenToWallet } from 'src/modules/sdai/AddTokenToWallet';
 import { SDAIEtherscanLink } from 'src/modules/sdai/SDAIEtherscanLink';
 import { SDAITopPanel } from 'src/modules/sdai/SDAITopPanel';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export default function SDAI() {
   const { loading: globalLoading, reserves, dsr } = useAppDataContext();
@@ -32,6 +37,29 @@ export default function SDAI() {
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const { currentAccount } = useWeb3Context();
+  const { currentMarket: market } = useProtocolDataContext();
+
+  if (market === CustomMarket.gnosis) {
+    return (
+      <>
+        <TopInfoPanel
+          titleComponent={
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <PageTitle
+                pageTitle={<Trans>sDAI</Trans>}
+                withMarketSwitcher={true}
+                withMigrateButton={false}
+              />
+            </Box>
+          }
+        >
+          <Warning severity="warning" sx={{ my: 6 }}>
+            <Trans>sDAI is not available in this market, please switch to another one.</Trans>
+          </Warning>
+        </TopInfoPanel>
+      </>
+    );
+  }
 
   return (
     <>

@@ -3,6 +3,7 @@ import { Box, Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -38,6 +39,7 @@ export const SupplyAssetsListMobileItem = ({
   const { currentMarket } = useProtocolDataContext();
   const { dsr } = useAppDataContext();
   const { openSupply, openPSMSwap } = useModalContext();
+  const showAirdropInfo = useShowAirdropInfo();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
@@ -87,7 +89,7 @@ export const SupplyAssetsListMobileItem = ({
         />
       </Row>
 
-      {(symbol === 'ETH' || symbol === 'WETH') && (
+      {(symbol === 'ETH' || symbol === 'WETH') && showAirdropInfo && (
         <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
           <SpkAirdropNoteInline tokenAmount={6} />
         </Row>

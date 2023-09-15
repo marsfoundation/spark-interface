@@ -4,6 +4,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -35,7 +36,7 @@ export const SupplyAssetsListItem = ({
   const { currentMarket } = useProtocolDataContext();
   const { dsr } = useAppDataContext();
   const { openSupply, openPSMSwap } = useModalContext();
-
+  const showAirdropInfo = useShowAirdropInfo();
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
   if (supplyCapUsage.isMaxed) return null;
@@ -79,7 +80,9 @@ export const SupplyAssetsListItem = ({
           ) : null
         }
       >
-        {(symbol === 'ETH' || symbol === 'WETH') && <SpkAirdropNoteInline tokenAmount={6} />}
+        {(symbol === 'ETH' || symbol === 'WETH') && showAirdropInfo && (
+          <SpkAirdropNoteInline tokenAmount={6} />
+        )}
       </ListAPRColumn>
 
       <ListButtonsColumn>

@@ -11,10 +11,11 @@ import {
 import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -46,6 +47,7 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const showAirdropInfo = useShowAirdropInfo();
   const {
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
@@ -216,7 +218,7 @@ export const RepayModalContent = ({
 
   return (
     <>
-      {tokenToRepayWith.symbol === 'DAI' && <SpkAirdropNote />}
+      {tokenToRepayWith.symbol === 'DAI' && showAirdropInfo && <SpkAirdropNote />}
       <AssetInput
         value={amount}
         onChange={handleChange}

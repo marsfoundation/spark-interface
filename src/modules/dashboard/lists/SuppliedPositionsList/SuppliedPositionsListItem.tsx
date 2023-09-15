@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -28,6 +29,7 @@ export const SuppliedPositionsListItem = ({
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const showAirdropInfo = useShowAirdropInfo();
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
@@ -72,7 +74,7 @@ export const SuppliedPositionsListItem = ({
           ) : null
         }
       >
-        {reserve.symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
+        {reserve.symbol === 'ETH' && showAirdropInfo && <SpkAirdropNoteInline tokenAmount={6} />}
       </ListAPRColumn>
 
       <ListColumn>
