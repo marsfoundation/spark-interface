@@ -3,7 +3,6 @@ import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -33,7 +32,6 @@ export const BorrowAssetsListMobileItem = ({
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const showAirdropInfo = useShowAirdropInfo();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
@@ -79,10 +77,11 @@ export const BorrowAssetsListMobileItem = ({
         />
       </Row>
 
-      {symbol === 'DAI' && showAirdropInfo && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={24} />
-        </Row>
+      {symbol === 'DAI' && (
+        <SpkAirdropNoteInline
+          tokenAmount={24}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
       )}
 
       <Row

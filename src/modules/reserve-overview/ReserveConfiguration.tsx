@@ -20,7 +20,6 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -36,7 +35,6 @@ type ReserveConfigurationProps = {
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { dsr } = useAppDataContext();
-  const showAirdropInfo = useShowAirdropInfo();
   const reserveId =
     reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
   const renderCharts =
@@ -69,7 +67,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
 
-        {reserve.symbol !== 'sDAI' && showAirdropInfo && <SpkAirdropNote />}
+        {reserve.symbol !== 'sDAI' && <SpkAirdropNote />}
       </Box>
 
       <Box>

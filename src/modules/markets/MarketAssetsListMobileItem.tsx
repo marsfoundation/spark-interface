@@ -4,7 +4,6 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -16,7 +15,6 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
-  const showAirdropInfo = useShowAirdropInfo();
   return (
     <ListMobileItemWrapper
       symbol={reserve.symbol}
@@ -102,15 +100,17 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         </Box>
       </Row>
 
-      {reserve.symbol === 'DAI' && showAirdropInfo && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={24} />
-        </Row>
+      {reserve.symbol === 'DAI' && (
+        <SpkAirdropNoteInline
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+          tokenAmount={24}
+        />
       )}
-      {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && showAirdropInfo && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={6} />
-        </Row>
+      {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
+        <SpkAirdropNoteInline
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+          tokenAmount={6}
+        />
       )}
 
       <Button

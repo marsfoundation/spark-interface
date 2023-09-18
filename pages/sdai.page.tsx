@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Link, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Disclaimers } from 'src/components/ConnectWalletPaper';
@@ -38,9 +38,9 @@ export default function SDAI() {
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const { currentAccount } = useWeb3Context();
-  const { currentMarket: market } = useProtocolDataContext();
+  const { currentMarket: market, setCurrentMarket } = useProtocolDataContext();
 
-  if (market === CustomMarket.gnosis) {
+  if (market !== CustomMarket.proto_spark_v3) {
     return (
       <>
         <TopInfoPanel
@@ -56,7 +56,16 @@ export default function SDAI() {
         >
           <TopInfoPanelItem hideIcon title={null}>
             <Warning severity="warning">
-              <Trans>sDAI is not available in this market, please switch to another one.</Trans>
+              <Trans>
+                sDAI is not available in this market, please switch to{' '}
+                <Link
+                  component="button"
+                  onClick={() => setCurrentMarket(CustomMarket.proto_spark_v3)}
+                >
+                  mainnet
+                </Link>
+                .
+              </Trans>
             </Warning>
           </TopInfoPanelItem>
         </TopInfoPanel>

@@ -4,7 +4,6 @@ import { Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
@@ -25,7 +24,6 @@ export const BorrowedPositionsListItem = ({
   const { openBorrow, openRepay } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
-  const showAirdropInfo = useShowAirdropInfo();
   const {
     isActive,
     isFrozen,
@@ -70,7 +68,7 @@ export const BorrowedPositionsListItem = ({
           ) : null
         }
       >
-        {reserve.symbol === 'DAI' && showAirdropInfo && <SpkAirdropNoteInline tokenAmount={24} />}
+        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListButtonsColumn>

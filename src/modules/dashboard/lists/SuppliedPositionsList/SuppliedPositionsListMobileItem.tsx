@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
@@ -26,7 +25,6 @@ export const SuppliedPositionsListMobileItem = ({
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const showAirdropInfo = useShowAirdropInfo();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
     reserve;
@@ -69,10 +67,11 @@ export const SuppliedPositionsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
-      {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && showAirdropInfo && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={6} />
-        </Row>
+      {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
+        <SpkAirdropNoteInline
+          tokenAmount={6}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
       )}
 
       <Row

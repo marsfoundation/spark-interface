@@ -28,7 +28,6 @@ export const BorrowAssetsListItem = ({
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const showAirdropInfo = useShowAirdropInfo();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
@@ -69,7 +68,7 @@ export const BorrowAssetsListItem = ({
           ) : null
         }
       >
-        {symbol === 'DAI' && showAirdropInfo && <SpkAirdropNoteInline tokenAmount={24} />}
+        {symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListButtonsColumn>
@@ -92,7 +91,27 @@ export const BorrowAssetsListItem = ({
   );
 };
 
-export function SpkAirdropNoteInline({ tokenAmount }: { tokenAmount: number }) {
+export function SpkAirdropNoteInline({
+  tokenAmount,
+  Wrapper,
+}: {
+  tokenAmount: number;
+  Wrapper?: React.ComponentType | React.ReactElement | null;
+}) {
+  const showAirdropInfo = useShowAirdropInfo();
+
+  if (!showAirdropInfo) return null;
+
+  return typeof Wrapper === 'function' ? (
+    <Wrapper>
+      <AirdropNote tokenAmount={tokenAmount} />
+    </Wrapper>
+  ) : (
+    <AirdropNote tokenAmount={tokenAmount} />
+  );
+}
+
+const AirdropNote = ({ tokenAmount }: { tokenAmount: number }) => {
   return (
     <a
       href="https://forum.makerdao.com/t/proposed-spark-pre-farming-airdrop-formula/21786"
@@ -102,4 +121,4 @@ export function SpkAirdropNoteInline({ tokenAmount }: { tokenAmount: number }) {
       Eligible for <strong>{tokenAmount}M</strong> SPK⚡ Airdrop
     </a>
   );
-}
+};

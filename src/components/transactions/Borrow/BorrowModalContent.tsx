@@ -113,7 +113,6 @@ export const BorrowModalContent = ({
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const { borrowCap } = useAssetCaps();
-  const showAirdropInfo = useShowAirdropInfo();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -224,7 +223,7 @@ export const BorrowModalContent = ({
 
   return (
     <>
-      {symbol === 'DAI' && showAirdropInfo && <SpkAirdropNote />}
+      {symbol === 'DAI' && <SpkAirdropNote />}
       {borrowCap.determineWarningDisplay({ borrowCap })}
       <AssetInput
         value={amount}
@@ -338,6 +337,9 @@ export const BorrowModalContent = ({
 };
 
 export function SpkAirdropNote() {
+  const showAirdropInfo = useShowAirdropInfo();
+  if (!showAirdropInfo) return null;
+
   return (
     <Warning severity="info" sx={{ my: 6 }}>
       <Trans>

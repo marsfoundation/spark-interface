@@ -5,5 +5,5 @@ import { useProtocolDataContext } from './useProtocolDataContext';
 export const useShowAirdropInfo = () => {
   const { currentMarket } = useProtocolDataContext();
 
-  return currentMarket !== CustomMarket.gnosis;
+  return currentMarket === CustomMarket.proto_spark_v3;
 };

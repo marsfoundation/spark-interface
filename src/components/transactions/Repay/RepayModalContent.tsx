@@ -15,7 +15,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -47,7 +46,6 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
-  const showAirdropInfo = useShowAirdropInfo();
   const {
     poolComputed: { minRemainingBaseTokenBalance },
   } = useRootStore();
@@ -218,7 +216,7 @@ export const RepayModalContent = ({
 
   return (
     <>
-      {tokenToRepayWith.symbol === 'DAI' && showAirdropInfo && <SpkAirdropNote />}
+      {tokenToRepayWith.symbol === 'DAI' && <SpkAirdropNote />}
       <AssetInput
         value={amount}
         onChange={handleChange}

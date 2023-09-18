@@ -54,6 +54,6 @@ export const useWalletBalances = () => {
   return {
     walletBalances: aggregatedBalance,
     hasEmptyWallet,
-    loading: !walletBalances || !reserves,
+    loading: !walletBalances.length || !reserves.length,
   };
 };

@@ -5,7 +5,6 @@ import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
 import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
@@ -21,7 +20,7 @@ import { ListAPRColumn } from '../dashboard/lists/ListAPRColumn';
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
   const { currentMarket } = useProtocolDataContext();
-  const showAirdropInfo = useShowAirdropInfo();
+
   return (
     <ListItem
       px={6}
@@ -64,7 +63,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           variant="main16"
           symbolsVariant="secondary16"
         />
-        {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && showAirdropInfo && (
+        {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
           <SpkAirdropNoteInline tokenAmount={6} />
         )}
       </ListColumn>
@@ -98,7 +97,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         {!reserve.borrowingEnabled &&
           Number(reserve.totalVariableDebt) > 0 &&
           !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
-        {reserve.symbol === 'DAI' && showAirdropInfo && <SpkAirdropNoteInline tokenAmount={24} />}
+        {reserve.symbol === 'DAI' && <SpkAirdropNoteInline tokenAmount={24} />}
       </ListAPRColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">

@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
@@ -25,7 +24,6 @@ export const BorrowedPositionsListMobileItem = ({
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { borrowCap } = useAssetCaps();
-  const showAirdropInfo = useShowAirdropInfo();
   const {
     symbol,
     iconSymbol,
@@ -87,10 +85,11 @@ export const BorrowedPositionsListMobileItem = ({
           currentMarket={currentMarket}
         />
       </Row>
-      {reserve.symbol === 'DAI' && showAirdropInfo && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={24} />
-        </Row>
+      {reserve.symbol === 'DAI' && (
+        <SpkAirdropNoteInline
+          tokenAmount={24}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
       )}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
