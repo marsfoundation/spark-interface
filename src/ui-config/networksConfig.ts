@@ -342,9 +342,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.xdai]: {
     name: 'Gnosis Chain',
-    publicJsonRPCUrl: ['https://rpc.gnosis.gateway.fm', 'https://rpc.gnosischain.com'], // todo validate https://docs.gnosischain.com/tools/rpc/
+    publicJsonRPCUrl: ['https://rpc.ankr.com/gnosis', 'https://rpc.gnosischain.com'],
     publicJsonRPCWSUrl: 'wss://rpc.gnosischain.com/wss',
-    baseUniswapAdapter: '0x0', // todo
+    baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'xDAI',
     wrappedBaseAssetSymbol: 'wxDAI',
     baseAssetDecimals: 18,
