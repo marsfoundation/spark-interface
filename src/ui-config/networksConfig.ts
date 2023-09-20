@@ -351,6 +351,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://gnosisscan.io',
     isTestnet: false,
     networkLogoPath: '/icons/networks/gnosis.png',
-    bridge: undefined, //todo
+    bridge: {
+      icon: '/icons/bridge/gnosis.svg',
+      name: 'xDai Bridge',
+      url: 'https://bridge.gnosischain.com/',
+    },
   },
 } as const;
