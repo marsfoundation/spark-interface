@@ -17,6 +17,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 
@@ -336,6 +337,9 @@ export const BorrowModalContent = ({
 };
 
 export function SpkAirdropNote() {
+  const showAirdropInfo = useShowAirdropInfo();
+  if (!showAirdropInfo) return null;
+
   return (
     <Warning severity="info" sx={{ my: 6 }}>
       <Trans>

@@ -101,14 +101,16 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
       </Row>
 
       {reserve.symbol === 'DAI' && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={24} />
-        </Row>
+        <SpkAirdropNoteInline
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+          tokenAmount={24}
+        />
       )}
       {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={6} />
-        </Row>
+        <SpkAirdropNoteInline
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+          tokenAmount={6}
+        />
       )}
 
       <Button

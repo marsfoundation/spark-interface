@@ -78,9 +78,10 @@ export const BorrowAssetsListMobileItem = ({
       </Row>
 
       {symbol === 'DAI' && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={24} />
-        </Row>
+        <SpkAirdropNoteInline
+          tokenAmount={24}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
       )}
 
       <Row
