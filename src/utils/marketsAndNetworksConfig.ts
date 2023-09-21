@@ -72,7 +72,7 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
  * Fork markets are generated for all markets on the underlying base chain.
  */
 export const marketsData = Object.keys(_marketsData)
-  .filter((m) => m !== CustomMarket.gnosis || process.env.NEXT_PUBLIC_ENABLE_GNOSIS === '1')
+  .filter((m) => m !== CustomMarket.gnosis || process.env.NEXT_PUBLIC_ENABLE_MARKET_SWITCHER === '1')
   .reduce((acc, value) => {
     acc[value] = _marketsData[value as keyof typeof CustomMarket];
     if (
