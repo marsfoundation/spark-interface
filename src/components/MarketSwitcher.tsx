@@ -94,7 +94,7 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  if (process.env.NEXT_PUBLIC_ENABLE_MARKET_SWITCHER !== '1') return null;
+  if (process.env.NEXT_PUBLIC_ENABLE_GNOSIS !== '1') return null;
 
   return (
     <TextField
