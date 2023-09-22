@@ -71,20 +71,22 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
  * Generates network configs based on marketsData & fork settings.
  * Fork markets are generated for all markets on the underlying base chain.
  */
-export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
-  acc[value] = _marketsData[value as keyof typeof CustomMarket];
-  if (
-    FORK_ENABLED &&
-    _marketsData[value as keyof typeof CustomMarket].chainId === FORK_BASE_CHAIN_ID
-  ) {
-    acc[`fork_${value}`] = {
-      ..._marketsData[value as keyof typeof CustomMarket],
-      chainId: FORK_CHAIN_ID,
-      isFork: true,
-    };
-  }
-  return acc;
-}, {} as { [key: string]: MarketDataType });
+export const marketsData = Object.keys(_marketsData)
+  .filter((m) => m !== CustomMarket.gnosis || process.env.NEXT_PUBLIC_ENABLE_GNOSIS === '1')
+  .reduce((acc, value) => {
+    acc[value] = _marketsData[value as keyof typeof CustomMarket];
+    if (
+      FORK_ENABLED &&
+      _marketsData[value as keyof typeof CustomMarket].chainId === FORK_BASE_CHAIN_ID
+    ) {
+      acc[`fork_${value}`] = {
+        ..._marketsData[value as keyof typeof CustomMarket],
+        chainId: FORK_CHAIN_ID,
+        isFork: true,
+      };
+    }
+    return acc;
+  }, {} as { [key: string]: MarketDataType });
 
 export function getDefaultChainId() {
   return marketsData[availableMarkets[0]].chainId;
