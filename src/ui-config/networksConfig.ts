@@ -340,4 +340,21 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://app.multichain.org/#/router',
     },
   },
+  [ChainId.xdai]: {
+    name: 'Gnosis Chain',
+    publicJsonRPCUrl: ['https://rpc.ankr.com/gnosis', 'https://rpc.gnosischain.com'],
+    publicJsonRPCWSUrl: 'wss://rpc.gnosischain.com/wss',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'xDAI',
+    wrappedBaseAssetSymbol: 'wxDAI',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://gnosisscan.io',
+    isTestnet: false,
+    networkLogoPath: '/icons/networks/gnosis.png',
+    bridge: {
+      icon: '/icons/bridge/gnosis.svg',
+      name: 'xDai Bridge',
+      url: 'https://bridge.gnosischain.com/',
+    },
+  },
 } as const;

@@ -68,9 +68,10 @@ export const SuppliedPositionsListMobileItem = ({
         />
       </Row>
       {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
-        <Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2}>
-          <SpkAirdropNoteInline tokenAmount={6} />
-        </Row>
+        <SpkAirdropNoteInline
+          tokenAmount={6}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
       )}
 
       <Row
