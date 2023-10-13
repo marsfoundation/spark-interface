@@ -346,7 +346,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://rpc.gnosischain.com/wss',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'xDAI',
-    wrappedBaseAssetSymbol: 'wxDAI',
+    wrappedBaseAssetSymbol: 'WXDAI',
     baseAssetDecimals: 18,
     explorerLink: 'https://gnosisscan.io',
     isTestnet: false,
