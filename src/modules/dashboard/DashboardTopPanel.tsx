@@ -99,23 +99,6 @@ export const DashboardTopPanel = () => {
 
   return (
     <>
-      {showMigrateButton && (
-        <Box sx={{ width: '100%' }}>
-          <Link href={ROUTES.migrationTool}>
-            <Button
-              variant="gradient"
-              sx={{
-                height: '40px',
-                width: '100%',
-              }}
-            >
-              <Typography variant="buttonM">
-                <Trans>Migrate Your Aave V2 Position to Spark Protocol</Trans>
-              </Typography>
-            </Button>
-          </Link>
-        </Box>
-      )}
       <TopInfoPanel
         titleComponent={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
