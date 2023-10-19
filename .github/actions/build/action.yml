@@ -65,7 +65,7 @@ runs:
         NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
         NEXT_PUBLIC_ENABLE_GOVERNANCE: 'false'
         NEXT_PUBLIC_ENABLE_STAKING: 'false'
-        NEXT_PUBLIC_API_BASEURL: 'https://api.sparkprotocol.io'
+        NEXT_PUBLIC_API_BASEURL: 'https://api.spark.fi'
         NEXT_PUBLIC_TRANSAK_APP_URL: ''
         NEXT_PUBLIC_TRANSAK_API_URL: ''
         NEXT_PUBLIC_TRANSAK_API_KEY: ''
