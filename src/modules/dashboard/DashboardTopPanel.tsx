@@ -1,19 +1,15 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import Link from 'next/link';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
-import { ROUTES } from 'src/components/primitives/Link';
 import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { selectCurrentChainIdV2PoolReserve } from 'src/store/poolSelectors';
-import { usePoolDataV2Subscription, useRootStore } from 'src/store/root';
-import { selectIsMigrationAvailable } from 'src/store/v3MigrationSelectors';
+import { usePoolDataV2Subscription } from 'src/store/root';
 
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
@@ -41,12 +37,6 @@ export const DashboardTopPanel = () => {
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
 
-  const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
-  const v2Reserve = useRootStore((state) => selectCurrentChainIdV2PoolReserve(state));
-  const hasV2Positions = v2Reserve?.userReserves?.some(
-    (reserve) => reserve.scaledATokenBalance !== '0' || reserve.scaledVariableDebt !== '0'
-  );
-  const showMigrateButton = isMigrateToV3Available && currentAccount !== '' && hasV2Positions;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -107,17 +97,6 @@ export const DashboardTopPanel = () => {
               withMarketSwitcher={true}
               bridge={currentNetworkConfig.bridge}
             />
-            {showMigrateButton && !downToSM && (
-              <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
-                <Link href={ROUTES.migrationTool}>
-                  <Button variant="gradient" sx={{ height: '20px' }}>
-                    <Typography variant="buttonS" data-cy={`migration-button`}>
-                      <Trans>Migrate to Spark Protocol</Trans>
-                    </Typography>
-                  </Button>
-                </Link>
-              </Box>
-            )}
           </Box>
         }
       >
