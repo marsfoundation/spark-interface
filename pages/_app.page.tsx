@@ -61,6 +61,7 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <script defer data-domain="app.spark.fi" src="https://plausible.io/js/script.js" />
       </Head>
       <Meta
         title={'Maker-Powered Lending Market'}
