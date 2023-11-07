@@ -82,6 +82,7 @@ function useRefresh(ms: number) {
 const getVisibleDecimals = (daiBalance: BigNumber | undefined): number => {
   const changeRatio = 1.55e-9;
   const value = daiBalance?.multipliedBy(changeRatio);
+
   if (!value) {
     return 0;
   }
@@ -92,5 +93,9 @@ const getVisibleDecimals = (daiBalance: BigNumber | undefined): number => {
 
   const decimals = -e;
 
-  return decimals === 1 ? 2 : decimals;
+  if (decimals === 1) return 2;
+
+  if (decimals > 6) return 7;
+
+  return decimals;
 };
