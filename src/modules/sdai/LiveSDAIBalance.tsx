@@ -26,13 +26,7 @@ export function LiveSDAIBalance() {
     dsr &&
     rho &&
     chi &&
-    convertToAssets(
-      new BigNumber(sDaiBalance),
-      rho,
-      dsr,
-      chi,
-      new BigNumber(utcTimestamp)
-    ).toString();
+    convertToAssets(new BigNumber(sDaiBalance), rho, dsr, chi, new BigNumber(utcTimestamp));
 
   useRefresh(500);
 
@@ -51,7 +45,7 @@ export function LiveSDAIBalance() {
         value={daiBalance ? daiBalance.toString() : 0}
         symbol="DAI"
         variant={valueTypographyVariant}
-        visibleDecimals={7}
+        visibleDecimals={getVisibleDecimals(daiBalance)}
         compact={false}
         symbolsColor="#A5A8B6"
         symbolsVariant={symbolsVariant}
@@ -84,3 +78,24 @@ function useRefresh(ms: number) {
     };
   }, []);
 }
+
+const getVisibleDecimals = (daiBalance: BigNumber | undefined): number => {
+  const changeRatio = 1.55e-9;
+  const value = daiBalance?.multipliedBy(changeRatio);
+
+  if (!value) {
+    return 0;
+  }
+
+  const e = value.e;
+
+  if (!e || e >= 0) return 0;
+
+  const decimals = -e;
+
+  if (decimals === 1) return 2;
+
+  if (decimals > 6) return 7;
+
+  return decimals;
+};
