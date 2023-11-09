@@ -22,7 +22,7 @@ export const SuppliedPositionsListItem = ({
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
 }: DashboardReserve) => {
-  const { user, dsr } = useAppDataContext();
+  const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
@@ -58,19 +58,9 @@ export const SuppliedPositionsListItem = ({
       />
 
       <ListAPRColumn
-        value={
-          reserve.symbol === 'sDAI' && dsr != null ? dsr.toNumber() : Number(reserve.supplyAPY)
-        }
+        value={Number(reserve.supplyAPY)}
         incentives={aIncentivesData}
         symbol={reserve.symbol}
-        tooltip={
-          reserve.symbol === 'sDAI' && dsr != null ? (
-            <Trans>
-              This is the Dai Savings Rate, and not the supply rate. You earn this automatically
-              when converting your DAI to sDAI.
-            </Trans>
-          ) : null
-        }
       >
         {reserve.symbol === 'ETH' && <SpkAirdropNoteInline tokenAmount={6} />}
       </ListAPRColumn>
