@@ -40,7 +40,7 @@ export default function SDAI() {
   const { currentAccount } = useWeb3Context();
   const { currentMarket: market, setCurrentMarket } = useProtocolDataContext();
 
-  if (market !== CustomMarket.proto_spark_v3) {
+  if (![CustomMarket.proto_spark_v3, CustomMarket.proto_spark_goerli_v3].includes(market)) {
     return (
       <>
         <TopInfoPanel
