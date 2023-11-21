@@ -8,8 +8,6 @@ import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
 
-import { PlaygroundsControl } from './components/PlaygroundControls'
-
 export function SettingsMenu() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languagesOpen, setLanguagesOpen] = useState(false);
@@ -74,7 +72,6 @@ export function SettingsMenu() {
         <DarkModeSwitcher component={MenuItem} />
         {PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
-        <PlaygroundsControl />
       </Menu>
 
       <Menu
