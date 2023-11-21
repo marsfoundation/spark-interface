@@ -204,7 +204,7 @@ export const BorrowAssetsList = () => {
               {user?.isInIsolationMode && (
                 <Warning severity="warning">
                   <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                  <Link href="https://docs.sparkprotocol.io/faq/" target="_blank" rel="noopener">
+                  <Link href="https://docs.spark.fi/faq" target="_blank" rel="noopener">
                     Learn More
                   </Link>
                 </Warning>

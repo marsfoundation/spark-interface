@@ -208,7 +208,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   </Link>
                   . To learn more about E-Mode and applied restrictions in{' '}
                   <Link
-                    href="https://docs.sparkprotocol.io/faq/spark-lend-features#high-efficiency-mode-e-mode"
+                    href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#high-efficiency-mode-e-mode"
                     sx={{ textDecoration: 'underline' }}
                     variant="caption"
                     color="text.secondary"

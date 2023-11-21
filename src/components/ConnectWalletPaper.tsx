@@ -82,11 +82,11 @@ export const Disclaimers = () => {
       (
       <Trans>
         By using this Site, I have read and agree to the{' '}
-        <a href="https://www.sparkprotocol.io/terms-of-use.html" target="blank">
+        <a href="https://www.spark.fi/terms-of-use.html" target="blank">
           Terms of Use
         </a>{' '}
         and{' '}
-        <a href="https://www.sparkprotocol.io/privacy-policy.html" target="blank">
+        <a href="https://www.spark.fi/privacy-policy.html" target="blank">
           Privacy Policy
         </a>
         .
@@ -94,13 +94,13 @@ export const Disclaimers = () => {
         <br />- I am not the person or entities who reside in, are citizens of, are incorporated in,
         or have a registered office in the United States of America or any Prohibited Localities, as
         defined in the{' '}
-        <a href="https://www.sparkprotocol.io/terms-of-use.html" target="blank">
+        <a href="https://www.spark.fi/terms-of-use.html" target="blank">
           Terms of Use
         </a>
         .
         <br />- I will not in the future access this site while located within the United States or
         any Prohibited Localities, as defined in the{' '}
-        <a href="https://www.sparkprotocol.io/terms-of-use.html" target="blank">
+        <a href="https://www.spark.fi/terms-of-use.html" target="blank">
           Terms of Use
         </a>
         .

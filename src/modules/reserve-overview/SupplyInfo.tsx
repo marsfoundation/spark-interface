@@ -90,7 +90,7 @@ export const SupplyInfo = ({
                         the asset and to help manage risks involved.
                       </Trans>{' '}
                       <Link
-                        href="https://docs.sparkprotocol.io/developers/features/supply-borrow-caps"
+                        href="https://devs.spark.fi/sparklend/features/supply-borrow-caps"
                         underline="always"
                       >
                         <Trans>Learn more</Trans>
@@ -176,7 +176,7 @@ export const SupplyInfo = ({
                   In Isolation mode you cannot supply other assets as collateral for borrowing.
                   Assets used as collateral in Isolation mode can only be borrowed to a specific
                   debt ceiling.{' '}
-                  <Link href="https://docs.sparkprotocol.io/faq/spark-lend-features#isolation-mode">
+                  <Link href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#isolation-mode">
                     Learn more
                   </Link>
                 </Typography>

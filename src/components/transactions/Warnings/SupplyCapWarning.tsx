@@ -31,7 +31,7 @@ export const SupplyCapWarning = ({ supplyCap, icon = true, ...rest }: SupplyCapW
     <Warning severity={severity} icon={icon} {...rest}>
       {renderText()}{' '}
       <Link
-        href="https://docs.sparkprotocol.io/developers/features/supply-borrow-caps"
+        href="https://devs.spark.fi/sparklend/features/supply-borrow-caps"
         underline="always"
       >
         <Trans>Learn more</Trans>

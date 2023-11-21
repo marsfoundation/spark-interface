@@ -236,7 +236,7 @@ export const WalletSelector = () => {
         <Trans>
           Need help connecting a wallet?{' '}
           <Link
-            href="https://docs.sparkprotocol.io/faq/troubleshooting"
+            href="https://docs.spark.fi/defi-infrastructure/sparklend/troubleshooting"
             target="_blank"
             rel="noopener"
           >
