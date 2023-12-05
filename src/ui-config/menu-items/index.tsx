@@ -64,12 +64,12 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.sparkprotocol.io/developers/sparklend/faq',
+    link: 'https://docs.spark.fi/faq',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.sparkprotocol.io/developers/sparklend/readme',
+    link: 'https://devs.spark.fi/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },

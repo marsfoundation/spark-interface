@@ -190,7 +190,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             <Trans>
               E-Mode increases your LTV for a selected category of assets up to 97%.{' '}
               <Link
-                href="https://docs.sparkprotocol.io/faq/spark-lend-features#high-efficiency-mode-e-mode"
+                href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#high-efficiency-mode-e-mode"
                 sx={{ textDecoration: 'underline' }}
                 variant="caption"
                 color="text.secondary"

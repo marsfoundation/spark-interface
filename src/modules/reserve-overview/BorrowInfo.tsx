@@ -87,7 +87,7 @@ export const BorrowInfo = ({
                         pool insolvency.
                       </Trans>{' '}
                       <Link
-                        href="https://docs.sparkprotocol.io/developers/features/supply-borrow-caps"
+                        href="https://devs.spark.fi/sparklend/features/supply-borrow-caps"
                         underline="always"
                       >
                         <Trans>Learn more</Trans>

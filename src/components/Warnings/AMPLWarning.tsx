@@ -7,7 +7,7 @@ export const AMPLWarning = () => {
     <Trans>
       <b>Ampleforth</b> is a rebasing asset. Visit the{' '}
       <Link
-        href="https://docs.sparkprotocol.io/developers/v/2.0/guides/ampl-asset-listing"
+        href="https://docs.spark.fi"
         underline="always"
       >
         <Trans>documentation</Trans>

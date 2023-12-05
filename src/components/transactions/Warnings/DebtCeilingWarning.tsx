@@ -38,7 +38,7 @@ export const DebtCeilingWarning = ({
     <Warning severity={severity} icon={icon} {...rest}>
       {renderText()}{' '}
       <Link
-        href="https://docs.sparkprotocol.io/faq/spark-lend-features#how-does-isolation-mode-affect-my-borrowing-power"
+        href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#how-does-e-mode-affect-my-borrowing-power"
         underline="always"
       >
         <Trans>Learn more</Trans>

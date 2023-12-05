@@ -42,7 +42,7 @@ export const IsolatedTooltip = () => {
         <Trans>
           Learn more in our{' '}
           <Link
-            href="https://docs.sparkprotocol.io/faq/spark-lend-features#isolation-mode"
+            href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#isolation-mode"
             fontWeight={500}
           >
             FAQ guide

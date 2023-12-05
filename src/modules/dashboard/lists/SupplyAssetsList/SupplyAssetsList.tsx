@@ -248,7 +248,7 @@ export const SupplyAssetsList = () => {
               <Warning severity="warning">
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}
-                  <Link href="https://docs.sparkprotocol.io/faq/" target="_blank" rel="noopener">
+                  <Link href="https://docs.spark.fi/faq" target="_blank" rel="noopener">
                     Learn More
                   </Link>
                 </Trans>
