@@ -83,6 +83,11 @@ const moreMenuItems: MoreMenuItem[] = [
     title: t`Github`,
     icon: <GithubIcon />,
   },
+  {
+    link: 'https://spark.fi/terms-of-use.html',
+    title: t`Terms of Service`,
+    icon: <QuestionMarkCircleIcon />,
+  },
 ];
 
 export const moreMenuExtraItems: MoreMenuItem[] = [];
