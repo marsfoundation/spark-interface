@@ -17,6 +17,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useShowAirdropInfo } from 'src/hooks/useShouldShowAirdropInfo';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 
@@ -74,7 +75,7 @@ const BorrowModeSwitch = ({
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ width: '100%', mt: 0.5 }}
+        sx={{ width: '100%', height: '36px', p: '2px', mt: 0.5 }}
       >
         <StyledToggleButton
           value={InterestRate.Variable}
@@ -111,7 +112,7 @@ export const BorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { borrowCap, debtCeiling } = useAssetCaps();
+  const { borrowCap } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -219,11 +220,11 @@ export const BorrowModalContent = ({
     interestRateMode === InterestRate.Stable
       ? poolReserve.sIncentivesData
       : poolReserve.vIncentivesData;
+
   return (
     <>
+      {symbol === 'DAI' && <SpkAirdropNote />}
       {borrowCap.determineWarningDisplay({ borrowCap })}
-      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
-
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -242,6 +243,7 @@ export const BorrowModalContent = ({
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow.toString(10)}
+        balanceText={<Trans>Available</Trans>}
       />
 
       {blockingError !== undefined && (
@@ -312,7 +314,7 @@ export const BorrowModalContent = ({
         <Trans>
           <b>Attention:</b> Parameter changes via governance can alter your account health factor
           and risk of liquidation. Follow the{' '}
-          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+          <a href="https://forum.makerdao.com/">Maker governance forum</a> for updates.
         </Trans>
       </Warning>
 
@@ -333,3 +335,24 @@ export const BorrowModalContent = ({
     </>
   );
 };
+
+export function SpkAirdropNote() {
+  const showAirdropInfo = useShowAirdropInfo();
+  if (!showAirdropInfo) return null;
+
+  return (
+    <Warning severity="info" sx={{ my: 6 }}>
+      <Trans>
+        DAI borrowers with volatile assets and ETH depositors will be eligible for a future ⚡ SPK
+        airdrop. Please read the details on the{' '}
+        <a
+          href="https://forum.makerdao.com/t/proposed-spark-pre-farming-airdrop-formula/21786"
+          target="blank"
+        >
+          Maker governance forum
+        </a>
+        .
+      </Trans>
+    </Warning>
+  );
+}

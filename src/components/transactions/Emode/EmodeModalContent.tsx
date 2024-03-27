@@ -72,7 +72,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
     userReserves,
   } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
@@ -178,7 +178,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   return (
     <>
       <TxModalTitle title={`${mode} E-Mode`} />
-      {isWrongNetwork && !watchModeOnlyAddress && (
+      {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
@@ -189,7 +189,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
               Enabling E-Mode only allows you to borrow assets belonging to the selected category.
               Please visit our{' '}
               <Link
-                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#high-efficiency-mode-e-mode"
                 target="_blank"
                 rel="noopener"
               >

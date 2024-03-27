@@ -120,19 +120,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
               <Typography variant="subheader1" sx={{ color: 'common.white' }}>
                 {market.marketTitle} <Trans>Market</Trans>
               </Typography>
-              {market.v3 && (
-                <Box
-                  sx={{
-                    color: '#fff',
-                    px: 2,
-                    mx: 2,
-                    borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
-                  }}
-                >
-                  <Typography variant="subheader2">Version 3</Typography>
-                </Box>
-              )}
             </Box>
           </Box>
 
@@ -209,7 +196,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       )}
       <TopInfoPanelItem title={<Trans>Reserve Size</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={poolReserve?.totalLiquidityUSD}
+          value={Math.max(Number(poolReserve?.totalLiquidityUSD), 0)}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
@@ -219,7 +206,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
       <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={poolReserve?.availableLiquidityUSD}
+          value={Math.max(Number(poolReserve?.availableLiquidityUSD), 0)}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

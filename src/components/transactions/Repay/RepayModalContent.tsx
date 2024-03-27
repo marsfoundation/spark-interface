@@ -11,13 +11,15 @@ import {
 import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
+import { SpkAirdropNote } from '../Borrow/BorrowModalContent';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -44,6 +46,9 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const {
+    poolComputed: { minRemainingBaseTokenBalance },
+  } = useRootStore();
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -82,7 +87,9 @@ export const RepayModalContent = ({
     balance = underlyingBalance;
   } else {
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
-      userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
+      userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol
+        ? minRemainingBaseTokenBalance
+        : '0'
     );
     balance = normalizedWalletBalance.toString(10);
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
@@ -171,13 +178,12 @@ export const RepayModalContent = ({
   const amountAfterRepay = valueToBigNumber(debt)
     .minus(amount || '0')
     .toString(10);
-  const displayAmountAfterRepay = BigNumber.min(amountAfterRepay, maxAmountToRepay);
-  const displayAmountAfterRepayInUsd = displayAmountAfterRepay
+  const amountAfterRepayInUsd = new BigNumber(amountAfterRepay)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const maxRepayWithDustRemaining = isMaxSelected && displayAmountAfterRepayInUsd.toNumber() > 0;
+  const maxRepayWithDustRemaining = isMaxSelected && amountAfterRepayInUsd.toNumber() > 0;
 
   // health factor calculations
   // we use usd values instead of MarketreferenceCurrency so it has same precision
@@ -210,6 +216,7 @@ export const RepayModalContent = ({
 
   return (
     <>
+      {tokenToRepayWith.symbol === 'DAI' && <SpkAirdropNote />}
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -219,6 +226,7 @@ export const RepayModalContent = ({
         onSelect={setTokenToRepayWith}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToRepay.toString(10)}
+        balanceText={<Trans>Wallet balance</Trans>}
       />
 
       {maxRepayWithDustRemaining && (
@@ -235,7 +243,7 @@ export const RepayModalContent = ({
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
           futureValue={amountAfterRepay}
-          futureValueUSD={displayAmountAfterRepayInUsd.toString(10)}
+          futureValueUSD={amountAfterRepayInUsd.toString(10)}
           value={debt}
           valueUSD={debtUSD.toString()}
           symbol={

@@ -1,13 +1,15 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
-import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -18,9 +20,10 @@ export const BorrowedPositionsListMobileItem = ({
   totalBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
-}: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+}: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
+  const { borrowCap } = useAssetCaps();
   const {
     symbol,
     iconSymbol,
@@ -43,6 +46,7 @@ export const BorrowedPositionsListMobileItem = ({
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      borrowEnabled={reserve.borrowingEnabled}
       showBorrowCapTooltips
     >
       <ListValueRow
@@ -81,19 +85,25 @@ export const BorrowedPositionsListMobileItem = ({
           currentMarket={currentMarket}
         />
       </Row>
+      {reserve.symbol === 'DAI' && (
+        <SpkAirdropNoteInline
+          tokenAmount={24}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
+      )}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(underlyingAsset, borrowRateMode)}
+          onClick={() => openRepay(underlyingAsset, borrowRateMode, isFrozen)}
           sx={{ mr: 1.5 }}
           fullWidth
         >
           <Trans>Repay</Trans>
         </Button>
         <Button
-          disabled={!isActive || !borrowingEnabled || isFrozen}
+          disabled={!isActive || !borrowingEnabled || isFrozen || borrowCap.isMaxed}
           variant="outlined"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth

@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -13,7 +13,7 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-import { BorrowAssetsItem } from './types';
+import { SpkAirdropNoteInline } from './BorrowAssetsListItem';
 
 export const BorrowAssetsListMobileItem = ({
   symbol,
@@ -29,14 +29,10 @@ export const BorrowAssetsListMobileItem = ({
   vIncentivesData,
   underlyingAsset,
   isFreezed,
-}: BorrowAssetsItem) => {
+}: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
-
-  // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  const { borrowCap: borrowCapUsage } = useAssetCaps();
-  if (borrowCapUsage.isMaxed) return null;
 
   return (
     <ListMobileItemWrapper
@@ -80,6 +76,13 @@ export const BorrowAssetsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
+
+      {symbol === 'DAI' && (
+        <SpkAirdropNoteInline
+          tokenAmount={24}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
+      )}
 
       <Row
         caption={

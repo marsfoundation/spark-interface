@@ -5,9 +5,11 @@ import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
+import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { usePoolDataV2Subscription } from 'src/store/root';
 
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
@@ -28,6 +30,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
+  usePoolDataV2Subscription();
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
@@ -87,9 +90,15 @@ export const DashboardTopPanel = () => {
   return (
     <>
       <TopInfoPanel
-        pageTitle={<Trans>Dashboard</Trans>}
-        withMarketSwitcher
-        bridge={currentNetworkConfig.bridge}
+        titleComponent={
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <PageTitle
+              pageTitle={<Trans>Dashboard</Trans>}
+              withMarketSwitcher={true}
+              bridge={currentNetworkConfig.bridge}
+            />
+          </Box>
+        }
       >
         <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
@@ -117,7 +126,7 @@ export const DashboardTopPanel = () => {
           }
           loading={loading}
         >
-          {currentAccount ? (
+          {currentAccount && Number(user?.netWorthUSD) > 0 ? (
             <FormattedNumber
               value={user.netAPY}
               variant={valueTypographyVariant}

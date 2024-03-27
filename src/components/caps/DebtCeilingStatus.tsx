@@ -60,7 +60,7 @@ export const DebtCeilingStatus = ({
                 users. Debt ceiling is specific to assets in isolation mode and is denoted in USD.
               </Trans>{' '}
               <Link
-                href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
+                href="https://docs.spark.fi/defi-infrastructure/sparklend/spark-lend-features#how-does-isolation-mode-affect-my-borrowing-power"
                 underline="always"
               >
                 <Trans>Learn more</Trans>

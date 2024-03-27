@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { CircularProgress, Paper, PaperProps, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
-import LoveGhost from '/public/loveGhost.svg';
+import WalletConnectLogo from '/public/walletConnectLogo.svg';
+import WalletConnectLogoDark from '/public/walletConnectLogoDark.svg';
 
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
@@ -17,6 +18,7 @@ export const ConnectWalletPaper = ({
   sx,
   ...rest
 }: ConnectWalletPaperProps) => {
+  const theme = useTheme();
   return (
     <Paper
       {...rest}
@@ -31,26 +33,86 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
-      <LoveGhost style={{ marginBottom: '16px' }} />
+      {theme.palette.mode === 'light' ? (
+        <WalletConnectLogo style={{ marginBottom: '16px', maxWidth: '250px' }} />
+      ) : (
+        <WalletConnectLogoDark style={{ marginBottom: '16px', maxWidth: '250px' }} />
+      )}
       <>
         {loading ? (
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 2 }}>
-              <Trans>Please, connect your wallet</Trans>
-            </Typography>
-            <Typography sx={{ mb: 6 }} color="text.secondary">
-              {description || (
-                <Trans>
-                  Please connect your wallet to see your supplies, borrowings, and open positions.
-                </Trans>
-              )}
-            </Typography>
+            {description ? (
+              <Typography
+                sx={{
+                  mb: 6,
+                  textAlign: 'left',
+                  maxWidth: '700px',
+                  marginBottom: '50px',
+                  padding: '15px 20px',
+                  borderRadius: '6px',
+                }}
+              >
+                {description}
+              </Typography>
+            ) : (
+              <Disclaimers />
+            )}
             <ConnectWalletButton />
           </>
         )}
       </>
     </Paper>
+  );
+};
+
+export const Disclaimers = () => {
+  return (
+    <Typography
+      sx={{
+        mb: 6,
+        textAlign: 'left',
+        maxWidth: '700px',
+        marginBottom: '50px',
+        padding: '15px 20px',
+        borderRadius: '6px',
+      }}
+    >
+      (
+      <Trans>
+        By using this Site, I have read and agree to the{' '}
+        <a href="https://spark.fi/terms-of-use.html" target="blank">
+          Terms of Use
+        </a>{' '}
+        and{' '}
+        <a href="https://spark.fi/privacy-policy.html" target="blank">
+          Privacy Policy
+        </a>
+        .
+        <br />
+        <br />- I am not the person or entities who reside in, are citizens of, are incorporated in,
+        or have a registered office in the United States of America or any Prohibited Localities, as
+        defined in the{' '}
+        <a href="https://spark.fi/terms-of-use.html" target="blank">
+          Terms of Use
+        </a>
+        .
+        <br />- I will not in the future access this site while located within the United States or
+        any Prohibited Localities, as defined in the{' '}
+        <a href="https://spark.fi/terms-of-use.html" target="blank">
+          Terms of Use
+        </a>
+        .
+        <br />
+        - I am not using, and will not in the future use, a VPN to mask my physical location from a
+        restricted territory.
+        <br />
+        - I am lawfully permitted to access this site and use it&#39;s services under the laws of
+        the jurisdiction in which I reside and am located.
+        <br />- I understand the risks associated with entering into using the Spark.
+      </Trans>
+      )
+    </Typography>
   );
 };

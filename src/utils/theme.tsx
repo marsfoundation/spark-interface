@@ -30,6 +30,7 @@ declare module '@mui/material/styles/createPalette' {
     default: string;
     paper: string;
     surface: string;
+    navbar: string;
     header: string;
     disabled: string;
   }
@@ -126,7 +127,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   return {
     breakpoints: {
       keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      values: { xs: 0, xsm: 640, sm: 760, md: 960, lg: 1280, xl: 1440, xxl: 1800 },
+      values: { xs: 0, xsm: 640, sm: 760, md: 960, lg: 1280, xl: 1575, xxl: 1800 },
     },
     palette: {
       mode,
@@ -175,10 +176,17 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         muted: getColor('#A5A8B6', '#8E92A3'),
       },
       background: {
-        default: getColor('#F1F1F3', '#1B2030'),
-        paper: getColor('#FFFFFF', '#292E41'),
+        default: getColor('#F1F1F3', '#373736'),
+        paper: getColor('#f1f1f1', '#2d2d2b'),
         surface: getColor('#F7F7F9', '#383D51'),
-        header: getColor('#2B2D3C', '#1B2030'),
+        navbar: getColor(
+          'radial-gradient(150% 300% at center calc(100% + 80px), #3F3E37, #171715)',
+          'radial-gradient(200% 200% at center calc(100% + 80px), #3F3E37, #171715)'
+        ),
+        header: getColor(
+          'radial-gradient(150% 300% at bottom, #3F3E37, #171715)',
+          'radial-gradient(200% 200% at bottom, #3F3E37, #171715)'
+        ),
         disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
@@ -191,8 +199,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         focus: getColor('#F1F1F3', '#EBEBEF1F'),
       },
       gradients: {
-        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
+        aaveGradient: 'linear-gradient(to right, #E5D718, #E3C154)',
+        newGradient: 'linear-gradient(to right, #E5D718, #E3C154)',
       },
     },
     spacing: 4,
@@ -421,9 +429,20 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           {
+            props: { variant: 'contained' },
+            style: {
+              color: theme.palette.common.black,
+              borderColor: '#EBEBED1F',
+              background: '#E3C154',
+              '&:hover, &.Mui-focusVisible': {
+                background: '#E5D718',
+              },
+            },
+          },
+          {
             props: { variant: 'gradient' },
             style: {
-              color: theme.palette.common.white,
+              color: theme.palette.common.black,
               background: theme.palette.gradients.aaveGradient,
               transition: 'all 0.2s ease',
               '&:hover, &.Mui-focusVisible': {
@@ -535,7 +554,7 @@ export function getThemedComponents(theme: Theme) {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '8px',
           },
         },
         variants: [
@@ -553,7 +572,7 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { variant: 'elevation' },
             style: {
-              boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+              boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.2)',
               ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
             },
           },

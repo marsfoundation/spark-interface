@@ -16,22 +16,26 @@ export const getStaticProps = async () => {
   const ProposalFetcher = new Proposal();
 
   const proposals = [...Array(ProposalFetcher.count()).keys()].map((id) => {
-    // TODO: only pass required ipfs data
     const ipfs = IpfsFetcher.get(id);
     const proposal = ProposalFetcher.get(id);
     return {
-      ipfs: { title: ipfs.title, id: ipfs.id, originalHash: ipfs.originalHash },
+      ipfs: {
+        title: ipfs.title,
+        id: ipfs.id,
+        originalHash: ipfs.originalHash,
+        shortDescription: ipfs.shortDescription,
+      },
       proposal,
       prerendered: true,
     };
   });
 
-  return { props: { proposals } };
+  return { props: { proposals: proposals.slice().reverse() } };
 };
 
 export type GovernancePageProps = {
   proposals: {
-    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash'>;
+    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash' | 'shortDescription'>;
     proposal: CustomProposalType;
     prerendered: boolean;
   }[];
@@ -63,12 +67,11 @@ export default function Governance(props: GovernancePageProps) {
 Governance.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        <AaveTokensBalanceProvider>
-          {page}
-          <GovDelegationModal />
-        </AaveTokensBalanceProvider>
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      <AaveTokensBalanceProvider>
+        {page}
+        <GovDelegationModal />
+      </AaveTokensBalanceProvider>
     </MainLayout>
   );
 };

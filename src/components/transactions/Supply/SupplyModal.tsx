@@ -15,7 +15,7 @@ export const SupplyModal = () => {
   return (
     <BasicModal open={type === ModalType.Supply} setOpen={close}>
       <ModalWrapper
-        title={<Trans>Supply</Trans>}
+        title={<Trans>Deposit</Trans>}
         underlyingAsset={args.underlyingAsset}
         requiredPermission={PERMISSION.DEPOSITOR}
       >

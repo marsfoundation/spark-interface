@@ -29,6 +29,7 @@ type InterestRateModelType = {
   utilizationRate: string;
   baseVariableBorrowRate: string;
   baseStableBorrowRate: string;
+  symbol: string;
 };
 
 type Rate = {
@@ -64,6 +65,7 @@ function getRates({
   optimalUsageRatio,
   baseVariableBorrowRate,
   baseStableBorrowRate,
+  symbol,
 }: InterestRateModelType): Rate[] {
   const rates: Rate[] = [];
   const formattedOptimalUtilizationRate = normalizeBN(optimalUsageRatio, 25).toNumber();
@@ -74,7 +76,8 @@ function getRates({
     if (utilization === 0) {
       rates.push({
         stableRate: 0,
-        variableRate: 0,
+        variableRate:
+          symbol === 'DAI' ? new BigNumber(baseVariableBorrowRate).div(1e27).toNumber() : 0,
         utilization,
       });
     }
@@ -329,25 +332,29 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             </Text>
 
             {/* Optimal Utilization Line */}
-            <Line
-              from={{ x: dateScale(ticks[0].value), y: margin.top + 8 }}
-              to={{ x: dateScale(ticks[0].value), y: innerHeight }}
-              stroke="#0062D2"
-              strokeWidth={1}
-              pointerEvents="none"
-              strokeDasharray="5,2"
-            />
-            <Text
-              x={dateScale(ticks[0].value)}
-              y={margin.top}
-              width={360}
-              textAnchor="middle"
-              verticalAnchor="middle"
-              fontSize="10px"
-              fill="#62677B"
-            >
-              {`Optimal ${formattedOptimalUtilizationRate}%`}
-            </Text>
+            {reserve.symbol !== 'DAI' && (
+              <>
+                <Line
+                  from={{ x: dateScale(ticks[0].value), y: margin.top + 8 }}
+                  to={{ x: dateScale(ticks[0].value), y: innerHeight }}
+                  stroke="#0062D2"
+                  strokeWidth={1}
+                  pointerEvents="none"
+                  strokeDasharray="5,2"
+                />
+                <Text
+                  x={dateScale(ticks[0].value)}
+                  y={margin.top}
+                  width={360}
+                  textAnchor="middle"
+                  verticalAnchor="middle"
+                  fontSize="10px"
+                  fill="#62677B"
+                >
+                  {`Optimal ${formattedOptimalUtilizationRate}%`}
+                </Text>
+              </>
+            )}
 
             {/* Tooltip */}
             {tooltipData && (

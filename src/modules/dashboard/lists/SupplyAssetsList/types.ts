@@ -1,4 +1,4 @@
-import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 
 export type SupplyAssetsItem = {
   underlyingAsset: string;
@@ -18,4 +18,6 @@ export type SupplyAssetsItem = {
   isActive?: boolean;
   usageAsCollateralEnabledOnUser: boolean;
   detailsAddress: string;
+  showSwap: boolean;
+  hideSupply: boolean;
 };

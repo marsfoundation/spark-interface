@@ -1,17 +1,13 @@
 {
-  "short_name": "Aave v3",
-  "name": "Aave v3",
-  "description": "Non-custodial liquidity protocol",
-  "iconPath": "aave.svg",
+  "short_name": "Spark",
+  "name": "Spark",
+  "description": "Maker-Powered Lending Market",
   "icons": [
-    {
-      "src": "favicon32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    }
+    {"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},
+    {"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}
   ],
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#2d2d2b",
+  "background_color": "#2d2d2b"
 }

@@ -2,9 +2,11 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment } from 'react';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { Fragment, useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { ListColumn } from 'src/components/lists/ListColumn';
+import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
+import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
@@ -20,19 +22,55 @@ import {
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
+  DASHBOARD_LIST_COLUMN_WIDTHS,
+  DashboardReserve,
+  handleSortDashboardReserves,
+} from '../../../../utils/dashboardSortUtils';
+import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
 } from '../../../../utils/getMaxAmountAvailableToBorrow';
-import { ListHeader } from '../ListHeader';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
+
+const head = [
+  {
+    title: <Trans>Asset</Trans>,
+    sortKey: 'symbol',
+  },
+  {
+    title: (
+      <AvailableTooltip
+        capType={CapType.borrowCap}
+        text={<Trans>Available</Trans>}
+        key="availableBorrows"
+        variant="subheader2"
+      />
+    ),
+    sortKey: 'availableBorrows',
+  },
+
+  {
+    title: (
+      <VariableAPYTooltip
+        text={<Trans>Borrow APY</Trans>}
+        key="variableBorrowAPY"
+        variant="subheader2"
+      />
+    ),
+    sortKey: 'variableBorrowAPY',
+  },
+];
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const [sortName, setSortName] = useState('');
+  const [sortDesc, setSortDesc] = useState(false);
 
   const { baseAssetSymbol } = currentNetworkConfig;
 
@@ -79,7 +117,8 @@ export const BorrowAssetsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  const borrowReserves =
+  // Filter out reserves with no liquidity or debt
+  const borrowReserves: unknown =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
@@ -87,41 +126,62 @@ export const BorrowAssetsList = () => {
             availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
         );
 
-  const head = [
-    <AvailableTooltip
-      capType={CapType.borrowCap}
-      text={<Trans>Available</Trans>}
-      key="Available"
-      variant="subheader2"
-    />,
-    <VariableAPYTooltip
-      text={<Trans>APY, variable</Trans>}
-      key="APY_dash_variable_ type"
-      variant="subheader2"
-    />,
-    <StableAPYTooltip
-      text={<Trans>APY, stable</Trans>}
-      key="APY_dash_stable_ type"
-      variant="subheader2"
-    />,
-  ];
+  // Transform to the DashboardReserve schema so the sort utils can work with it
+  const preSortedReserves = borrowReserves as DashboardReserve[];
+  const sortedReserves = handleSortDashboardReserves(
+    sortDesc,
+    sortName,
+    'asset',
+    preSortedReserves
+  );
+  const borrowDisabled = !sortedReserves.length;
+
+  const RenderHeader: React.FC = () => {
+    return (
+      <ListHeaderWrapper>
+        {head.map((col) => (
+          <ListColumn
+            isRow={col.sortKey === 'symbol'}
+            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
+            key={col.sortKey}
+          >
+            <ListHeaderTitle
+              sortName={sortName}
+              sortDesc={sortDesc}
+              setSortName={setSortName}
+              setSortDesc={setSortDesc}
+              sortKey={col.sortKey}
+            >
+              {col.title}
+            </ListHeaderTitle>
+          </ListColumn>
+        ))}
+        <ListButtonsColumn isColumnHeader />
+      </ListHeaderWrapper>
+    );
+  };
 
   if (loading)
-    return <ListLoader title={<Trans>Assets to borrow</Trans>} head={head} withTopMargin />;
+    return (
+      <ListLoader
+        title={<Trans>Assets to Borrow</Trans>}
+        head={head.map((col) => col.title)}
+        withTopMargin
+      />
+    );
 
-  const borrowDisabled = !borrowReserves.length;
   return (
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Assets to borrow</Trans>
+          <Trans>Assets to Borrow</Trans>
         </Typography>
       }
       localStorageName="borrowAssetsDashboardTableCollapse"
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
-        <Box sx={{ px: 6, mb: 4 }}>
+        <Box sx={{ px: 6, pb: 4 }}>
           {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
             <MarketWarning marketName="Harmony" />
           )}
@@ -144,7 +204,7 @@ export const BorrowAssetsList = () => {
               {user?.isInIsolationMode && (
                 <Warning severity="warning">
                   <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                  <Link href="https://docs.spark.fi/faq" target="_blank" rel="noopener">
                     Learn More
                   </Link>
                 </Warning>
@@ -168,8 +228,8 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!borrowReserves.length && <ListHeader head={head} />}
-        {borrowReserves.map((item) => (
+        {!downToXSM && !!sortedReserves.length && <RenderHeader />}
+        {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (

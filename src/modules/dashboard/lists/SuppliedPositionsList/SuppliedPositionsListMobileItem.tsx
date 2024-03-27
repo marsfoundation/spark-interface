@@ -1,16 +1,15 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
-import {
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -21,18 +20,18 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  user,
-}: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
-  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
-    reserve;
+}: DashboardReserve) => {
+  const { user } = useAppDataContext();
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
+    reserve;
 
   const canBeEnabledAsCollateral =
     !debtCeiling.isMaxed &&
-    reserve.usageAsCollateralEnabled &&
+    reserve.reserveLiquidationThreshold !== '0' &&
     ((!reserve.isIsolated && !user.isInIsolationMode) ||
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
@@ -49,14 +48,14 @@ export const SuppliedPositionsListMobileItem = ({
       showDebtCeilingTooltips
     >
       <ListValueRow
-        title={<Trans>Supply balance</Trans>}
+        title={<Trans>Deposit balance</Trans>}
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
         disabled={Number(underlyingBalance) === 0}
       />
 
       <Row
-        caption={<Trans>Supply APY</Trans>}
+        caption={<Trans>Deposit APY</Trans>}
         align="flex-start"
         captionVariant="description"
         mb={2}
@@ -68,6 +67,12 @@ export const SuppliedPositionsListMobileItem = ({
           variant="secondary14"
         />
       </Row>
+      {(reserve.symbol === 'ETH' || reserve.symbol === 'WETH') && (
+        <SpkAirdropNoteInline
+          tokenAmount={6}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
+      )}
 
       <Row
         caption={<Trans>Used as collateral</Trans>}
@@ -110,7 +115,7 @@ export const SuppliedPositionsListMobileItem = ({
             onClick={() => openSupply(underlyingAsset)}
             fullWidth
           >
-            <Trans>Supply</Trans>
+            <Trans>Deposit</Trans>
           </Button>
         )}
       </Box>

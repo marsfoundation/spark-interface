@@ -1,4 +1,4 @@
-import { BookOpenIcon, CreditCardIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { BookOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -26,6 +26,11 @@ export const navigation: Navigation[] = [
     link: ROUTES.markets,
     title: t`Markets`,
     dataCy: 'menuMarkets',
+  },
+  {
+    link: ROUTES.sDAI,
+    title: `sDAI`,
+    dataCy: 'menuSDAI',
   },
   {
     link: ROUTES.staking,
@@ -59,31 +64,29 @@ interface MoreMenuItem extends Navigation {
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
+    link: 'https://docs.spark.fi/faq',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.aave.com/portal/',
+    link: 'https://devs.spark.fi/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },
   {
-    link: 'https://discord.gg/7kHKnkDEUf',
+    link: 'https://discord.gg/sparkdao',
     title: t`Discord`,
     icon: <DiscordIcon />,
   },
   {
-    link: 'https://github.com/aave/interface',
+    link: 'https://github.com/marsfoundation/spark-interface',
     title: t`Github`,
     icon: <GithubIcon />,
   },
   {
-    link: 'https://global.transak.com',
-    makeLink: (walletAddress) =>
-      `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
-    title: t`Buy Crypto With Fiat`,
-    icon: <CreditCardIcon />,
+    link: 'https://spark.fi/terms-of-use.html',
+    title: t`Terms of Service`,
+    icon: <QuestionMarkCircleIcon />,
   },
 ];
 

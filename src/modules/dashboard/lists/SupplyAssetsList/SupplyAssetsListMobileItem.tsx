@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -9,10 +11,10 @@ import { IncentivesCard } from '../../../../components/incentives/IncentivesCard
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
+import { SpkAirdropNoteInline } from '../BorrowAssetsList/BorrowAssetsListItem';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-import { SupplyAssetsItem } from './types';
 
 export const SupplyAssetsListMobileItem = ({
   symbol,
@@ -30,9 +32,12 @@ export const SupplyAssetsListMobileItem = ({
   isFreezed,
   underlyingAsset,
   detailsAddress,
-}: SupplyAssetsItem) => {
+  showSwap,
+  hideSupply,
+}: DashboardReserve) => {
   const { currentMarket } = useProtocolDataContext();
-  const { openSupply } = useModalContext();
+  const { dsr } = useAppDataContext();
+  const { openSupply, openPSMSwap } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
@@ -48,7 +53,7 @@ export const SupplyAssetsListMobileItem = ({
       showDebtCeilingTooltips
     >
       <ListValueRow
-        title={<Trans>Supply balance</Trans>}
+        title={<Trans>Deposit balance</Trans>}
         value={Number(walletBalance)}
         subValue={walletBalanceUSD}
         disabled={Number(walletBalance) === 0}
@@ -63,18 +68,31 @@ export const SupplyAssetsListMobileItem = ({
       />
 
       <Row
-        caption={<Trans>Supply APY</Trans>}
+        caption={
+          symbol === 'sDAI' && dsr != null ? (
+            <Trans>Dai Savings Rate APY</Trans>
+          ) : (
+            <Trans>Deposit APY</Trans>
+          )
+        }
         align="flex-start"
         captionVariant="description"
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
+          value={symbol === 'sDAI' && dsr != null ? dsr.toNumber() : Number(supplyAPY)}
           incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"
         />
       </Row>
+
+      {(symbol === 'ETH' || symbol === 'WETH') && (
+        <SpkAirdropNoteInline
+          tokenAmount={6}
+          Wrapper={<Row caption="Airdrop" align="flex-start" captionVariant="description" mb={2} />}
+        />
+      )}
 
       <Row
         caption={<Trans>Can be collateral</Trans>}
@@ -89,23 +107,39 @@ export const SupplyAssetsListMobileItem = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
-          variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
-          sx={{ mr: 1.5 }}
-          fullWidth
-        >
-          <Trans>Supply</Trans>
-        </Button>
-        <Button
-          variant="outlined"
-          component={Link}
-          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-          fullWidth
-        >
-          <Trans>Details</Trans>
-        </Button>
+        {!hideSupply && (
+          <Button
+            sx={(theme) => ({
+              color: theme.palette.common.white,
+              background: '#4caf50',
+              '&:hover, &.Mui-focusVisible': {
+                background: '#8bc34a',
+              },
+              mr: 1.5,
+            })}
+            disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+            variant="contained"
+            onClick={() => openSupply(underlyingAsset)}
+            fullWidth
+          >
+            <Trans>Deposit</Trans>
+          </Button>
+        )}
+        {showSwap && (
+          <Button variant="contained" onClick={() => openPSMSwap(underlyingAsset)} fullWidth>
+            <Trans>Swap</Trans>
+          </Button>
+        )}
+        {!(showSwap && !hideSupply) && (
+          <Button
+            variant="outlined"
+            component={Link}
+            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+            fullWidth
+          >
+            <Trans>Details</Trans>
+          </Button>
+        )}
       </Box>
     </ListMobileItemWrapper>
   );

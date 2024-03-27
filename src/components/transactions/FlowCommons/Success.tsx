@@ -3,7 +3,9 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ReactNode, useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,6 +14,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
 export type SuccessTxViewProps = {
+  txHash?: string;
   action?: ReactNode;
   amount?: string;
   symbol?: string;
@@ -27,6 +30,7 @@ const ExtLinkIcon = () => (
 );
 
 export const TxSuccessView = ({
+  txHash,
   action,
   amount,
   symbol,
@@ -39,6 +43,8 @@ export const TxSuccessView = ({
   const { currentNetworkConfig } = useProtocolDataContext();
   const [base64, setBase64] = useState('');
   const theme = useTheme();
+  const router = useRouter();
+  const isOnSDaiPage = router.pathname === '/sdai';
 
   return (
     <>
@@ -120,13 +126,13 @@ export const TxSuccessView = ({
               })}
             >
               <TokenIcon
-                symbol={symbol}
+                symbol={addToken.symbol}
                 aToken={addToken && addToken.aToken ? true : false}
                 sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
               />
               <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
                 <Trans>
-                  Add {addToken && addToken.aToken ? 'aToken ' : 'token '} to wallet to track your
+                  Add {addToken && addToken.aToken ? 'spToken ' : 'token '} to wallet to track your
                   balance.
                 </Trans>
               </Typography>
@@ -135,7 +141,7 @@ export const TxSuccessView = ({
                   addERC20Token({
                     address: addToken.address,
                     decimals: addToken.decimals,
-                    symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
+                    symbol: addToken.aToken ? `sp${addToken.symbol}` : addToken.symbol,
                     image: !/_/.test(addToken.symbol) ? base64 : undefined,
                   });
                 }}
@@ -150,12 +156,7 @@ export const TxSuccessView = ({
                     aToken={addToken.aToken}
                   />
                 )}
-                <img
-                  src="/icons/wallets/walletIcon.svg"
-                  width="24px"
-                  height="24px"
-                  alt="wallet icon"
-                />
+                <WalletIcon sx={{ width: '20px', height: '20px' }} />
                 <Typography variant="buttonM" color="white" ml="4px">
                   <Trans>Add to wallet</Trans>
                 </Typography>
@@ -168,7 +169,9 @@ export const TxSuccessView = ({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Link
           variant="helperText"
-          href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
+          href={currentNetworkConfig.explorerLinkBuilder({
+            tx: txHash ? txHash : mainTxState.txHash,
+          })}
           sx={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -190,7 +193,7 @@ export const TxSuccessView = ({
           sx={{ minHeight: '44px' }}
           data-cy="closeButton"
         >
-          <Trans>Ok, Close</Trans>
+          Ok, {isOnSDaiPage ? 'Done' : 'Close'}
         </Button>
       </Box>
     </>

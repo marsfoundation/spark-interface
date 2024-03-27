@@ -9,13 +9,13 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export function VotingPowerInfoPanel() {
   const { currentAccount } = useWeb3Context();
-  const { votingPower, propositionPower } = useVotingPower();
+  const powers = useVotingPower();
   const { openGovDelegation } = useModalContext();
   // TODO: if not logged in & loading, show some placeholder
   return (
     <>
-      <Box sx={{ px: 6, py: 4 }}>
-        <Typography variant="h3" gutterBottom>
+      <Box sx={{ px: 6, py: 6 }}>
+        <Typography variant="h3" sx={{ height: '36px', display: 'flex', alignItems: 'center' }}>
           <Trans>Your info</Trans>
         </Typography>
         {currentAccount && (
@@ -33,7 +33,11 @@ export function VotingPowerInfoPanel() {
                 </>
               }
             >
-              <FormattedNumber value={votingPower || 0} variant="main16" visibleDecimals={2} />
+              <FormattedNumber
+                value={powers?.votingPower || 0}
+                variant="main16"
+                visibleDecimals={2}
+              />
             </Row>
             <Row
               sx={{ py: 2 }}
@@ -48,7 +52,11 @@ export function VotingPowerInfoPanel() {
                 </>
               }
             >
-              <FormattedNumber value={propositionPower || 0} variant="main16" visibleDecimals={2} />
+              <FormattedNumber
+                value={powers?.propositionPower || 0}
+                variant="main16"
+                visibleDecimals={2}
+              />
             </Row>
           </>
         )}
@@ -61,7 +69,14 @@ export function VotingPowerInfoPanel() {
         {currentAccount ? (
           <Button
             variant="contained"
-            disabled={votingPower === '0' && propositionPower === '0'}
+            disabled={
+              powers?.votingPower === '0' &&
+              powers?.propositionPower === '0' &&
+              powers?.aaveVotingDelegatee === '' &&
+              powers?.aavePropositionDelegatee === '' &&
+              powers?.stkAavePropositionDelegatee === '' &&
+              powers?.stkAaveVotingDelegatee === ''
+            }
             onClick={() => openGovDelegation()}
           >
             <Trans>Delegate</Trans>

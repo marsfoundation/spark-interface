@@ -82,7 +82,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         >
           <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {'a' + poolReserve.symbol}
+            {'sp' + poolReserve.symbol}
           </Typography>
         </MenuItem>
         {poolReserve.borrowingEnabled && (

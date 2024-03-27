@@ -2,12 +2,14 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
+import { ListColumn } from 'src/components/lists/ListColumn';
+import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
+import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
-import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -15,19 +17,41 @@ import {
   ComputedUserReserveData,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  DASHBOARD_LIST_COLUMN_WIDTHS,
+  DashboardReserve,
+  handleSortDashboardReserves,
+} from '../../../../utils/dashboardSortUtils';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
-import { ListHeader } from '../ListHeader';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
+
+const head = [
+  {
+    title: <Trans>Asset</Trans>,
+    sortKey: 'symbol',
+  },
+  {
+    title: <Trans key="Debt">Debt</Trans>,
+    sortKey: 'variableBorrows',
+  },
+  {
+    title: <Trans key="APY">APY</Trans>,
+    sortKey: 'borrowAPY',
+  },
+];
 
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const [sortName, setSortName] = useState('');
+  const [sortDesc, setSortDesc] = useState(false);
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -72,19 +96,49 @@ export const BorrowedPositionsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  const head = [
-    <Trans key="Debt">Debt</Trans>,
-    <Trans key="APY">APY</Trans>,
-    <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
-  ];
+  // Transform to the DashboardReserve schema so the sort utils can work with it
+  const preSortedReserves = borrowPositions as DashboardReserve[];
+  const sortedReserves = handleSortDashboardReserves(
+    sortDesc,
+    sortName,
+    'position',
+    preSortedReserves,
+    true
+  );
 
-  if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
+  const RenderHeader: React.FC = () => {
+    return (
+      <ListHeaderWrapper>
+        {head.map((col) => (
+          <ListColumn
+            isRow={col.sortKey === 'symbol'}
+            maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
+            key={col.sortKey}
+          >
+            <ListHeaderTitle
+              sortName={sortName}
+              sortDesc={sortDesc}
+              setSortName={setSortName}
+              setSortDesc={setSortDesc}
+              sortKey={col.sortKey}
+            >
+              {col.title}
+            </ListHeaderTitle>
+          </ListColumn>
+        ))}
+        <ListButtonsColumn isColumnHeader />
+      </ListHeaderWrapper>
+    );
+  };
+
+  if (loading)
+    return <ListLoader title={<Trans>Your Borrows</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your borrows</Trans>
+          <Trans>Your Borrows</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
@@ -93,10 +147,10 @@ export const BorrowedPositionsList = () => {
           <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
         ) : undefined
       }
-      noData={!borrowPositions.length}
+      noData={!sortedReserves.length}
       topInfo={
         <>
-          {!!borrowPositions.length && (
+          {!!sortedReserves.length && (
             <>
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
               <ListTopInfoItem
@@ -116,10 +170,10 @@ export const BorrowedPositionsList = () => {
         </>
       }
     >
-      {borrowPositions.length ? (
+      {sortedReserves.length ? (
         <>
-          {!downToXSM && <ListHeader head={head} />}
-          {borrowPositions.map((item) => (
+          {!downToXSM && <RenderHeader />}
+          {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (

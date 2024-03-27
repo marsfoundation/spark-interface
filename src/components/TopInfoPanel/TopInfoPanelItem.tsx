@@ -63,6 +63,9 @@ export const TopInfoPanelItem = ({
               width: 42,
               height: 42,
               mr: 3,
+              '& path': {
+                stroke: 'rgb(233 234 239)', // improves contrast of the icons
+              },
             }}
           >
             {icon && icon}

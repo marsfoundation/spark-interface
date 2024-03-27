@@ -2,11 +2,11 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
-import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
 import { utils } from 'ethers';
 import { useState } from 'react';
-import { WatchOnlyModeTooltip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
+import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { UserRejectedRequestError } from 'src/libs/web3-data-provider/WalletConnectConnector';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 
@@ -19,7 +19,7 @@ export type WalletRowProps = {
 };
 
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
-  const { connectWallet } = useWeb3Context();
+  const { connectWallet, loading } = useWeb3Context();
 
   const getWalletIcon = (walletType: WalletType) => {
     switch (walletType) {
@@ -75,6 +75,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
 
   return (
     <Button
+      disabled={loading}
       variant="outlined"
       sx={{
         display: 'flex',
@@ -100,7 +101,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, connectWatchModeOnly } = useWeb3Context();
+  const { error, connectReadOnlyMode } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -135,10 +136,10 @@ export const WalletSelector = () => {
     }
   };
 
-  const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
+  const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      connectWatchModeOnly(inputMockWalletAddress);
+      connectReadOnlyMode(inputMockWalletAddress);
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) !== '.eth') {
@@ -147,7 +148,7 @@ export const WalletSelector = () => {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectWatchModeOnly(resolvedAddress);
+          connectReadOnlyMode(resolvedAddress);
         } else {
           setValidAddressError(true);
         }
@@ -157,7 +158,7 @@ export const WalletSelector = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    handleWatchAddress(inputMockWalletAddress);
+    handleReadAddress(inputMockWalletAddress);
   };
 
   return (
@@ -183,9 +184,9 @@ export const WalletSelector = () => {
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">
-          <Trans>Enter an address to track in watch-only mode</Trans>
+          <Trans>Track wallet balance in read-only mode</Trans>
         </Typography>
-        <WatchOnlyModeTooltip />
+        <ReadOnlyModeTooltip />
       </Box>
       <form onSubmit={handleSubmit}>
         <InputBase
@@ -198,13 +199,13 @@ export const WalletSelector = () => {
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
-          placeholder="Enter ethereum address or ENS name"
+          placeholder="Ethereum address or ENS name"
           fullWidth
           autoFocus
           value={inputMockWalletAddress}
           onChange={(e) => setInputMockWalletAddress(e.target.value)}
           inputProps={{
-            'aria-label': 'watch mode only address',
+            'aria-label': 'read-only mode address',
           }}
         />
         <Button
@@ -221,9 +222,9 @@ export const WalletSelector = () => {
           disabled={
             !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
           }
-          aria-label="watch mode only address"
+          aria-label="read-only mode address"
         >
-          Watch address
+          <Trans>Track wallet</Trans>
         </Button>
       </form>
       {validAddressError && (
@@ -234,7 +235,11 @@ export const WalletSelector = () => {
       <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
         <Trans>
           Need help connecting a wallet?{' '}
-          <Link href="https://docs.aave.com/faq/troubleshooting" target="_blank" rel="noopener">
+          <Link
+            href="https://docs.spark.fi/defi-infrastructure/sparklend/troubleshooting"
+            target="_blank"
+            rel="noopener"
+          >
             Read our FAQ
           </Link>
         </Trans>
